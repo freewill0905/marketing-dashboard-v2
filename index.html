@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 마케팅 팀 // MKTG-OS v2.6</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Noto+Sans+KR:wght@300;400;700&display=swap');
+
+  :root {
+    --bg-primary: #050508;
+    --bg-secondary: #0a0a12;
+    --bg-card: #0d0d1a;
+    --bg-card-hover: #111128;
+    --border-dim: #1a1a2e;
+    --border-glow: #2a2a4e;
+    --cyan: #00f5ff;
+    --cyan-dim: #00a8b5;
+    --purple: #bf5fff;
+    --purple-dim: #7a3aaa;
+    --green: #00ff88;
+    --green-dim: #00aa5a;
+    --orange: #ff6b35;
+    --orange-dim: #aa4020;
+    --pink: #ff2d78;
+    --pink-dim: #aa1a50;
+    --blue: #4d9fff;
+    --blue-dim: #2a60aa;
+    --yellow: #ffd700;
+    --text-primary: #e0e0ff;
+    --text-secondary: #8888aa;
+    --text-dim: #444466;
+    --font-display: 'Orbitron', monospace;
+    --font-mono: 'Share Tech Mono', monospace;
+    --font-korean: 'Noto Sans KR', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-korean);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 2px,
+      rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 9998;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image:
+      linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* TOPBAR */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 56px;
+    background: rgba(5,5,8,0.95);
+    border-bottom: 1px solid var(--cyan-dim);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 20px rgba(0,245,255,0.1);
+  }
+
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+
+  .logo {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--cyan);
+    text-shadow: 0 0 10px var(--cyan);
+    letter-spacing: 2px;
+  }
+
+  .logo span { color: var(--purple); text-shadow: 0 0 10px var(--purple); }
+
+  .sys-info {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    display: flex;
+    gap: 16px;
+  }
+
+  .sys-info .live { color: var(--green); animation: blink 1.5s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+
+  .btn-settings {
+    background: transparent;
+    border: 1px solid var(--purple-dim);
+    color: var(--purple);
+    padding: 6px 14px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  }
+
+  .btn-settings:hover {
+    background: rgba(191,95,255,0.15);
+    border-color: var(--purple);
+    box-shadow: 0 0 12px rgba(191,95,255,0.4);
+  }
+
+  .api-status {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 4px 10px;
+    border: 1px solid;
+    clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+  }
+
+  .api-status.connected {
+    color: var(--green);
+    border-color: var(--green-dim);
+    background: rgba(0,255,136,0.08);
+    text-shadow: 0 0 6px var(--green);
+  }
+
+  .api-status.disconnected {
+    color: var(--orange);
+    border-color: var(--orange-dim);
+    background: rgba(255,107,53,0.08);
+  }
+
+  /* MAIN */
+  .main {
+    padding: 80px 24px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HERO */
+  .hero { text-align: center; padding: 40px 0 48px; }
+
+  .hero-subtitle {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--cyan-dim);
+    letter-spacing: 4px;
+    margin-bottom: 12px;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .hero-title .t1 { color: var(--text-primary); }
+  .hero-title .t2 {
+    color: var(--cyan);
+    text-shadow: 0 0 20px var(--cyan), 0 0 40px rgba(0,245,255,0.3);
+  }
+
+  .hero-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* STATS */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin: 32px 0 48px;
+    flex-wrap: wrap;
+  }
+
+  .stat-item { text-align: center; }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+    margin-top: 4px;
+  }
+
+  .stat-divider { width: 1px; background: var(--border-glow); align-self: stretch; }
+
+  /* DEPARTMENT */
+  .dept-section { margin-bottom: 48px; }
+
+  .dept-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    position: relative;
+  }
+
+  .dept-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 1px;
+    background: linear-gradient(90deg, var(--dept-color) 0%, transparent 70%);
+  }
+
+  .dept-icon {
+    width: 36px; height: 36px;
+    border: 1px solid var(--dept-color);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+    background: rgba(0,0,0,0.5);
+    flex-shrink: 0;
+  }
+
+  .dept-name {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .dept-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border: 1px solid var(--dept-color);
+    opacity: 0.6;
+    clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+  }
+
+  /* AGENT CARDS */
+  .agents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .agent-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-dim);
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+    clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+  }
+
+  .agent-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .agent-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--agent-color);
+    box-shadow: 0 0 10px var(--agent-color);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .agent-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--agent-color);
+    box-shadow: 0 0 24px rgba(var(--agent-glow), 0.2), inset 0 0 24px rgba(var(--agent-glow), 0.05);
+    transform: translateY(-2px);
+  }
+
+  .agent-card:hover::after { opacity: 1; }
+
+  .card-corner {
+    position: absolute;
+    top: 8px; right: 8px;
+    width: 20px; height: 20px;
+    border-top: 1px solid var(--agent-color);
+    border-right: 1px solid var(--agent-color);
+    opacity: 0.5;
+  }
+
+  .agent-emoji {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: block;
+    filter: drop-shadow(0 0 8px rgba(255,255,255,0.2));
+    transition: transform 0.25s;
+  }
+
+  .agent-card:hover .agent-emoji { transform: scale(1.1) rotate(-5deg); }
+
+  .agent-status {
+    position: absolute;
+    top: 16px; right: 16px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .agent-name {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  .agent-role {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .agent-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    padding: 2px 8px;
+    border: 1px solid var(--border-glow);
+    color: var(--text-dim);
+    clip-path: polygon(3px 0, 100% 0, 100% calc(100% - 3px), calc(100% - 3px) 100%, 0 100%, 0 3px);
+  }
+
+  .btn-chat {
+    width: 100%;
+    margin-top: 16px;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid var(--agent-color);
+    color: var(--agent-color);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+    clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+  }
+
+  .btn-chat:hover {
+    background: rgba(var(--agent-glow), 0.15);
+    box-shadow: 0 0 12px rgba(var(--agent-glow), 0.4);
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-overlay.active { display: flex; }
+
+  /* CHAT MODAL */
+  .chat-modal {
+    width: 100%;
+    max-width: 640px;
+    height: 90vh;
+    max-height: 720px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--cyan);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+    box-shadow: 0 0 60px rgba(0,245,255,0.2);
+    animation: modalIn 0.25s ease;
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .chat-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-glow);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(0,0,0,0.4);
+    flex-shrink: 0;
+  }
+
+  .chat-agent-emoji { font-size: 28px; }
+  .chat-agent-info { flex: 1; }
+
+  .chat-agent-name {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .chat-agent-status {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--green);
+    margin-top: 2px;
+  }
+
+  .chat-close {
+    width: 32px; height: 32px;
+    background: transparent;
+    border: 1px solid var(--border-glow);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+    clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+  }
+
+  .chat-close:hover {
+    border-color: var(--pink);
+    color: var(--pink);
+    background: rgba(255,45,120,0.1);
+  }
+
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .chat-messages::-webkit-scrollbar { width: 4px; }
+  .chat-messages::-webkit-scrollbar-track { background: var(--bg-primary); }
+  .chat-messages::-webkit-scrollbar-thumb { background: var(--border-glow); border-radius: 2px; }
+
+  .msg { display: flex; gap: 10px; max-width: 90%; }
+  .msg.user { flex-direction: row-reverse; align-self: flex-end; }
+  .msg.assistant { align-self: flex-start; }
+
+  .msg-avatar {
+    width: 32px; height: 32px;
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    border: 1px solid var(--border-glow);
+    background: var(--bg-primary);
+  }
+
+  .msg-bubble {
+    padding: 12px 16px;
+    font-size: 14px;
+    line-height: 1.6;
+    border-radius: 2px;
+  }
+
+  .msg.user .msg-bubble {
+    background: rgba(0,245,255,0.08);
+    border: 1px solid var(--modal-color, var(--cyan));
+    color: var(--text-primary);
+  }
+
+  .msg.assistant .msg-bubble {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--border-glow);
+    color: var(--text-primary);
+  }
+
+  .msg-time {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-dim);
+    margin-top: 4px;
+    text-align: right;
+  }
+
+  .msg.assistant .msg-time { text-align: left; }
+
+  .typing-indicator {
+    display: flex;
+    gap: 4px;
+    padding: 12px 16px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--border-glow);
+    align-self: flex-start;
+    border-radius: 2px;
+  }
+
+  .typing-dot {
+    width: 6px; height: 6px;
+    background: var(--text-dim);
+    border-radius: 50%;
+    animation: typing 1s infinite;
+  }
+
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes typing {
+    0%,100% { transform: translateY(0); opacity: 0.4; }
+    50% { transform: translateY(-4px); opacity: 1; }
+  }
+
+  .chat-input-area {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border-glow);
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    background: rgba(0,0,0,0.4);
+    flex-shrink: 0;
+  }
+
+  .chat-input {
+    flex: 1;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-glow);
+    color: var(--text-primary);
+    padding: 12px 14px;
+    font-family: var(--font-korean);
+    font-size: 14px;
+    resize: none;
+    min-height: 44px;
+    max-height: 120px;
+    transition: border-color 0.2s;
+    clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+  }
+
+  .chat-input:focus {
+    outline: none;
+    border-color: var(--modal-color, var(--cyan));
+    box-shadow: 0 0 8px rgba(0,245,255,0.2);
+  }
+
+  .chat-input::placeholder { color: var(--text-dim); }
+
+  .btn-send {
+    padding: 12px 20px;
+    background: transparent;
+    border: 1px solid var(--modal-color, var(--cyan));
+    color: var(--modal-color, var(--cyan));
+    font-family: var(--font-mono);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+    letter-spacing: 1px;
+  }
+
+  .btn-send:hover {
+    background: rgba(0,245,255,0.12);
+    box-shadow: 0 0 12px rgba(0,245,255,0.3);
+  }
+
+  .btn-send:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* SETTINGS MODAL */
+  .settings-modal {
+    width: 100%;
+    max-width: 480px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--purple);
+    clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+    box-shadow: 0 0 60px rgba(191,95,255,0.2);
+    animation: modalIn 0.25s ease;
+  }
+
+  .settings-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-glow);
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(0,0,0,0.4);
+  }
+
+  .settings-title {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--purple);
+    text-shadow: 0 0 8px var(--purple);
+    letter-spacing: 1px;
+  }
+
+  .settings-body { padding: 24px; }
+  .settings-group { margin-bottom: 24px; }
+
+  .settings-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .settings-input {
+    width: 100%;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-glow);
+    color: var(--text-primary);
+    padding: 12px 14px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    transition: border-color 0.2s;
+    clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+  }
+
+  .settings-input:focus {
+    outline: none;
+    border-color: var(--purple);
+    box-shadow: 0 0 8px rgba(191,95,255,0.2);
+  }
+
+  .settings-select {
+    width: 100%;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-glow);
+    color: var(--text-primary);
+    padding: 12px 14px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M0 0l6 8 6-8z' fill='%238888aa'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+  }
+
+  .settings-select:focus { outline: none; border-color: var(--purple); }
+  .settings-select option { background: var(--bg-secondary); }
+
+  .settings-hint {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  .settings-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-glow);
+    display: flex; gap: 10px; justify-content: flex-end;
+  }
+
+  .btn-cancel {
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid var(--border-glow);
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+  }
+
+  .btn-cancel:hover { border-color: var(--text-secondary); color: var(--text-primary); }
+
+  .btn-save {
+    padding: 10px 20px;
+    background: rgba(191,95,255,0.1);
+    border: 1px solid var(--purple);
+    color: var(--purple);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+    letter-spacing: 1px;
+  }
+
+  .btn-save:hover {
+    background: rgba(191,95,255,0.25);
+    box-shadow: 0 0 12px rgba(191,95,255,0.4);
+  }
+
+  /* TOAST */
+  .toast-container {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    z-index: 9999;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+
+  .toast {
+    padding: 12px 20px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    border: 1px solid;
+    animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+    clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+  }
+
+  .toast.success { background: rgba(0,255,136,0.1); border-color: var(--green); color: var(--green); }
+  .toast.error { background: rgba(255,45,120,0.1); border-color: var(--pink); color: var(--pink); }
+
+  @keyframes toastIn { from { opacity:0; transform: translateX(20px); } to { opacity:1; transform: translateX(0); } }
+  @keyframes toastOut { from { opacity:1; } to { opacity:0; } }
+
+  .welcome-msg { text-align: center; padding: 40px 20px; color: var(--text-dim); }
+  .welcome-msg .emoji { font-size: 40px; margin-bottom: 12px; display: block; }
+  .welcome-msg p { font-size: 13px; line-height: 1.6; }
+  .welcome-msg .hint { font-family: var(--font-mono); font-size: 11px; margin-top: 8px; opacity: 0.6; }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 24px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    border-top: 1px solid var(--border-dim);
+    margin-top: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .topbar { padding: 0 12px; }
+    .sys-info { display: none; }
+    .main { padding: 68px 12px 24px; }
+    .hero { padding: 24px 0 32px; }
+    .stats-bar { gap: 20px; }
+    .stat-value { font-size: 22px; }
+    .agents-grid { grid-template-columns: 1fr; }
+    .chat-modal { height: 100vh; max-height: none; clip-path: none; }
+    .settings-modal { max-width: 100%; }
+  }
+
+  @media (max-width: 480px) {
+    .stat-divider { display: none; }
+  }
+
+  /* PRELOADER */
+  #preloader {
+    position: fixed; inset: 0;
+    background: var(--bg-primary);
+    z-index: 9999;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 20px;
+    transition: opacity 0.4s ease;
+  }
+
+  .preloader-logo {
+    font-family: var(--font-display);
+    font-size: 24px; font-weight: 900;
+    color: var(--cyan);
+    text-shadow: 0 0 20px var(--cyan);
+    letter-spacing: 4px;
+    animation: flicker 3s infinite;
+  }
+
+  @keyframes flicker {
+    0%,95%,97%,100% { opacity:1; }
+    96% { opacity:0.6; }
+  }
+
+  .preloader-bar {
+    width: 200px; height: 2px;
+    background: var(--border-dim);
+    position: relative; overflow: hidden;
+  }
+
+  .preloader-bar::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    animation: scan 1.2s ease forwards;
+  }
+
+  @keyframes scan { from { left:-100%; } to { left:100%; } }
+
+  .preloader-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <div class="preloader-logo">MKTG-OS</div>
+  <div class="preloader-bar"></div>
+  <div class="preloader-text">INITIALIZING AI AGENTS...</div>
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="logo" style="animation:flicker 8s infinite">
+      MKTG<span>-OS</span> <span style="font-size:10px;color:var(--text-dim)">v2.6</span>
+    </div>
+    <div class="sys-info">
+      <span class="live">● LIVE</span>
+      <span id="clock">00:00:00</span>
+      <span>8 AGENTS ONLINE</span>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="api-status disconnected" id="apiStatus">API: 미연결</div>
+    <button class="btn-settings" onclick="openSettings()">⚙ 설정</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="hero">
+    <div class="hero-subtitle">// AI MARKETING COMMAND CENTER</div>
+    <div class="hero-title">
+      <div class="t1">AI 마케팅 팀</div>
+      <div class="t2">대시보드</div>
+    </div>
+    <p class="hero-desc">8명의 AI 마케팅 전문가가 당신의 브랜드를 위해 대기 중입니다. 에이전트를 선택하고 대화를 시작하세요.</p>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-value" style="color:var(--cyan);text-shadow:0 0 10px var(--cyan)">8</div>
+      <div class="stat-label">AGENTS ONLINE</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-value" style="color:var(--green);text-shadow:0 0 10px var(--green)">4</div>
+      <div class="stat-label">DEPARTMENTS</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-value" style="color:var(--purple);text-shadow:0 0 10px var(--purple)" id="sessionCount">0</div>
+      <div class="stat-label">SESSIONS TODAY</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-value" style="color:var(--orange);text-shadow:0 0 10px var(--orange)" id="msgCount">0</div>
+      <div class="stat-label">MESSAGES SENT</div>
+    </div>
+  </div>
+
+  <div id="departmentsContainer"></div>
+</div>
+
+<div class="footer">
+  MKTG-OS v2.6 // Powered by Claude AI (Anthropic) // AI 마케팅 팀 시스템
+</div>
+
+<!-- CHAT MODAL -->
+<div class="modal-overlay" id="chatOverlay" onclick="handleOverlayClick(event)">
+  <div class="chat-modal" id="chatModal">
+    <div class="chat-header">
+      <div class="chat-agent-emoji" id="chatEmoji">🤖</div>
+      <div class="chat-agent-info">
+        <div class="chat-agent-name" id="chatAgentName">에이전트</div>
+        <div class="chat-agent-status">● ONLINE · 응답 준비 완료</div>
+      </div>
+      <button class="chat-close" onclick="closeChat()">✕</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="welcome-msg">
+        <span class="emoji">🤖</span>
+        <p>에이전트를 선택하면 대화가 시작됩니다.</p>
+      </div>
+    </div>
+    <div class="chat-input-area">
+      <textarea class="chat-input" id="chatInput" placeholder="메시지를 입력하세요... (Enter: 전송 / Shift+Enter: 줄바꿈)" rows="1"
+        onkeydown="handleKeydown(event)" oninput="autoResize(this)"></textarea>
+      <button class="btn-send" id="sendBtn" onclick="sendMessage()">SEND ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay" id="settingsOverlay" onclick="handleSettingsOverlayClick(event)">
+  <div class="settings-modal">
+    <div class="settings-header">
+      <div class="settings-title">⚙ 시스템 설정</div>
+      <button class="chat-close" onclick="closeSettings()">✕</button>
+    </div>
+    <div class="settings-body">
+      <div class="settings-group">
+        <label class="settings-label">// ANTHROPIC API KEY</label>
+        <input type="password" class="settings-input" id="apiKeyInput" placeholder="sk-ant-api03-..." />
+        <p class="settings-hint">
+          API 키는 브라우저 localStorage에만 저장되며 외부로 전송되지 않습니다.<br>
+          발급: console.anthropic.com
+        </p>
+      </div>
+      <div class="settings-group">
+        <label class="settings-label">// AI 모델 선택</label>
+        <select class="settings-select" id="modelSelect">
+          <option value="claude-sonnet-4-6">Claude Sonnet 4.6 (추천)</option>
+          <option value="claude-opus-4-6">Claude Opus 4.6 (고성능)</option>
+          <option value="claude-haiku-4-5-20251001">Claude Haiku 4.5 (빠름)</option>
+        </select>
+      </div>
+      <div class="settings-group">
+        <label class="settings-label">// 최대 응답 토큰</label>
+        <select class="settings-select" id="maxTokensSelect">
+          <option value="1024">1,024 토큰 (간결)</option>
+          <option value="2048" selected>2,048 토큰 (기본)</option>
+          <option value="4096">4,096 토큰 (상세)</option>
+          <option value="8192">8,192 토큰 (최대)</option>
+        </select>
+      </div>
+    </div>
+    <div class="settings-footer">
+      <button class="btn-cancel" onclick="closeSettings()">취소</button>
+      <button class="btn-save" onclick="saveSettings()">저장 ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ============================================================
+// AGENT DATA
+// ============================================================
+const departments = [
+  {
+    id: 'content', name: '콘텐츠팀', icon: '✍️',
+    colorVal: '#00f5ff', badge: 'CONTENT',
+    agents: [
+      {
+        id: 'copywriter', emoji: '✍️', name: '카피라이터',
+        role: '브랜드 메시지와 광고 카피를 전문으로 작성합니다. 슬로건, 제품 설명, 랜딩 페이지 카피를 담당합니다.',
+        tags: ['카피라이팅', '브랜딩', '슬로건', '광고 문구'],
+        systemPrompt: `당신은 전문 마케팅 카피라이터입니다. 브랜드의 핵심 메시지를 강렬하고 설득력 있게 표현하는 것이 전문 분야입니다. 슬로건, 광고 카피, 제품 설명, 랜딩 페이지 텍스트 등을 전문으로 작성합니다. 항상 한국어로 응답하며, 창의적이고 임팩트 있는 문구를 제안합니다. 고객 요청에 여러 옵션을 제시하고 각 옵션의 강점을 설명합니다.`,
+        welcome: '안녕하세요! 카피라이터 AI입니다. 슬로건, 광고 카피, 제품 설명 등 강력한 마케팅 문구를 함께 만들어 드리겠습니다. 어떤 카피가 필요하신가요?',
+        colorVal: '#00f5ff', glowRGB: '0,245,255',
+      },
+      {
+        id: 'sns-writer', emoji: '📱', name: 'SNS 작가',
+        role: '인스타그램, X(트위터), 페이스북 등 소셜 미디어 콘텐츠를 기획하고 작성합니다. 해시태그 전략도 포함합니다.',
+        tags: ['SNS', '인스타그램', '해시태그', '콘텐츠 캘린더'],
+        systemPrompt: `당신은 소셜 미디어 콘텐츠 전문가입니다. 인스타그램, X(트위터), 페이스북, 유튜브 쇼츠 등 각 플랫폼 특성에 맞는 콘텐츠를 기획하고 작성합니다. 트렌디한 해시태그 전략, 인게이지먼트를 높이는 게시물 작성, 콘텐츠 캘린더 기획이 전문입니다. 항상 한국어로 응답하며, 플랫폼별 최적화된 형식으로 콘텐츠를 제안합니다.`,
+        welcome: '안녕하세요! SNS 콘텐츠 전문가입니다. 인스타, 트위터, 페북 등 소셜 미디어를 위한 매력적인 콘텐츠를 함께 만들어요! 어떤 플랫폼용 콘텐츠가 필요하신가요?',
+        colorVal: '#4d9fff', glowRGB: '77,159,255',
+      },
+    ]
+  },
+  {
+    id: 'ads', name: '광고팀', icon: '📊',
+    colorVal: '#ff6b35', badge: 'ADVERTISING',
+    agents: [
+      {
+        id: 'ads-analyst', emoji: '📊', name: '광고 성과 분석가',
+        role: '광고 캠페인 성과를 분석하고 ROI 최적화 전략을 제안합니다. 데이터 기반 인사이트를 제공합니다.',
+        tags: ['ROI 분석', 'CTR', 'CPC', '퍼포먼스'],
+        systemPrompt: `당신은 디지털 광고 성과 분석 전문가입니다. Google Ads, Meta Ads, 네이버 광고 등 다양한 광고 플랫폼의 성과 데이터를 분석하고 최적화 전략을 제안합니다. CTR, CPC, ROAS, 전환율 등 핵심 지표 분석, A/B 테스트 설계, 타겟팅 최적화, 예산 배분 전략을 전문으로 합니다. 항상 한국어로 응답하며, 데이터 기반의 구체적인 개선 방안을 제시합니다.`,
+        welcome: '안녕하세요! 광고 성과 분석 전문가입니다. 광고 캠페인 데이터를 분석하고 ROI를 극대화할 최적화 전략을 제안해 드리겠습니다. 어떤 광고 데이터를 분석할까요?',
+        colorVal: '#ff6b35', glowRGB: '255,107,53',
+      },
+      {
+        id: 'banner-planner', emoji: '🎨', name: '배너 기획자',
+        role: '온라인 광고 배너의 기획과 카피를 담당합니다. 효과적인 비주얼 커뮤니케이션 전략을 수립합니다.',
+        tags: ['배너 디자인', '광고 기획', '비주얼', 'GDN'],
+        systemPrompt: `당신은 디지털 광고 배너 기획 전문가입니다. 구글 디스플레이 네트워크, 카카오 광고, 네이버 디스플레이 등 다양한 배너 광고를 기획합니다. 배너 사이즈별 최적 레이아웃, 시선을 사로잡는 헤드카피, 클릭을 유도하는 CTA 문구, 브랜드 가이드라인 준수 등을 전문으로 합니다. 항상 한국어로 응답하며, 구체적인 배너 카피와 시각적 구성 아이디어를 제안합니다.`,
+        welcome: '안녕하세요! 배너 기획 전문가입니다. 클릭률을 높이는 매력적인 배너 광고 기획을 도와드리겠습니다. 어떤 배너가 필요하신가요?',
+        colorVal: '#ffd700', glowRGB: '255,215,0',
+      },
+    ]
+  },
+  {
+    id: 'analysis', name: '분석팀', icon: '🔍',
+    colorVal: '#00ff88', badge: 'ANALYTICS',
+    agents: [
+      {
+        id: 'data-analyst', emoji: '📈', name: '데이터 분석가',
+        role: '마케팅 데이터를 심층 분석하고 비즈니스 인사이트를 도출합니다. KPI 설정 및 성과 측정을 담당합니다.',
+        tags: ['데이터 분석', 'KPI', '인사이트', '리포트'],
+        systemPrompt: `당신은 마케팅 데이터 분석 전문가입니다. 구글 애널리틱스, 데이터 스튜디오, 엑셀, SQL 등을 활용한 마케팅 데이터 분석이 전문입니다. 고객 행동 분석, 퍼널 분석, 코호트 분석, LTV 분석 등 다양한 분석 방법론을 제공하고, 비즈니스 성장을 위한 데이터 기반 의사결정을 지원합니다. 항상 한국어로 응답하며, 복잡한 데이터를 명확하고 실행 가능한 인사이트로 변환합니다.`,
+        welcome: '안녕하세요! 마케팅 데이터 분석가입니다. 데이터 속 숨겨진 인사이트를 발굴하고 비즈니스 성장을 위한 전략적 방향을 제시해 드리겠습니다. 어떤 데이터를 분석할까요?',
+        colorVal: '#00ff88', glowRGB: '0,255,136',
+      },
+      {
+        id: 'competitor-analyst', emoji: '🕵️', name: '경쟁사 분석가',
+        role: '경쟁사의 마케팅 전략, 포지셔닝, 강약점을 분석합니다. 시장 내 차별화 전략을 제안합니다.',
+        tags: ['경쟁사 분석', '시장 조사', 'SWOT', '포지셔닝'],
+        systemPrompt: `당신은 경쟁사 분석 및 시장 조사 전문가입니다. 경쟁사의 마케팅 전략, 제품 포지셔닝, 가격 전략, 콘텐츠 전략 등을 종합적으로 분석합니다. SWOT 분석, 경쟁 우위 분석, 시장 트렌드 파악, 차별화 전략 수립 등을 전문으로 합니다. 항상 한국어로 응답하며, 경쟁사 대비 전략적 우위를 확보할 수 있는 구체적인 방안을 제시합니다.`,
+        welcome: '안녕하세요! 경쟁사 분석 전문가입니다. 경쟁사 전략을 파악하고 시장에서 차별화된 포지션을 확보할 수 있도록 도와드리겠습니다. 어떤 경쟁사 또는 시장을 분석할까요?',
+        colorVal: '#bf5fff', glowRGB: '191,95,255',
+      },
+    ]
+  },
+  {
+    id: 'planning', name: '기획팀', icon: '🚀',
+    colorVal: '#ff2d78', badge: 'PLANNING',
+    agents: [
+      {
+        id: 'detail-page', emoji: '📋', name: '상세페이지 기획자',
+        role: '쇼핑몰 상세페이지 구성과 카피를 기획합니다. 구매 전환율을 높이는 설득력 있는 콘텐츠를 만듭니다.',
+        tags: ['상세페이지', '쇼핑몰', '전환율', 'UX 라이팅'],
+        systemPrompt: `당신은 이커머스 상세페이지 기획 전문가입니다. 쿠팡, 스마트스토어, 자사몰 등 다양한 플랫폼의 상세페이지 구성과 카피를 전문으로 합니다. 소비자 심리를 파악한 설득력 있는 스토리텔링, 제품의 핵심 가치 전달, 구매 전환율을 높이는 콘텐츠 구조 설계가 전문입니다. 항상 한국어로 응답하며, 실제 사용 가능한 상세페이지 기획안과 카피를 제안합니다.`,
+        welcome: '안녕하세요! 상세페이지 기획 전문가입니다. 소비자의 구매 결정을 이끌어내는 매력적인 상세페이지를 함께 만들어 드리겠습니다. 어떤 제품의 상세페이지를 기획할까요?',
+        colorVal: '#ff2d78', glowRGB: '255,45,120',
+      },
+      {
+        id: 'launch-planner', emoji: '🚀', name: '런치 플래너',
+        role: '신제품/서비스 출시 전략을 기획합니다. 런치 캠페인, 타임라인, 채널 믹스 전략을 수립합니다.',
+        tags: ['런치 전략', '캠페인 기획', '타임라인', '채널 믹스'],
+        systemPrompt: `당신은 제품 및 서비스 런치 전략 기획 전문가입니다. 신제품 출시를 위한 종합적인 마케팅 전략 수립, 런치 캠페인 기획, 채널별 마케팅 믹스, 타임라인 설계, 프리런치-런치-포스트런치 단계별 전략을 전문으로 합니다. 항상 한국어로 응답하며, 실행 가능한 구체적인 런치 플랜과 체크리스트를 제공합니다.`,
+        welcome: '안녕하세요! 런치 플래너입니다. 새로운 제품이나 서비스의 성공적인 시장 진입을 위한 전략을 함께 수립해 드리겠습니다. 어떤 제품/서비스를 런칭할 예정인가요?',
+        colorVal: '#4d9fff', glowRGB: '77,159,255',
+      },
+    ]
+  }
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let currentAgent = null;
+let chatHistory = {};
+let settings = { apiKey: '', model: 'claude-sonnet-4-6', maxTokens: 2048 };
+let sessionCount = 0;
+let msgCount = 0;
+
+// ============================================================
+// INIT
+// ============================================================
+window.addEventListener('DOMContentLoaded', () => {
+  loadSettings();
+  renderDepartments();
+  startClock();
+  setTimeout(() => {
+    const pl = document.getElementById('preloader');
+    pl.style.opacity = '0';
+    setTimeout(() => pl.style.display = 'none', 400);
+  }, 1400);
+});
+
+function startClock() {
+  const update = () => {
+    const now = new Date();
+    document.getElementById('clock').textContent =
+      [now.getHours(), now.getMinutes(), now.getSeconds()]
+        .map(n => String(n).padStart(2,'0')).join(':');
+  };
+  update();
+  setInterval(update, 1000);
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function renderDepartments() {
+  const container = document.getElementById('departmentsContainer');
+  container.innerHTML = '';
+  departments.forEach(dept => {
+    const section = document.createElement('div');
+    section.className = 'dept-section';
+    section.innerHTML = `
+      <div class="dept-header" style="--dept-color:${dept.colorVal}">
+        <div class="dept-icon" style="border-color:${dept.colorVal};box-shadow:0 0 8px ${dept.colorVal}40">${dept.icon}</div>
+        <div class="dept-name" style="color:${dept.colorVal};text-shadow:0 0 8px ${dept.colorVal}">${dept.name}</div>
+        <div class="dept-badge" style="border-color:${dept.colorVal};color:${dept.colorVal}">${dept.badge}</div>
+      </div>
+      <div class="agents-grid">
+        ${dept.agents.map(a => agentCardHTML(a)).join('')}
+      </div>
+    `;
+    container.appendChild(section);
+  });
+}
+
+function agentCardHTML(agent) {
+  const tags = agent.tags.map(t => `<span class="tag">${t}</span>`).join('');
+  return `
+    <div class="agent-card" style="--agent-color:${agent.colorVal};--agent-glow:${agent.glowRGB}" onclick="openChat('${agent.id}')">
+      <div class="card-corner"></div>
+      <div class="agent-status"></div>
+      <span class="agent-emoji">${agent.emoji}</span>
+      <div class="agent-name" style="color:${agent.colorVal};text-shadow:0 0 6px ${agent.colorVal}">${agent.name}</div>
+      <div class="agent-role">${agent.role}</div>
+      <div class="agent-tags">${tags}</div>
+      <button class="btn-chat" onclick="event.stopPropagation();openChat('${agent.id}')">▶ 채팅 시작</button>
+    </div>
+  `;
+}
+
+// ============================================================
+// CHAT
+// ============================================================
+function findAgent(id) {
+  for (const dept of departments)
+    for (const a of dept.agents)
+      if (a.id === id) return a;
+  return null;
+}
+
+function openChat(agentId) {
+  const agent = findAgent(agentId);
+  if (!agent) return;
+
+  currentAgent = agent;
+  sessionCount++;
+  document.getElementById('sessionCount').textContent = sessionCount;
+
+  // Style modal
+  const modal = document.getElementById('chatModal');
+  modal.style.borderColor = agent.colorVal;
+  modal.style.boxShadow = `0 0 60px rgba(${agent.glowRGB}, 0.25)`;
+
+  // Header
+  document.getElementById('chatEmoji').textContent = agent.emoji;
+  const nameEl = document.getElementById('chatAgentName');
+  nameEl.textContent = agent.name;
+  nameEl.style.color = agent.colorVal;
+  nameEl.style.textShadow = `0 0 6px ${agent.colorVal}`;
+
+  // Input / send button colors
+  const input = document.getElementById('chatInput');
+  input.style.setProperty('--modal-color', agent.colorVal);
+  const sendBtn = document.getElementById('sendBtn');
+  sendBtn.style.borderColor = agent.colorVal;
+  sendBtn.style.color = agent.colorVal;
+
+  renderMessages(agentId, agent);
+  document.getElementById('chatOverlay').classList.add('active');
+  input.focus();
+}
+
+function renderMessages(agentId, agent) {
+  const container = document.getElementById('chatMessages');
+  const history = chatHistory[agentId] || [];
+  if (history.length === 0) {
+    container.innerHTML = `
+      <div class="welcome-msg">
+        <span class="emoji">${agent.emoji}</span>
+        <p>${agent.welcome}</p>
+        <p class="hint">// Enter: 전송 &nbsp;|&nbsp; Shift+Enter: 줄바꿈</p>
+      </div>
+    `;
+  } else {
+    container.innerHTML = history.map(m => msgHTML(m, agent)).join('');
+    scrollBottom();
+  }
+}
+
+function msgHTML(msg, agent) {
+  const isUser = msg.role === 'user';
+  const time = new Date(msg.timestamp).toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit'});
+  const avatar = isUser ? '👤' : agent.emoji;
+  const bubbleStyle = isUser
+    ? `background:rgba(${agent.glowRGB},0.08);border:1px solid ${agent.colorVal};`
+    : `background:rgba(0,0,0,0.4);border:1px solid var(--border-glow);`;
+  return `
+    <div class="msg ${msg.role}">
+      <div class="msg-avatar">${avatar}</div>
+      <div>
+        <div class="msg-bubble" style="${bubbleStyle}">${esc(msg.content).replace(/\n/g,'<br>')}</div>
+        <div class="msg-time">${time}</div>
+      </div>
+    </div>
+  `;
+}
+
+function closeChat() {
+  document.getElementById('chatOverlay').classList.remove('active');
+  currentAgent = null;
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('chatOverlay')) closeChat();
+}
+
+function handleKeydown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+async function sendMessage() {
+  if (!currentAgent) return;
+  const input = document.getElementById('chatInput');
+  const content = input.value.trim();
+  if (!content) return;
+
+  if (!settings.apiKey) {
+    showToast('API 키를 먼저 설정해주세요', 'error');
+    openSettings();
+    return;
+  }
+
+  if (!chatHistory[currentAgent.id]) chatHistory[currentAgent.id] = [];
+  chatHistory[currentAgent.id].push({ role: 'user', content, timestamp: Date.now() });
+
+  input.value = '';
+  input.style.height = 'auto';
+  msgCount++;
+  document.getElementById('msgCount').textContent = msgCount;
+
+  const container = document.getElementById('chatMessages');
+  container.innerHTML = chatHistory[currentAgent.id].map(m => msgHTML(m, currentAgent)).join('');
+
+  const typingEl = document.createElement('div');
+  typingEl.className = 'typing-indicator';
+  typingEl.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+  container.appendChild(typingEl);
+  scrollBottom();
+
+  const sendBtn = document.getElementById('sendBtn');
+  sendBtn.disabled = true;
+  sendBtn.textContent = '...';
+
+  try {
+    const reply = await callAPI(currentAgent);
+    typingEl.remove();
+    chatHistory[currentAgent.id].push({ role: 'assistant', content: reply, timestamp: Date.now() });
+    container.innerHTML = chatHistory[currentAgent.id].map(m => msgHTML(m, currentAgent)).join('');
+    scrollBottom();
+  } catch (err) {
+    typingEl.remove();
+    showToast(`오류: ${err.message}`, 'error');
+  } finally {
+    sendBtn.disabled = false;
+    sendBtn.textContent = 'SEND ▶';
+    input.focus();
+  }
+}
+
+async function callAPI(agent) {
+  const messages = chatHistory[agent.id].map(m => ({ role: m.role, content: m.content }));
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': settings.apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-calls': 'true',
+    },
+    body: JSON.stringify({
+      model: settings.model,
+      max_tokens: parseInt(settings.maxTokens),
+      system: agent.systemPrompt,
+      messages,
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error?.message || `HTTP ${res.status}`);
+  }
+
+  const data = await res.json();
+  return data.content[0].text;
+}
+
+function scrollBottom() {
+  const c = document.getElementById('chatMessages');
+  c.scrollTop = c.scrollHeight;
+}
+
+// ============================================================
+// SETTINGS
+// ============================================================
+function openSettings() {
+  document.getElementById('apiKeyInput').value = settings.apiKey;
+  document.getElementById('modelSelect').value = settings.model;
+  document.getElementById('maxTokensSelect').value = settings.maxTokens;
+  document.getElementById('settingsOverlay').classList.add('active');
+}
+
+function closeSettings() {
+  document.getElementById('settingsOverlay').classList.remove('active');
+}
+
+function handleSettingsOverlayClick(e) {
+  if (e.target === document.getElementById('settingsOverlay')) closeSettings();
+}
+
+function saveSettings() {
+  settings.apiKey = document.getElementById('apiKeyInput').value.trim();
+  settings.model = document.getElementById('modelSelect').value;
+  settings.maxTokens = document.getElementById('maxTokensSelect').value;
+  localStorage.setItem('mktgos_settings', JSON.stringify(settings));
+  updateApiStatus();
+  closeSettings();
+  showToast('설정이 저장되었습니다', 'success');
+}
+
+function loadSettings() {
+  try {
+    const saved = localStorage.getItem('mktgos_settings');
+    if (saved) Object.assign(settings, JSON.parse(saved));
+  } catch(e) {}
+  updateApiStatus();
+}
+
+function updateApiStatus() {
+  const el = document.getElementById('apiStatus');
+  if (settings.apiKey && settings.apiKey.startsWith('sk-')) {
+    el.textContent = 'API: 연결됨';
+    el.className = 'api-status connected';
+  } else {
+    el.textContent = 'API: 미연결';
+    el.className = 'api-status disconnected';
+  }
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function showToast(msg, type = 'success') {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.textContent = (type === 'success' ? '✓ ' : '✕ ') + msg;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 3100);
+}
+
+// ============================================================
+// UTILS
+// ============================================================
+function esc(str) {
+  const d = document.createElement('div');
+  d.appendChild(document.createTextNode(str));
+  return d.innerHTML;
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('settingsOverlay').classList.contains('active')) closeSettings();
+    else if (document.getElementById('chatOverlay').classList.contains('active')) closeChat();
+  }
+});
+</script>
+</body>
+</html>
