@@ -1290,6 +1290,7 @@ async function callAPI(agent) {
   const messages = chatHistory[agent.id].map(m => ({ role: m.role, content: m.content }));
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
+    mode: 'cors',
     headers: {
       'Content-Type': 'application/json',
       'x-api-key': settings.apiKey,
