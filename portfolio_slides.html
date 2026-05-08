@@ -674,6 +674,99 @@
       0%, 100% { box-shadow: 0 0 35px rgba(240,180,41,0.1), inset 0 0 35px rgba(240,180,41,0.02); }
       50%       { box-shadow: 0 0 65px rgba(240,180,41,0.22), inset 0 0 50px rgba(240,180,41,0.05); }
     }
+
+    /* ══════════════════════════════════════
+       INLINE EDITOR
+    ══════════════════════════════════════ */
+    #edit-mode-btn {
+      position: fixed;
+      top: 14px;
+      right: 16px;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 16px;
+      background: rgba(4, 20, 36, 0.9);
+      border: 1px solid rgba(0, 212, 245, 0.32);
+      color: var(--cyan);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.25s, border-color 0.25s, box-shadow 0.25s;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      user-select: none;
+    }
+    #edit-mode-btn:hover {
+      background: rgba(0, 212, 245, 0.1);
+      border-color: var(--cyan);
+      box-shadow: 0 0 18px rgba(0, 212, 245, 0.15);
+    }
+    #edit-mode-btn.is-on {
+      background: rgba(0, 212, 245, 0.13);
+      border-color: var(--cyan);
+      color: #fff;
+      box-shadow: 0 0 22px rgba(0, 212, 245, 0.22);
+    }
+    .edit-btn-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(0, 212, 245, 0.38);
+      flex-shrink: 0;
+      transition: background 0.25s, box-shadow 0.25s;
+    }
+    #edit-mode-btn.is-on .edit-btn-dot {
+      background: var(--cyan);
+      box-shadow: 0 0 7px var(--cyan);
+      animation: blink 1.5s ease-in-out infinite;
+    }
+
+    body.edit-on .editable-text {
+      outline: 1px dashed rgba(0, 212, 245, 0.22);
+      cursor: text;
+    }
+    body.edit-on .editable-text:hover {
+      outline: 1px dashed rgba(0, 212, 245, 0.65);
+    }
+    body.edit-on .editable-text[contenteditable="true"] {
+      outline: 1px solid var(--cyan) !important;
+      border-radius: 1px;
+    }
+    body.edit-on .cover-name[contenteditable="true"] {
+      -webkit-text-fill-color: var(--white) !important;
+      background: rgba(0, 212, 245, 0.07) !important;
+      -webkit-background-clip: unset !important;
+      background-clip: unset !important;
+    }
+
+    #save-toast {
+      position: fixed;
+      bottom: 22px;
+      right: 18px;
+      z-index: 10000;
+      padding: 7px 16px;
+      background: rgba(4, 20, 36, 0.9);
+      border: 1px solid rgba(0, 212, 245, 0.38);
+      color: var(--cyan);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.22s, transform 0.22s;
+      pointer-events: none;
+      backdrop-filter: blur(8px);
+    }
+    #save-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
 </head>
 <body>
@@ -706,7 +799,7 @@
           <p class="cover-role">디지털 마케터</p>
           <div class="cover-badge">
             <span class="badge-dot"></span>
-            10년 8개월 경력
+            <span class="cover-badge-text">10년 8개월 경력</span>
           </div>
         </div>
       </div>
@@ -957,6 +1050,12 @@
   </div><!-- /slides -->
 </div><!-- /reveal -->
 
+<button id="edit-mode-btn" title="편집 모드 ON/OFF — 더블클릭으로 텍스트 편집">
+  <span class="edit-btn-dot"></span>
+  <span id="edit-btn-label">편집 모드</span>
+</button>
+<div id="save-toast">✓ 저장됨</div>
+
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.0/dist/reveal.js"></script>
 <script>
 /* ════════════════════════════
@@ -1201,6 +1300,141 @@ Reveal.on('slidechanged', e => {
   const fn = handlers[e.indexh];
   if (fn) fn(e.currentSlide);
 });
+
+/* ════════════════════════════
+   INLINE EDITOR
+════════════════════════════ */
+(function () {
+  const STORAGE_KEY = 'portfolio-edits-v1';
+
+  const EDITABLE_SELECTORS = [
+    '.cover-eyebrow',
+    '.cover-name',
+    '.cover-role',
+    '.cover-badge-text',
+    '.slide-tag',
+    '.slide-title',
+    '.a-label',
+    '.a-sub',
+    '.tl-year',
+    '.tl-company',
+    '.tl-role',
+    '.tl-desc',
+    '.kpi-val',
+    '.kpi-label',
+    '.g-name',
+    '.g-desc',
+    '.g-badge',
+    '.s-val',
+    '.s-lab',
+    '.sk-name',
+    '.sk-desc',
+    '.closing-eyebrow',
+    '.closing-headline',
+    '.closing-sub',
+    '.c-text',
+    '.closing-sig'
+  ];
+
+  let editModeOn = false;
+  let saveTimer  = null;
+
+  function assignIds() {
+    EDITABLE_SELECTORS.forEach(sel => {
+      document.querySelectorAll(sel).forEach((el, i) => {
+        el.dataset.editId = sel.replace(/[^a-zA-Z]/g, '') + '_' + i;
+        el.classList.add('editable-text');
+      });
+    });
+  }
+
+  function restoreContent() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      Object.entries(saved).forEach(([id, html]) => {
+        const el = document.querySelector('[data-edit-id="' + id + '"]');
+        if (el) el.innerHTML = html;
+      });
+    } catch (e) {}
+  }
+
+  function saveAll() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () {
+      const data = {};
+      document.querySelectorAll('[data-edit-id]').forEach(el => {
+        data[el.dataset.editId] = el.innerHTML;
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      showToast();
+    }, 300);
+  }
+
+  function showToast() {
+    const toast = document.getElementById('save-toast');
+    if (!toast) return;
+    toast.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => toast.classList.remove('show'), 1800);
+  }
+
+  function startEdit(el) {
+    const prev = document.querySelector('[data-edit-id][contenteditable]');
+    if (prev && prev !== el) endEdit(prev);
+    el.setAttribute('contenteditable', 'true');
+    el.setAttribute('spellcheck', 'false');
+    el.focus();
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    range.collapse(false);
+    const sel = window.getSelection();
+    if (sel) { sel.removeAllRanges(); sel.addRange(range); }
+  }
+
+  function endEdit(el) {
+    el.removeAttribute('contenteditable');
+    saveAll();
+  }
+
+  const btn   = document.getElementById('edit-mode-btn');
+  const label = document.getElementById('edit-btn-label');
+
+  btn.addEventListener('click', () => {
+    editModeOn = !editModeOn;
+    document.body.classList.toggle('edit-on', editModeOn);
+    btn.classList.toggle('is-on', editModeOn);
+    label.textContent = editModeOn ? '편집 종료' : '편집 모드';
+    if (!editModeOn) {
+      const active = document.querySelector('[data-edit-id][contenteditable]');
+      if (active) endEdit(active);
+    }
+  });
+
+  document.addEventListener('dblclick', e => {
+    if (!editModeOn) return;
+    const el = e.target.closest('[data-edit-id]');
+    if (!el) return;
+    e.preventDefault();
+    e.stopPropagation();
+    startEdit(el);
+  });
+
+  document.addEventListener('blur', e => {
+    if (e.target.dataset && e.target.dataset.editId) {
+      endEdit(e.target);
+    }
+  }, true);
+
+  document.addEventListener('keydown', e => {
+    const active = document.querySelector('[data-edit-id][contenteditable]');
+    if (!active) return;
+    if (e.key === 'Escape') { endEdit(active); active.blur(); return; }
+    e.stopPropagation();
+  }, true);
+
+  assignIds();
+  restoreContent();
+})();
 </script>
 </body>
 </html>
