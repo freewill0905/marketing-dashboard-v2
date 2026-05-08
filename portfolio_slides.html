@@ -3,769 +3,430 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>양시현 — 디지털 마케터 포트폴리오</title>
+  <title>양시현 — 디지털 마케터</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.0/dist/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.0/dist/reveal.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
   <style>
     :root {
-      --navy-deep: #020b16;
-      --navy: #041424;
-      --navy-card: #071d30;
-      --cyan: #00d4f5;
-      --cyan-glow: rgba(0,212,245,0.2);
-      --gold: #f0b429;
-      --gold-light: #ffd166;
-      --gold-glow: rgba(240,180,41,0.25);
-      --white: #e8f0f8;
-      --white-dim: rgba(232,240,248,0.65);
-      --white-faint: rgba(232,240,248,0.18);
+      --bg:    #07080f;
+      --bg2:   #0d0e1a;
+      --red:   #FF3520;
+      --redg:  rgba(255,53,32,0.18);
+      --cyan:  #00D4F5;
+      --gold:  #FFB800;
+      --white: #F0F4FF;
+      --dim:   rgba(240,244,255,0.58);
+      --faint: rgba(240,244,255,0.16);
+      --card:  rgba(255,255,255,0.038);
+      --line:  rgba(255,255,255,0.07);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    .reveal-viewport { background: var(--navy-deep); }
-
-    .reveal {
-      font-family: 'Noto Sans KR', sans-serif;
-      color: var(--white);
-      font-size: 16px;
-    }
-
-    .reveal .slides section {
-      padding: 0;
-      height: 100%;
-      top: 0 !important;
-    }
-
-    .reveal .progress {
-      height: 3px;
-      color: var(--cyan);
-      background: rgba(0,212,245,0.1);
-    }
-
-    .reveal .slide-number {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 11px;
-      letter-spacing: 0.2em;
-      background: none;
-      color: var(--white-faint);
-      bottom: 1rem;
-      right: 1.5rem;
-    }
-
-    .reveal .controls button { color: var(--cyan); }
+    .reveal-viewport { background: var(--bg); }
+    .reveal { font-family: 'Noto Sans KR', sans-serif; color: var(--white); font-size: 16px; }
+    .reveal .slides section { padding: 0; height: 100%; top: 0 !important; }
+    .reveal .progress { height: 3px; color: var(--red); background: rgba(255,53,32,0.1); }
+    .reveal .slide-number { font-family: 'Rajdhani',sans-serif; font-size: 11px; letter-spacing: .2em; background: none; color: var(--faint); }
+    .reveal .controls button { color: var(--red); }
 
     /* ── shared layout ── */
     .slide-inner {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 2.5rem 4rem;
-      position: relative;
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      padding: 2.4rem 5%; position: relative; overflow: hidden;
+    }
+
+    /* ══════════════════════════════════
+       SLIDE 1 · HOOK
+    ══════════════════════════════════ */
+    .hook-wrap {
+      position: absolute; inset: 0; background: var(--bg);
+      display: flex; flex-direction: column;
+      justify-content: center; padding: 0 8%;
       overflow: hidden;
     }
-
-    .slide-header {
-      text-align: center;
-      margin-bottom: 2rem;
-      width: 100%;
-    }
-
-    .slide-tag {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 11px;
-      letter-spacing: 0.45em;
-      color: var(--cyan);
-      text-transform: uppercase;
-      display: block;
-      margin-bottom: 0.4rem;
-    }
-
-    .slide-title {
-      font-family: 'Noto Serif KR', serif;
-      font-size: clamp(1.5rem, 3vw, 2.4rem);
-      font-weight: 700;
-      color: var(--white);
-      margin: 0 0 0.6rem;
-      line-height: 1.2;
-    }
-
-    .dec-bar {
-      display: block;
-      width: 50px;
-      height: 2px;
-      background: linear-gradient(90deg, var(--cyan), var(--gold));
-      margin: 0 auto;
-    }
-
-    /* ══════════════════════════════════════
-       SLIDE 1 — COVER
-    ══════════════════════════════════════ */
-    .cover-wrap {
-      position: absolute;
-      inset: 0;
-      background: var(--navy-deep);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    #particle-canvas {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
-
-    .cover-geo {
-      position: absolute;
-      right: -8%;
-      top: 50%;
+    .hook-bg-char {
+      position: absolute; right: -1%; top: 50%;
       transform: translateY(-50%);
-      width: 55%;
-      height: 120%;
-      opacity: 0.055;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 38vw; color: rgba(255,53,32,0.028);
+      line-height: 1; pointer-events: none; user-select: none;
+    }
+    .hook-line {
+      display: flex; align-items: flex-start; gap: 1.1rem;
+      margin-bottom: 2rem;
+      opacity: 0; transform: translateX(-28px);
+    }
+    .hook-line.show { animation: hookSlide .7s cubic-bezier(.22,1,.36,1) forwards; }
+    .hook-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.4rem,2.8vw,2.2rem);
+      color: var(--red); flex-shrink: 0; line-height: 1.3;
+    }
+    .hook-q {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.15rem,2.6vw,2.1rem);
+      font-weight: 700; color: var(--white); line-height: 1.45;
+      border-left: 3px solid var(--red); padding-left: 1rem;
+    }
+    .hook-cta {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.6rem,3.8vw,3.2rem);
+      letter-spacing: .06em; color: var(--red);
+      margin-top: .5rem;
+      opacity: 0; transform: translateX(-28px);
+    }
+    .hook-cta.show { animation: hookSlide .65s cubic-bezier(.22,1,.36,1) forwards; }
+
+    /* ══════════════════════════════════
+       SLIDE 2 · IMPACT
+    ══════════════════════════════════ */
+    .impact-wrap {
+      position: absolute; inset: 0; background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .impact-radial {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 65% 60% at 50% 50%, rgba(255,53,32,.065) 0%, transparent 70%);
       pointer-events: none;
     }
-
-    .cover-content {
-      position: relative;
-      z-index: 2;
-      text-align: center;
+    .impact-content { position: relative; z-index: 2; text-align: center; padding: 0 7%; }
+    .impact-eyebrow {
+      font-family: 'Rajdhani', sans-serif; font-size: clamp(.65rem,1.3vw,.9rem);
+      letter-spacing: .45em; color: var(--red); text-transform: uppercase;
+      display: block; margin-bottom: 1.6rem;
+      opacity: 0; animation: fadeUp .55s ease forwards .3s;
     }
-
-    .cover-eyebrow {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 11px;
-      letter-spacing: 0.5em;
-      color: var(--cyan);
-      text-transform: uppercase;
-      display: block;
-      margin-bottom: 1.2rem;
-      opacity: 0;
-      animation: fadeUp 0.7s ease forwards 0.4s;
-    }
-
-    .cover-name {
+    .impact-hl {
       font-family: 'Noto Serif KR', serif;
-      font-size: clamp(5.5rem, 11vw, 9.5rem);
-      font-weight: 900;
-      line-height: 0.88;
-      letter-spacing: -0.03em;
-      background: linear-gradient(150deg, #ffffff 0%, var(--cyan) 45%, var(--gold) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      display: block;
-      margin-bottom: 1.2rem;
+      font-size: clamp(2rem,5.5vw,5rem);
+      font-weight: 900; line-height: 1.22; color: var(--white);
       opacity: 0;
-      animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) forwards 0.7s;
+    }
+    .impact-hl .red { color: var(--red); }
+    .impact-sub {
+      font-size: clamp(.82rem,1.6vw,1.1rem); color: var(--dim);
+      margin-top: 1.8rem; opacity: 0;
     }
 
-    .cover-divider {
-      width: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--cyan), var(--gold), transparent);
-      margin: 0 auto 1.2rem;
-      animation: expandW 0.8s ease forwards 1.5s;
+    /* ══════════════════════════════════
+       SLIDE 3 · HERO
+    ══════════════════════════════════ */
+    .hero-wrap {
+      position: absolute; inset: 0; background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
     }
-
-    .cover-role {
-      font-family: 'Noto Sans KR', sans-serif;
-      font-size: clamp(0.9rem, 2vw, 1.35rem);
-      font-weight: 300;
-      letter-spacing: 0.35em;
-      color: var(--white-dim);
-      margin-bottom: 1.8rem;
-      opacity: 0;
-      animation: fadeUp 0.7s ease forwards 1.8s;
+    .hero-inner {
+      display: flex; align-items: center; gap: 5rem;
+      padding: 0 7%; width: 100%; max-width: 1160px;
     }
+    .hero-left  { flex: 1.1; }
+    .hero-right { flex: .9; }
 
-    .cover-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.7rem;
-      padding: 0.55rem 1.6rem;
-      border: 1px solid rgba(0,212,245,0.35);
-      background: rgba(0,212,245,0.05);
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 13px;
-      letter-spacing: 0.25em;
-      color: var(--cyan);
-      opacity: 0;
-      animation: fadeUp 0.7s ease forwards 2.1s;
+    .hero-tag {
+      font-family: 'Rajdhani', sans-serif; font-size: 11px;
+      letter-spacing: .42em; color: var(--red); text-transform: uppercase;
+      display: block; margin-bottom: .9rem;
+      opacity: 0; animation: fadeUp .5s ease forwards .2s;
     }
-
-    .badge-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--cyan);
-      box-shadow: 0 0 8px var(--cyan);
-      animation: blink 2s ease-in-out infinite 2.5s;
-    }
-
-    /* ══════════════════════════════════════
-       SLIDE 2 — ACHIEVEMENTS
-    ══════════════════════════════════════ */
-    .achievements-slide { background: linear-gradient(150deg, var(--navy-deep) 0%, var(--navy) 100%); }
-
-    .a-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.1rem;
-      width: 100%;
-      max-width: 820px;
-    }
-
-    .a-card {
-      background: var(--navy-card);
-      border: 1px solid rgba(255,255,255,0.055);
-      padding: 1.6rem 1.8rem;
-      position: relative;
-      overflow: hidden;
-      opacity: 0;
-      transform: translateY(18px);
-      transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.3s;
-    }
-
-    .a-card.go { opacity: 1; transform: translateY(0); }
-
-    .a-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--cyan), var(--gold));
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.7s ease 0.3s;
-    }
-
-    .a-card.go::before { transform: scaleX(1); }
-    .a-card:hover { border-color: rgba(0,212,245,0.28); }
-
-    .a-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.8rem, 4.5vw, 4.2rem);
-      line-height: 1;
-      background: linear-gradient(135deg, var(--gold), var(--gold-light));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 0.35rem;
-    }
-
-    .a-unit { font-size: 0.42em; vertical-align: 0.18em; }
-
-    .a-label { font-size: 13px; font-weight: 500; color: var(--white); margin-bottom: 0.2rem; }
-    .a-sub   { font-size: 10.5px; color: var(--white-faint); letter-spacing: 0.04em; }
-    .a-icon  { position: absolute; bottom: 1.2rem; right: 1.5rem; font-size: 2rem; opacity: 0.1; }
-
-    /* ══════════════════════════════════════
-       SLIDE 3 — TIMELINE
-    ══════════════════════════════════════ */
-    .timeline-slide { background: var(--navy-deep); }
-
-    .tl-wrap { width: 100%; max-width: 800px; position: relative; }
-
-    .tl-line {
-      position: absolute;
-      left: 84px; top: 24px; bottom: 24px;
-      width: 1px;
-      background: linear-gradient(180deg, var(--cyan) 0%, var(--gold) 100%);
-      transform-origin: top;
-      transform: scaleY(0);
-      transition: transform 1.3s cubic-bezier(0.16,1,0.3,1) 0.1s;
-    }
-
-    .tl-line.go { transform: scaleY(1); }
-
-    .tl-item {
-      display: flex;
-      padding: 1.4rem 0;
-      opacity: 0;
-      transform: translateX(-14px);
-      transition: opacity 0.55s ease, transform 0.55s ease;
-    }
-
-    .tl-item.go { opacity: 1; transform: translateX(0); }
-
-    .tl-left {
-      width: 84px;
-      flex-shrink: 0;
-      text-align: right;
-      padding-right: 1.4rem;
-      position: relative;
-      padding-top: 2px;
-    }
-
-    .tl-year {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.6rem;
-      color: var(--cyan);
-      line-height: 1;
-    }
-
-    .tl-dot {
-      position: absolute;
-      right: -7px; top: 5px;
-      width: 12px; height: 12px;
-      border-radius: 50%;
-      background: var(--navy-deep);
-      border: 2px solid var(--cyan);
-      box-shadow: 0 0 10px var(--cyan-glow), 0 0 3px var(--cyan);
-    }
-
-    .tl-right { flex: 1; padding-left: 2rem; }
-
-    .tl-company {
+    .hero-name {
       font-family: 'Noto Serif KR', serif;
-      font-size: 1.35rem;
-      font-weight: 700;
-      color: var(--white);
-      margin-bottom: 0.25rem;
+      font-size: clamp(3.2rem,7.5vw,7rem); font-weight: 900;
+      line-height: .92; letter-spacing: -.03em; color: var(--white);
+      margin-bottom: .75rem;
+      opacity: 0; animation: fadeUp .85s cubic-bezier(.16,1,.3,1) forwards .38s;
     }
-
-    .tl-role {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 11px;
-      letter-spacing: 0.28em;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-bottom: 0.55rem;
-    }
-
-    .tl-desc {
-      font-size: 12.5px;
-      color: var(--white-dim);
-      line-height: 1.85;
-    }
-
-    /* ══════════════════════════════════════
-       SLIDE 4 — CHART
-    ══════════════════════════════════════ */
-    .chart-slide { background: var(--navy); }
-
-    .chart-wrap { width: 100%; max-width: 920px; }
-
-    .chart-box {
-      position: relative;
-      height: 340px;
-      background: rgba(0,0,0,0.18);
-      border: 1px solid rgba(255,255,255,0.045);
-      padding: 1.2rem 1.2rem 1rem;
-    }
-
-    .chart-kpis {
-      display: flex;
-      margin-top: 1rem;
-      border-top: 1px solid rgba(255,255,255,0.04);
-    }
-
-    .kpi {
-      flex: 1;
-      text-align: center;
-      padding: 0.9rem 1rem;
-      border-left: 1px solid rgba(255,255,255,0.04);
-    }
-    .kpi:first-child { border-left: none; }
-
-    .kpi-val {
+    .hero-role {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.7rem;
-      line-height: 1;
-      display: block;
-      margin-bottom: 0.2rem;
+      font-size: clamp(1.1rem,2.4vw,2rem);
+      letter-spacing: .14em; color: var(--red); margin-bottom: 1.6rem;
+      opacity: 0; animation: fadeUp .5s ease forwards .68s;
     }
-
-    .kpi-label {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 10.5px;
-      letter-spacing: 0.18em;
-      color: var(--white-dim);
-      text-transform: uppercase;
+    .hero-bar {
+      width: 0; height: 2px;
+      background: linear-gradient(90deg, var(--red), var(--gold));
+      margin-bottom: 1.6rem;
+      animation: expandW .8s ease forwards 1s;
     }
-
-    /* ══════════════════════════════════════
-       SLIDE 5 — SMARTSTORE
-    ══════════════════════════════════════ */
-    .store-slide { background: linear-gradient(150deg, var(--navy-deep) 0%, var(--navy) 100%); }
-
-    .grade-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1.2rem;
-      margin-bottom: 1.5rem;
+    .hero-desc {
+      font-size: clamp(.82rem,1.55vw,.98rem); color: var(--dim);
+      line-height: 1.95; margin-bottom: 1.6rem;
+      opacity: 0; animation: fadeUp .5s ease forwards 1.25s;
     }
-
-    .g-card {
-      text-align: center;
-      padding: 1.8rem 1.6rem;
-      background: var(--navy-card);
-      border: 1px solid rgba(255,255,255,0.06);
-      min-width: 160px;
-      opacity: 0;
-      transform: scale(0.93);
-      transition: opacity 0.5s ease, transform 0.5s ease;
+    .hero-tags {
+      display: flex; flex-wrap: wrap; gap: .5rem;
+      opacity: 0; animation: fadeUp .5s ease forwards 1.5s;
     }
-
-    .g-card.go { opacity: 1; transform: scale(1); }
-
-    .g-card.is-power   { border-top: 2px solid #6c8ead; }
-    .g-card.is-bigpower { border-top: 2px solid var(--cyan); }
-    .g-card.is-premium {
-      border-top: 2px solid var(--gold);
-      border-left: 1px solid rgba(240,180,41,0.22);
-      border-right: 1px solid rgba(240,180,41,0.22);
-      border-bottom: 1px solid rgba(240,180,41,0.12);
-      box-shadow: 0 0 40px rgba(240,180,41,0.1), inset 0 0 40px rgba(240,180,41,0.02);
+    .hero-tag-pill {
+      display: flex; align-items: center; gap: .45rem;
+      padding: .55rem .95rem;
+      background: var(--card); border: 1px solid var(--line);
+      font-size: 11.5px; color: var(--dim);
+      transition: border-color .3s;
     }
+    .hero-tag-pill:hover { border-color: rgba(255,53,32,.4); }
+    .pill-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
 
-    .g-card.is-premium.go { animation: premiumPulse 3s ease-in-out infinite 0.8s; }
-
-    .g-icon { font-size: 2rem; display: block; margin-bottom: 0.7rem; }
-
-    .g-name {
+    .hero-yrs-box {
+      text-align: center; padding: 2.8rem 2.2rem;
+      background: var(--card); border: 1px solid rgba(255,53,32,.22);
+      margin-bottom: .7rem;
+      opacity: 0; animation: scaleIn .7s cubic-bezier(.16,1,.3,1) forwards .45s;
+    }
+    .hero-yrs-big {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5rem,11vw,9rem); line-height: .88;
+      color: var(--red); display: block;
+      text-shadow: 0 0 80px rgba(255,53,32,.28);
+    }
+    .hero-yrs-lbl {
       font-family: 'Noto Serif KR', serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 0.45rem;
+      font-size: clamp(.9rem,1.9vw,1.45rem); font-weight: 700;
+      color: var(--white); display: block; margin-top: .4rem;
+    }
+    .hero-yrs-sub {
+      font-family: 'Rajdhani', sans-serif; font-size: 10px;
+      letter-spacing: .25em; color: var(--faint);
+      display: block; margin-top: .25rem;
     }
 
-    .g-name.power    { color: #8aafd4; }
-    .g-name.bigpower { color: var(--cyan); }
-    .g-name.premium  { color: var(--gold); text-shadow: 0 0 18px rgba(240,180,41,0.4); }
-
-    .g-desc { font-size: 11px; color: var(--white-faint); line-height: 1.7; }
-
-    .g-badge {
-      display: inline-block;
-      padding: 0.22rem 0.7rem;
-      margin-top: 0.7rem;
-      background: rgba(240,180,41,0.1);
-      border: 1px solid rgba(240,180,41,0.38);
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      color: var(--gold);
-      text-transform: uppercase;
+    /* ══════════════════════════════════
+       SLIDE 4 · NUMBERS
+    ══════════════════════════════════ */
+    .nums-slide { background: var(--bg); justify-content: flex-start; padding-top: 1.8rem; }
+    .nums-header { text-align: center; margin-bottom: 1.4rem; width: 100%; }
+    .sec-tag {
+      font-family: 'Rajdhani', sans-serif; font-size: 10px;
+      letter-spacing: .45em; color: var(--red); text-transform: uppercase;
+      display: block; margin-bottom: .28rem;
     }
-
-    .g-arrow { font-size: 1.4rem; color: var(--white-faint); }
-
-    .store-stats {
-      display: flex;
-      gap: 1px;
-      background: rgba(255,255,255,0.03);
-      max-width: 560px;
-      width: 100%;
+    .sec-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.25rem,2.4vw,1.95rem); font-weight: 700; color: var(--white);
     }
+    .nums-split { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; width: 100%; max-width: 980px; }
 
-    .s-stat {
-      flex: 1;
-      text-align: center;
-      padding: 1.1rem 0.8rem;
-      background: var(--navy-card);
+    .co-card {
+      background: var(--card); border: 1px solid var(--line);
+      padding: 1.4rem 1.5rem;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity .5s ease, transform .5s ease;
     }
-
-    .s-val {
+    .co-card.go { opacity: 1; transform: translateY(0); }
+    .co-name {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(.95rem,1.9vw,1.35rem); font-weight: 700; color: var(--white);
+      padding-bottom: .7rem; margin-bottom: .3rem;
+      border-bottom: 1px solid var(--line); position: relative;
+    }
+    .co-name::after {
+      content: ''; position: absolute; bottom: -1px; left: 0;
+      width: 0; height: 1px; background: var(--red);
+      transition: width .9s ease .3s;
+    }
+    .co-card.go .co-name::after { width: 55%; }
+    .co-period {
+      font-family: 'Rajdhani', sans-serif; font-size: 10px;
+      letter-spacing: .2em; color: var(--faint); margin-bottom: 1rem;
+    }
+    .n-row {
+      display: flex; align-items: baseline; gap: .8rem;
+      padding: .6rem 0; border-bottom: 1px solid rgba(255,255,255,.03);
+    }
+    .n-row:last-child { border-bottom: none; }
+    .n-val {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.7rem;
-      color: var(--cyan);
-      display: block;
-      line-height: 1;
-      margin-bottom: 0.25rem;
+      font-size: clamp(1.7rem,3.2vw,2.6rem); line-height: 1;
+      color: var(--gold); flex-shrink: 0; min-width: 110px;
+    }
+    .n-txt { font-size: clamp(9.5px,1.2vw,12px); color: var(--dim); line-height: 1.55; }
+    .n-badge {
+      display: inline-block; padding: .12rem .45rem;
+      background: rgba(255,184,0,.09); border: 1px solid rgba(255,184,0,.28);
+      font-family: 'Rajdhani', sans-serif; font-size: 9px;
+      letter-spacing: .1em; color: var(--gold); margin-top: .18rem;
     }
 
-    .s-lab { font-size: 10.5px; color: var(--white-faint); letter-spacing: 0.04em; }
-
-    /* ══════════════════════════════════════
-       SLIDE 6 — COMPETENCIES
-    ══════════════════════════════════════ */
-    .skills-slide { background: var(--navy-deep); }
-
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.9rem;
-      max-width: 880px;
-      width: 100%;
+    /* ══════════════════════════════════
+       SLIDE 5 · NAVER CERTIFIED
+    ══════════════════════════════════ */
+    .naver-slide { background: var(--bg); }
+    .naver-wrap { max-width: 800px; width: 100%; text-align: center; }
+    .naver-badge {
+      background: linear-gradient(135deg, rgba(255,184,0,.07), rgba(255,184,0,.02));
+      border: 1px solid rgba(255,184,0,.32);
+      padding: 2.4rem 2.8rem; margin: 1.5rem 0;
+      position: relative; overflow: hidden;
+      opacity: 0; animation: scaleIn .75s cubic-bezier(.16,1,.3,1) forwards .55s;
     }
+    .naver-badge::before {
+      content: '👑'; position: absolute; right: 1.4rem; top: 1.2rem;
+      font-size: 2rem; opacity: .2;
+    }
+    .nb-grade {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem,7vw,6rem); line-height: 1; color: var(--gold);
+      display: block; text-shadow: 0 0 60px rgba(255,184,0,.28);
+    }
+    .nb-label {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(.88rem,1.9vw,1.25rem); font-weight: 700; color: var(--white);
+      display: block; margin-top: .5rem;
+    }
+    .nb-sub { font-size: 12px; color: var(--faint); margin-top: .35rem; }
 
+    .nv-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: .8rem; margin-bottom: 1.3rem;
+      opacity: 0; animation: fadeUp .5s ease forwards .88s; }
+    .nv-stat {
+      background: var(--card); border: 1px solid var(--line);
+      padding: 1.1rem .7rem; text-align: center;
+      transition: border-color .3s;
+    }
+    .nv-stat:hover { border-color: rgba(255,53,32,.35); }
+    .nv-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.4rem,2.8vw,2.1rem); line-height: 1; color: var(--cyan); display: block;
+    }
+    .nv-lbl { font-size: 10px; color: var(--faint); margin-top: .28rem; display: block; }
+
+    .naver-quote {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(.82rem,1.55vw,1.05rem); font-weight: 700; color: var(--dim);
+      line-height: 1.75; padding: 1.2rem 1.4rem;
+      background: var(--card); border-left: 3px solid var(--red); text-align: left;
+      opacity: 0; animation: fadeUp .5s ease forwards 1.08s;
+    }
+    .naver-quote .hl { color: var(--white); }
+
+    /* ══════════════════════════════════
+       SLIDE 6 · SKILLS
+    ══════════════════════════════════ */
+    .skills-slide { background: var(--bg); }
+    .sk-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: .85rem; width: 100%; max-width: 900px; }
     .sk-card {
-      background: var(--navy-card);
-      border: 1px solid rgba(255,255,255,0.05);
-      padding: 1.35rem;
-      opacity: 0;
-      transform: translateY(14px);
-      transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.3s;
+      background: var(--card); border: 1px solid var(--line);
+      padding: 1.4rem 1.25rem;
+      opacity: 0; transform: translateY(16px);
+      transition: opacity .5s ease, transform .5s ease, border-color .3s;
     }
-
     .sk-card.go { opacity: 1; transform: translateY(0); }
-    .sk-card:hover { border-color: rgba(0,212,245,0.22); }
-
-    .sk-icon { font-size: 1.5rem; display: block; margin-bottom: 0.65rem; }
-
+    .sk-card:hover { border-color: rgba(255,53,32,.35); }
+    .sk-icon { font-size: 1.55rem; display: block; margin-bottom: .65rem; }
     .sk-name {
       font-family: 'Noto Serif KR', serif;
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--white);
-      margin-bottom: 0.35rem;
+      font-size: .92rem; font-weight: 700; color: var(--white); margin-bottom: .35rem;
     }
+    .sk-desc { font-size: 10.5px; color: var(--dim); line-height: 1.78; }
+    .sk-bar { margin-top: .9rem; height: 2px; background: rgba(255,255,255,.05); overflow: hidden; }
+    .sk-fill { height: 100%; background: linear-gradient(90deg, var(--red), var(--gold)); width: 0; transition: width 1.2s cubic-bezier(.16,1,.3,1); }
 
-    .sk-desc { font-size: 11px; color: var(--white-dim); line-height: 1.7; }
-
-    .sk-bar {
-      margin-top: 0.9rem;
-      height: 2px;
-      background: rgba(255,255,255,0.06);
-      overflow: hidden;
+    /* ══════════════════════════════════
+       SLIDE 7 · CTA
+    ══════════════════════════════════ */
+    .cta-wrap {
+      position: absolute; inset: 0; background: var(--bg);
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
     }
-
-    .sk-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--cyan), var(--gold));
-      width: 0;
-      transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
-    }
-
-    /* ══════════════════════════════════════
-       SLIDE 7 — CLOSING
-    ══════════════════════════════════════ */
-    .closing-wrap {
-      position: absolute;
-      inset: 0;
-      background: var(--navy-deep);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .closing-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 55% 65% at 15% 50%, rgba(0,212,245,0.07) 0%, transparent 70%),
-        radial-gradient(ellipse 55% 65% at 85% 50%, rgba(240,180,41,0.07) 0%, transparent 70%);
+    .cta-radial {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 62% 58% at 50% 50%, rgba(255,53,32,.065) 0%, transparent 65%);
       pointer-events: none;
     }
-
-    .closing-geo {
-      position: absolute;
-      inset: 0;
-      opacity: 0.04;
-      pointer-events: none;
+    .cta-content { position: relative; z-index: 2; text-align: center; padding: 0 6%; }
+    .cta-content > * {
+      opacity: 0; transform: translateY(14px);
+      transition: opacity .6s ease, transform .6s ease;
     }
-
-    .closing-content {
-      position: relative;
-      z-index: 2;
-      text-align: center;
+    .cta-content.go > * { opacity: 1; transform: translateY(0); }
+    .cta-content.go > *:nth-child(1) { transition-delay: .1s; }
+    .cta-content.go > *:nth-child(2) { transition-delay: .24s; }
+    .cta-content.go > *:nth-child(3) { transition-delay: .38s; }
+    .cta-content.go > *:nth-child(4) { transition-delay: .54s; }
+    .cta-content.go > *:nth-child(5) { transition-delay: .7s; }
+    .cta-tag {
+      font-family: 'Rajdhani', sans-serif; font-size: 11px;
+      letter-spacing: .45em; color: var(--red); text-transform: uppercase;
+      display: block; margin-bottom: 1.2rem;
     }
-
-    .closing-content > * {
-      opacity: 0;
-      transform: translateY(12px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .closing-content.go > * { opacity: 1; transform: translateY(0); }
-    .closing-content.go > *:nth-child(1) { transition-delay: 0.1s; }
-    .closing-content.go > *:nth-child(2) { transition-delay: 0.25s; }
-    .closing-content.go > *:nth-child(3) { transition-delay: 0.4s; }
-    .closing-content.go > *:nth-child(4) { transition-delay: 0.55s; }
-    .closing-content.go > *:nth-child(5) { transition-delay: 0.7s; }
-
-    .closing-eyebrow {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 11px;
-      letter-spacing: 0.5em;
-      color: var(--cyan);
-      text-transform: uppercase;
-      display: block;
-      margin-bottom: 1.2rem;
-    }
-
-    .closing-headline {
+    .cta-hl {
       font-family: 'Noto Serif KR', serif;
-      font-size: clamp(1.7rem, 3.5vw, 2.8rem);
-      font-weight: 700;
-      line-height: 1.35;
-      color: var(--white);
-      margin-bottom: 0.7rem;
+      font-size: clamp(1.8rem,4.5vw,3.8rem); font-weight: 900;
+      line-height: 1.22; color: var(--white); margin-bottom: .6rem;
     }
-
-    .closing-sub {
-      font-size: 13.5px;
-      color: var(--white-dim);
-      margin-bottom: 2.5rem;
+    .cta-sub { font-size: clamp(.82rem,1.6vw,1.05rem); color: var(--dim); margin-bottom: 2.4rem; }
+    .cta-contacts { display: flex; gap: .9rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+    .cta-card {
+      display: flex; align-items: center; gap: .7rem;
+      padding: 1rem 1.8rem; background: var(--card);
+      border: 1px solid rgba(255,53,32,.25);
+      transition: border-color .3s, box-shadow .3s; cursor: default;
     }
+    .cta-card:hover { border-color: var(--red); box-shadow: 0 0 24px rgba(255,53,32,.14); }
+    .cta-icon { font-size: 1.1rem; }
+    .cta-lbl { font-family: 'Rajdhani', sans-serif; font-size: 9px; letter-spacing: .25em; color: var(--faint); display: block; }
+    .cta-val { font-family: 'Rajdhani', sans-serif; font-size: clamp(.88rem,1.75vw,1.15rem); letter-spacing: .08em; color: var(--white); font-weight: 600; }
+    .cta-sig { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: .4em; color: var(--faint); }
 
-    .contact-row {
-      display: flex;
-      gap: 0.9rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 2.5rem;
-    }
-
-    .c-card {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      padding: 0.8rem 1.4rem;
-      background: var(--navy-card);
-      border: 1px solid rgba(0,212,245,0.2);
-      transition: border-color 0.3s, box-shadow 0.3s;
-    }
-
-    .c-card:hover {
-      border-color: var(--cyan);
-      box-shadow: 0 0 22px rgba(0,212,245,0.12);
-    }
-
-    .c-icon { font-size: 1rem; }
-
-    .c-text {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 13.5px;
-      letter-spacing: 0.1em;
-      color: var(--white);
-    }
-
-    .closing-sig {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.1rem;
-      letter-spacing: 0.4em;
-      color: var(--white-faint);
-    }
-
-    /* ══════════════════════════════════════
+    /* ══════════════════════════════════
        KEYFRAMES
-    ══════════════════════════════════════ */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    ══════════════════════════════════ */
+    @keyframes fadeUp   { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes hookSlide{ from { opacity:0; transform:translateX(-28px); } to { opacity:1; transform:translateX(0); } }
+    @keyframes scaleIn  { from { opacity:0; transform:scale(.92); } to { opacity:1; transform:scale(1); } }
+    @keyframes expandW  { from { width:0; } to { width:100%; } }
+    @keyframes crashIn  { from { opacity:0; transform:scale(1.14) translateY(-18px); } to { opacity:1; transform:scale(1) translateY(0); } }
+    @keyframes blink    { 0%,100% { opacity:1; } 50% { opacity:.25; } }
 
-    @keyframes expandW {
-      from { width: 0; }
-      to   { width: 260px; }
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.25; }
-    }
-
-    @keyframes premiumPulse {
-      0%, 100% { box-shadow: 0 0 35px rgba(240,180,41,0.1), inset 0 0 35px rgba(240,180,41,0.02); }
-      50%       { box-shadow: 0 0 65px rgba(240,180,41,0.22), inset 0 0 50px rgba(240,180,41,0.05); }
-    }
-
-    /* ══════════════════════════════════════
+    /* ══════════════════════════════════
        INLINE EDITOR
-    ══════════════════════════════════════ */
+    ══════════════════════════════════ */
     #edit-mode-btn {
-      position: fixed;
-      top: 14px;
-      right: 16px;
-      z-index: 10000;
-      display: flex;
-      align-items: center;
-      gap: 7px;
+      position: fixed; top: 14px; right: 16px; z-index: 10000;
+      display: flex; align-items: center; gap: 7px;
       padding: 7px 16px;
-      background: rgba(4, 20, 36, 0.9);
-      border: 1px solid rgba(0, 212, 245, 0.32);
-      color: var(--cyan);
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: background 0.25s, border-color 0.25s, box-shadow 0.25s;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      user-select: none;
+      background: rgba(7,8,15,.9);
+      border: 1px solid rgba(255,53,32,.3);
+      color: var(--red);
+      font-family: 'Rajdhani', sans-serif; font-size: 11px;
+      font-weight: 600; letter-spacing: .25em; text-transform: uppercase;
+      cursor: pointer; user-select: none;
+      transition: background .25s, border-color .25s, box-shadow .25s;
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     }
-    #edit-mode-btn:hover {
-      background: rgba(0, 212, 245, 0.1);
-      border-color: var(--cyan);
-      box-shadow: 0 0 18px rgba(0, 212, 245, 0.15);
-    }
-    #edit-mode-btn.is-on {
-      background: rgba(0, 212, 245, 0.13);
-      border-color: var(--cyan);
-      color: #fff;
-      box-shadow: 0 0 22px rgba(0, 212, 245, 0.22);
-    }
-    .edit-btn-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: rgba(0, 212, 245, 0.38);
-      flex-shrink: 0;
-      transition: background 0.25s, box-shadow 0.25s;
-    }
-    #edit-mode-btn.is-on .edit-btn-dot {
-      background: var(--cyan);
-      box-shadow: 0 0 7px var(--cyan);
-      animation: blink 1.5s ease-in-out infinite;
-    }
-
-    body.edit-on .editable-text {
-      outline: 1px dashed rgba(0, 212, 245, 0.22);
-      cursor: text;
-    }
-    body.edit-on .editable-text:hover {
-      outline: 1px dashed rgba(0, 212, 245, 0.65);
-    }
-    body.edit-on .editable-text[contenteditable="true"] {
-      outline: 1px solid var(--cyan) !important;
-      border-radius: 1px;
-    }
-    body.edit-on .cover-name[contenteditable="true"] {
-      -webkit-text-fill-color: var(--white) !important;
-      background: rgba(0, 212, 245, 0.07) !important;
-      -webkit-background-clip: unset !important;
-      background-clip: unset !important;
-    }
-
+    #edit-mode-btn:hover  { background: rgba(255,53,32,.08); border-color: var(--red); }
+    #edit-mode-btn.is-on  { background: rgba(255,53,32,.12); border-color: var(--red); color: #fff; box-shadow: 0 0 20px rgba(255,53,32,.18); }
+    .edit-dot { width:6px; height:6px; border-radius:50%; background:rgba(255,53,32,.35); flex-shrink:0; transition: background .25s, box-shadow .25s; }
+    #edit-mode-btn.is-on .edit-dot { background:var(--red); box-shadow:0 0 7px var(--red); animation:blink 1.5s ease-in-out infinite; }
+    body.edit-on .et { outline: 1px dashed rgba(255,53,32,.2); cursor: text; }
+    body.edit-on .et:hover { outline: 1px dashed rgba(255,53,32,.6); }
+    body.edit-on .et[contenteditable="true"] { outline: 1px solid var(--red) !important; }
     #save-toast {
-      position: fixed;
-      bottom: 22px;
-      right: 18px;
-      z-index: 10000;
-      padding: 7px 16px;
-      background: rgba(4, 20, 36, 0.9);
-      border: 1px solid rgba(0, 212, 245, 0.38);
-      color: var(--cyan);
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 11px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      opacity: 0;
-      transform: translateY(6px);
-      transition: opacity 0.22s, transform 0.22s;
-      pointer-events: none;
-      backdrop-filter: blur(8px);
+      position: fixed; bottom: 22px; right: 18px; z-index: 10000;
+      padding: 7px 16px; background: rgba(7,8,15,.92);
+      border: 1px solid rgba(255,53,32,.35); color: var(--red);
+      font-family: 'Rajdhani', sans-serif; font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
+      opacity: 0; transform: translateY(6px);
+      transition: opacity .22s, transform .22s; pointer-events: none;
     }
-    #save-toast.show {
-      opacity: 1;
-      transform: translateY(0);
+    #save-toast.show { opacity:1; transform:translateY(0); }
+
+    /* ══════════════════════════════════
+       MOBILE
+    ══════════════════════════════════ */
+    @media (max-width: 768px) {
+      .hero-inner { flex-direction: column; gap: 2rem; }
+      .hero-right { width: 100%; }
+      .nums-split { grid-template-columns: 1fr; }
+      .sk-grid { grid-template-columns: repeat(2,1fr); }
+      .nv-stats { grid-template-columns: 1fr 1fr; }
+      .cta-contacts { flex-direction: column; align-items: center; }
+    }
+    @media (max-width: 480px) {
+      .sk-grid { grid-template-columns: 1fr; }
+      .nv-stats { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -774,666 +435,407 @@
 <div class="reveal">
   <div class="slides">
 
-    <!-- ════════ SLIDE 1: COVER ════════ -->
+    <!-- ════ 1. HOOK ════ -->
     <section>
-      <div class="cover-wrap">
-        <canvas id="particle-canvas"></canvas>
+      <div class="hook-wrap">
+        <div class="hook-bg-char">?</div>
+        <div class="hook-line" id="hq1">
+          <span class="hook-num">01</span>
+          <span class="hook-q">스마트스토어 제대로 운영하고 싶다고요?</span>
+        </div>
+        <div class="hook-line" id="hq2">
+          <span class="hook-num">02</span>
+          <span class="hook-q">광고를 해보고 싶은데 대행사는 높은 비용만 요구한다고요?</span>
+        </div>
+        <div class="hook-line" id="hq3">
+          <span class="hook-num">03</span>
+          <span class="hook-q">대행사를 쓰고 있는데 잘하고 있는지 모르겠다고요?</span>
+        </div>
+        <div class="hook-cta" id="hook-cta">그렇다면, 저를 만나보세요</div>
+      </div>
+    </section>
 
-        <svg class="cover-geo" viewBox="0 0 600 700" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="300" cy="350" r="280" stroke="white" stroke-width="0.6"/>
-          <circle cx="300" cy="350" r="200" stroke="white" stroke-width="0.6"/>
-          <circle cx="300" cy="350" r="120" stroke="white" stroke-width="0.5"/>
-          <circle cx="300" cy="350" r="50"  stroke="white" stroke-width="0.5"/>
-          <line x1="20"  y1="350" x2="580" y2="350" stroke="white" stroke-width="0.45"/>
-          <line x1="300" y1="70"  x2="300" y2="630" stroke="white" stroke-width="0.45"/>
-          <line x1="102" y1="152" x2="498" y2="548" stroke="white" stroke-width="0.35"/>
-          <line x1="498" y1="152" x2="102" y2="548" stroke="white" stroke-width="0.35"/>
-          <line x1="20"  y1="185" x2="580" y2="515" stroke="white" stroke-width="0.25"/>
-          <line x1="580" y1="185" x2="20"  y2="515" stroke="white" stroke-width="0.25"/>
-        </svg>
-
-        <div class="cover-content">
-          <span class="cover-eyebrow">Digital Marketer Portfolio · 2026</span>
-          <span class="cover-name">양시현</span>
-          <div class="cover-divider"></div>
-          <p class="cover-role">디지털 마케터</p>
-          <div class="cover-badge">
-            <span class="badge-dot"></span>
-            <span class="cover-badge-text">10년 8개월 경력</span>
-          </div>
+    <!-- ════ 2. IMPACT ════ -->
+    <section>
+      <div class="impact-wrap">
+        <div class="impact-radial"></div>
+        <div class="impact-content">
+          <span class="impact-eyebrow">Real Results · Proven Track Record</span>
+          <h2 class="impact-hl" id="impact-hl">
+            제가 입사한 회사는<br>
+            <span class="red">사옥을 짓고,</span><br>
+            매출은 <span class="red">10배</span>가 됩니다
+          </h2>
+          <p class="impact-sub" id="impact-sub">두 회사에서 반복 증명한 숫자, 운이 아닌 전략입니다</p>
         </div>
       </div>
     </section>
 
-    <!-- ════════ SLIDE 2: ACHIEVEMENTS ════════ -->
+    <!-- ════ 3. HERO ════ -->
     <section>
-      <div class="slide-inner achievements-slide">
-        <div class="slide-header">
-          <span class="slide-tag">Key Achievements</span>
-          <h2 class="slide-title">핵심 성과</h2>
-          <span class="dec-bar"></span>
-        </div>
-        <div class="a-grid">
-          <div class="a-card" data-delay="0">
-            <div class="a-num"><span class="counter" data-target="3000">0</span><span class="a-unit">%</span></div>
-            <div class="a-label">네이버 SA ROAS</div>
-            <div class="a-sub">검색광고 수익률 달성</div>
-            <div class="a-icon">📈</div>
-          </div>
-          <div class="a-card" data-delay="150">
-            <div class="a-num"><span class="counter" data-target="4">0</span><span class="a-unit">배</span></div>
-            <div class="a-label">연간 매출 성장</div>
-            <div class="a-sub">1년 내 매출 4배 증대</div>
-            <div class="a-icon">💰</div>
-          </div>
-          <div class="a-card" data-delay="300">
-            <div class="a-num" style="font-size:2.6rem;-webkit-text-fill-color:unset;background:none;color:var(--gold);">프리미엄</div>
-            <div class="a-label">스마트스토어 최고 등급</div>
-            <div class="a-sub">파워 → 빅파워 → 프리미엄</div>
-            <div class="a-icon">🏆</div>
-          </div>
-          <div class="a-card" data-delay="450">
-            <div class="a-num"><span class="counter" data-target="1">0</span><span class="a-unit">개월</span></div>
-            <div class="a-label">브랜드스토어 구축</div>
-            <div class="a-sub">네이버 브랜드스토어 론칭</div>
-            <div class="a-icon">🚀</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ════════ SLIDE 3: TIMELINE ════════ -->
-    <section>
-      <div class="slide-inner timeline-slide">
-        <div class="slide-header">
-          <span class="slide-tag">Career History</span>
-          <h2 class="slide-title">경력 타임라인</h2>
-          <span class="dec-bar"></span>
-        </div>
-        <div class="tl-wrap">
-          <div class="tl-line"></div>
-
-          <div class="tl-item" data-delay="250">
-            <div class="tl-left">
-              <div class="tl-year">2017</div>
-              <div class="tl-dot"></div>
-            </div>
-            <div class="tl-right">
-              <div class="tl-company">바베큐타운</div>
-              <div class="tl-role">디지털 마케팅 담당</div>
-              <div class="tl-desc">검색광고·SNS 광고 운영, 온라인 채널 전략 수립 및 실행.<br>브랜드 인지도 강화를 위한 다채널 캠페인 관리.</div>
+      <div class="hero-wrap">
+        <div class="hero-inner">
+          <div class="hero-left">
+            <span class="hero-tag">Digital Marketer · 10 Years</span>
+            <div class="hero-name">양시현</div>
+            <div class="hero-role">10년차 디지털 마케터</div>
+            <div class="hero-bar"></div>
+            <p class="hero-desc">
+              네이버 SA · GFA, Meta 광고, 스마트스토어 운영 전문가.<br>
+              두 회사에서 매출 10배 성장과 네이버 프리미엄 등급을<br>
+              직접 만들어낸 실전 마케터입니다.
+            </p>
+            <div class="hero-tags">
+              <div class="hero-tag-pill"><span class="pill-dot"></span>네이버 SA 검색광고</div>
+              <div class="hero-tag-pill"><span class="pill-dot"></span>네이버 GFA 광고</div>
+              <div class="hero-tag-pill"><span class="pill-dot"></span>Meta 광고</div>
+              <div class="hero-tag-pill"><span class="pill-dot"></span>스마트스토어 운영</div>
+              <div class="hero-tag-pill"><span class="pill-dot"></span>상세페이지 기획</div>
+              <div class="hero-tag-pill"><span class="pill-dot"></span>SEO 최적화</div>
             </div>
           </div>
-
-          <div class="tl-item" data-delay="700">
-            <div class="tl-left">
-              <div class="tl-year">2022</div>
-              <div class="tl-dot" style="border-color:var(--gold);box-shadow:0 0 10px var(--gold-glow);"></div>
-            </div>
-            <div class="tl-right">
-              <div class="tl-company">에프에스</div>
-              <div class="tl-role">퍼포먼스 마케팅 담당</div>
-              <div class="tl-desc">ROAS 3000% 달성, 스마트스토어 프리미엄 등급 획득.<br>데이터 기반 광고 최적화로 매출 4배 성장 주도.</div>
-            </div>
-          </div>
-
-          <div class="tl-item" data-delay="1150">
-            <div class="tl-left">
-              <div class="tl-year">2025</div>
-              <div class="tl-dot" style="background:var(--gold);border-color:var(--gold);box-shadow:0 0 18px var(--gold-glow),0 0 6px var(--gold);"></div>
-            </div>
-            <div class="tl-right">
-              <div class="tl-company">비욘드릴렉스</div>
-              <div class="tl-role">마케팅 담당</div>
-              <div class="tl-desc">브랜드 성장 전략 총괄. 1개월 내 네이버 브랜드스토어 구축 완료.<br>퍼포먼스·콘텐츠 마케팅 통합 운영.</div>
+          <div class="hero-right">
+            <div class="hero-yrs-box">
+              <span class="hero-yrs-big">10</span>
+              <span class="hero-yrs-lbl">년차 마케터</span>
+              <span class="hero-yrs-sub">2015 – PRESENT</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ════════ SLIDE 4: CHART ════════ -->
+    <!-- ════ 4. NUMBERS ════ -->
     <section>
-      <div class="slide-inner chart-slide">
-        <div class="slide-header">
-          <span class="slide-tag">Naver SA Performance · 2025.02 – 2026.01</span>
-          <h2 class="slide-title">네이버 SA 월별 매출 성장</h2>
-          <span class="dec-bar"></span>
+      <div class="slide-inner nums-slide">
+        <div class="nums-header">
+          <span class="sec-tag">Proven Numbers</span>
+          <h2 class="sec-title">숫자로 증명합니다</h2>
         </div>
-        <div class="chart-wrap">
-          <div class="chart-box">
-            <canvas id="perfChart"></canvas>
+        <div class="nums-split">
+
+          <div class="co-card" data-delay="0">
+            <div class="co-name">바베큐타운</div>
+            <div class="co-period">광고 전략 · 스마트스토어 운영</div>
+            <div class="n-row">
+              <div class="n-val"><span class="counter" data-target="3000" data-suffix="%">0</span></div>
+              <div class="n-txt">SA 광고 ROAS 달성</div>
+            </div>
+            <div class="n-row">
+              <div class="n-val"><span class="counter" data-target="10" data-suffix="배">0</span></div>
+              <div class="n-txt">매출 성장<br><span class="n-badge">사옥 건립 기여</span></div>
+            </div>
+            <div class="n-row">
+              <div class="n-val" style="font-size:clamp(1.1rem,2vw,1.6rem);color:var(--gold);">프리미엄</div>
+              <div class="n-txt">네이버 스마트스토어 최고 등급 달성</div>
+            </div>
+            <div class="n-row">
+              <div class="n-val"><span class="counter" data-target="6" data-suffix="억">0</span></div>
+              <div class="n-txt">3개월 매출<br><span class="n-badge">2,000건 판매</span></div>
+            </div>
           </div>
-          <div class="chart-kpis">
-            <div class="kpi">
-              <span class="kpi-val" style="color:var(--gold);">+300%</span>
-              <span class="kpi-label">연간 매출 성장률</span>
+
+          <div class="co-card" data-delay="220">
+            <div class="co-name">비욘드릴렉스</div>
+            <div class="co-period">퍼포먼스 마케팅 · 이커머스 전략</div>
+            <div class="n-row">
+              <div class="n-val"><span class="counter" data-target="3000" data-suffix="%">0</span></div>
+              <div class="n-txt">SA ROAS 달성</div>
             </div>
-            <div class="kpi">
-              <span class="kpi-val" style="color:var(--cyan);">3,000%</span>
-              <span class="kpi-label">최고 ROAS 달성</span>
+            <div class="n-row">
+              <div class="n-val"><span class="counter" data-target="10000" data-suffix="%">0</span></div>
+              <div class="n-txt">GFA ROAS 달성</div>
             </div>
-            <div class="kpi">
-              <span class="kpi-val" style="color:#88c98e;">▼ 42%</span>
-              <span class="kpi-label">광고비 CPC 절감</span>
+            <div class="n-row">
+              <div class="n-val"><span class="counter" data-target="4" data-suffix="배">0</span></div>
+              <div class="n-txt">매출 성장<br><span class="n-badge">5개월 만에 프리미엄</span></div>
             </div>
+            <div class="n-row">
+              <div class="n-val"><span class="counter" data-target="1" data-suffix="개월">0</span></div>
+              <div class="n-txt">브랜드스토어 입점 완료</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ 5. NAVER CERTIFIED ════ -->
+    <section>
+      <div class="slide-inner naver-slide">
+        <div class="naver-wrap">
+          <span class="sec-tag" style="opacity:0;animation:fadeUp .5s ease forwards .2s;">Official Certification</span>
+          <h2 class="sec-title" style="opacity:0;animation:fadeUp .5s ease forwards .38s;margin-bottom:0;">네이버가 인정한 마케터</h2>
+
+          <div class="naver-badge">
+            <span class="nb-grade">프리미엄</span>
+            <span class="nb-label">네이버 스마트스토어 최고 등급</span>
+            <div class="nb-sub">두 회사에서 모두 달성 · 상위 1% 스토어</div>
+          </div>
+
+          <div class="nv-stats">
+            <div class="nv-stat"><span class="nv-val">3개월</span><span class="nv-lbl">바베큐타운 달성 기간</span></div>
+            <div class="nv-stat"><span class="nv-val">5개월</span><span class="nv-lbl">비욘드릴렉스 달성 기간</span></div>
+            <div class="nv-stat"><span class="nv-val">2개 사</span><span class="nv-lbl">반복 달성 (국내 유일급)</span></div>
+          </div>
+
+          <div class="naver-quote">
+            <span class="hl">바베큐타운: 3개월 매출 6억, 판매 2,000건</span>으로 프리미엄 달성.<br>
+            <span class="hl">비욘드릴렉스: 5개월 만에 프리미엄</span>, 1개월 내 브랜드스토어 입점 완료.<br>
+            두 회사 모두에서 최고 등급을 달성한 마케터는 흔하지 않습니다.
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ════════ SLIDE 5: SMARTSTORE ════════ -->
-    <section>
-      <div class="slide-inner store-slide">
-        <div class="slide-header">
-          <span class="slide-tag">Smartstore Growth</span>
-          <h2 class="slide-title">스마트스토어 등급 성장</h2>
-          <span class="dec-bar"></span>
-        </div>
-        <div class="grade-row">
-          <div class="g-card is-power" data-delay="0">
-            <span class="g-icon">🥉</span>
-            <div class="g-name power">파워</div>
-            <div class="g-desc">초기 광고 구조 수립<br>기초 데이터 확보</div>
-          </div>
-          <div class="g-arrow">→</div>
-          <div class="g-card is-bigpower" data-delay="400">
-            <span class="g-icon">🥈</span>
-            <div class="g-name bigpower">빅파워</div>
-            <div class="g-desc">ROAS 최적화 완성<br>전환율 대폭 개선</div>
-          </div>
-          <div class="g-arrow">→</div>
-          <div class="g-card is-premium" data-delay="800">
-            <span class="g-icon">👑</span>
-            <div class="g-name premium">프리미엄</div>
-            <div class="g-desc">최고 등급 달성<br>브랜드 신뢰도 확보</div>
-            <div class="g-badge">✓ 최고 등급</div>
-          </div>
-        </div>
-        <div class="store-stats">
-          <div class="s-stat">
-            <span class="s-val">TOP 1%</span>
-            <span class="s-lab">스마트스토어 등급</span>
-          </div>
-          <div class="s-stat">
-            <span class="s-val">1개월</span>
-            <span class="s-lab">브랜드스토어 구축</span>
-          </div>
-          <div class="s-stat">
-            <span class="s-val">4.9 ★</span>
-            <span class="s-lab">고객 만족 점수</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ════════ SLIDE 6: COMPETENCIES ════════ -->
+    <!-- ════ 6. SKILLS ════ -->
     <section>
       <div class="slide-inner skills-slide">
-        <div class="slide-header">
-          <span class="slide-tag">Core Competencies</span>
-          <h2 class="slide-title">핵심 역량</h2>
-          <span class="dec-bar"></span>
+        <div class="nums-header" style="margin-bottom:1.5rem;">
+          <span class="sec-tag">What I Can Do</span>
+          <h2 class="sec-title">할 수 있는 것</h2>
         </div>
-        <div class="skills-grid">
-          <div class="sk-card" data-delay="0"   data-width="95">
-            <span class="sk-icon">🎯</span>
-            <div class="sk-name">퍼포먼스 마케팅</div>
-            <div class="sk-desc">네이버 SA·GDN·메타 광고 통합 운영 및 ROAS 최적화</div>
-            <div class="sk-bar"><div class="sk-bar-fill"></div></div>
-          </div>
-          <div class="sk-card" data-delay="100" data-width="90">
-            <span class="sk-icon">🛒</span>
-            <div class="sk-name">이커머스 전략</div>
-            <div class="sk-desc">스마트스토어·쿠팡·자사몰 다채널 운영 전략 수립</div>
-            <div class="sk-bar"><div class="sk-bar-fill"></div></div>
-          </div>
-          <div class="sk-card" data-delay="200" data-width="85">
-            <span class="sk-icon">📊</span>
-            <div class="sk-name">데이터 분석</div>
-            <div class="sk-desc">GA4·네이버 애널리틱스 기반 데이터 드리븐 의사결정</div>
-            <div class="sk-bar"><div class="sk-bar-fill"></div></div>
-          </div>
-          <div class="sk-card" data-delay="300" data-width="88">
-            <span class="sk-icon">✍️</span>
-            <div class="sk-name">콘텐츠 마케팅</div>
-            <div class="sk-desc">브랜드 스토리텔링·SEO 콘텐츠·인플루언서 협업</div>
-            <div class="sk-bar"><div class="sk-bar-fill"></div></div>
-          </div>
-          <div class="sk-card" data-delay="400" data-width="92">
-            <span class="sk-icon">📱</span>
-            <div class="sk-name">SNS 광고 운영</div>
-            <div class="sk-desc">인스타그램·카카오·틱톡 광고 최적화 및 크리에이티브 기획</div>
-            <div class="sk-bar"><div class="sk-bar-fill"></div></div>
-          </div>
-          <div class="sk-card" data-delay="500" data-width="93">
-            <span class="sk-icon">🏪</span>
-            <div class="sk-name">브랜드스토어 구축</div>
-            <div class="sk-desc">네이버 브랜드스토어 기획부터 운영까지 원스톱 관리</div>
-            <div class="sk-bar"><div class="sk-bar-fill"></div></div>
-          </div>
+        <div class="sk-grid">
+          <div class="sk-card" data-delay="0"   data-w="97"><span class="sk-icon">🎯</span><div class="sk-name">네이버 검색광고 (SA)</div><div class="sk-desc">키워드 세팅, 입찰 관리, ROAS 최적화.<br>ROAS 3,000% 달성 실적.</div><div class="sk-bar"><div class="sk-fill"></div></div></div>
+          <div class="sk-card" data-delay="100" data-w="92"><span class="sk-icon">📡</span><div class="sk-name">네이버 GFA 광고</div><div class="sk-desc">디스플레이 광고 운영, 타겟 설정.<br>ROAS 10,000% 달성 실적.</div><div class="sk-bar"><div class="sk-fill"></div></div></div>
+          <div class="sk-card" data-delay="200" data-w="88"><span class="sk-icon">📱</span><div class="sk-name">Meta 광고</div><div class="sk-desc">Facebook · Instagram 광고 운영,<br>크리에이티브 기획 및 타겟 최적화.</div><div class="sk-bar"><div class="sk-fill"></div></div></div>
+          <div class="sk-card" data-delay="300" data-w="95"><span class="sk-icon">🛒</span><div class="sk-name">스마트스토어 운영</div><div class="sk-desc">등급 관리, 프로모션, 리뷰 전략.<br>프리미엄 등급 2회 달성.</div><div class="sk-bar"><div class="sk-fill"></div></div></div>
+          <div class="sk-card" data-delay="400" data-w="84"><span class="sk-icon">✍️</span><div class="sk-name">상세페이지 기획</div><div class="sk-desc">구매 전환율 높이는 상세페이지<br>기획 및 콘텐츠 방향 설정.</div><div class="sk-bar"><div class="sk-fill"></div></div></div>
+          <div class="sk-card" data-delay="500" data-w="80"><span class="sk-icon">🔍</span><div class="sk-name">SEO 최적화</div><div class="sk-desc">검색 노출 최적화, 키워드 리서치,<br>콘텐츠 SEO 전략 수립.</div><div class="sk-bar"><div class="sk-fill"></div></div></div>
         </div>
       </div>
     </section>
 
-    <!-- ════════ SLIDE 7: CLOSING ════════ -->
+    <!-- ════ 7. CTA ════ -->
     <section>
-      <div class="closing-wrap">
-        <div class="closing-bg"></div>
-
-        <svg class="closing-geo" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="180"  cy="360" r="300" stroke="white" stroke-width="0.5"/>
-          <circle cx="1100" cy="360" r="300" stroke="white" stroke-width="0.5"/>
-          <circle cx="640"  cy="360" r="240" stroke="white" stroke-width="0.5"/>
-          <line x1="0" y1="360" x2="1280" y2="360" stroke="white" stroke-width="0.4"/>
-        </svg>
-
-        <div class="closing-content">
-          <span class="closing-eyebrow">Let's Work Together</span>
-          <h2 class="closing-headline">함께 만들어갈<br>다음 성공 스토리</h2>
-          <p class="closing-sub">10년 8개월의 경험과 데이터가 증명하는 마케팅</p>
-          <div class="contact-row">
-            <div class="c-card">
-              <span class="c-icon">📧</span>
-              <span class="c-text">freewill0905@gmail.com</span>
+      <div class="cta-wrap">
+        <div class="cta-radial"></div>
+        <div class="cta-content">
+          <span class="cta-tag">Contact · Let's Grow Together</span>
+          <h2 class="cta-hl">매출이 고민이라면,<br>지금 연락하세요</h2>
+          <p class="cta-sub">10년의 실전 데이터와 전략이 당신의 매출을 바꿉니다</p>
+          <div class="cta-contacts">
+            <div class="cta-card">
+              <span class="cta-icon">📞</span>
+              <div>
+                <span class="cta-lbl">Phone</span>
+                <span class="cta-val">010-4227-8127</span>
+              </div>
             </div>
-            <div class="c-card">
-              <span class="c-icon">💼</span>
-              <span class="c-text">포트폴리오 · 협업 문의</span>
+            <div class="cta-card">
+              <span class="cta-icon">📧</span>
+              <div>
+                <span class="cta-lbl">Email</span>
+                <span class="cta-val">freewill0905@naver.com</span>
+              </div>
             </div>
           </div>
-          <div class="closing-sig">Yang Si-Hyeon · Digital Marketer · 2026</div>
+          <div class="cta-sig">Yang Si-Hyeon · Digital Marketer · 2026</div>
         </div>
       </div>
     </section>
 
-  </div><!-- /slides -->
-</div><!-- /reveal -->
+  </div>
+</div>
 
-<button id="edit-mode-btn" title="편집 모드 ON/OFF — 더블클릭으로 텍스트 편집">
-  <span class="edit-btn-dot"></span>
-  <span id="edit-btn-label">편집 모드</span>
+<button id="edit-mode-btn" title="더블클릭으로 텍스트 편집">
+  <span class="edit-dot"></span>
+  <span id="edit-lbl">편집 모드</span>
 </button>
 <div id="save-toast">✓ 저장됨</div>
 
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.0/dist/reveal.js"></script>
 <script>
-/* ════════════════════════════
-   PARTICLES
-════════════════════════════ */
-(function () {
-  const canvas = document.getElementById('particle-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-
-  function resize() {
-    canvas.width  = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+/* ── HOOK ── */
+function runHook() {
+  ['hq1','hq2','hq3'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove('show');
+    void el.offsetWidth;
+    setTimeout(() => el.classList.add('show'), 350 + i * 850);
+  });
+  const cta = document.getElementById('hook-cta');
+  if (cta) {
+    cta.classList.remove('show');
+    void cta.offsetWidth;
+    setTimeout(() => cta.classList.add('show'), 350 + 3 * 850);
   }
+}
 
-  const pts = [];
-  function init() {
-    resize();
-    pts.length = 0;
-    for (let i = 0; i < 75; i++) {
-      pts.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.32,
-        vy: (Math.random() - 0.5) * 0.32,
-        r: Math.random() * 1.6 + 0.4,
-        gold: Math.random() > 0.72,
-        op: Math.random() * 0.45 + 0.15
-      });
-    }
+/* ── IMPACT ── */
+function runImpact() {
+  const hl  = document.getElementById('impact-hl');
+  const sub = document.getElementById('impact-sub');
+  if (hl) {
+    hl.style.animation = 'none'; void hl.offsetWidth;
+    hl.style.animation = 'crashIn .95s cubic-bezier(.16,1,.3,1) forwards .45s';
   }
-
-  function frame() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (let i = 0; i < pts.length; i++) {
-      for (let j = i + 1; j < pts.length; j++) {
-        const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
-        const d  = Math.hypot(dx, dy);
-        if (d < 115) {
-          ctx.beginPath();
-          ctx.strokeStyle = `rgba(0,212,245,${0.07 * (1 - d / 115)})`;
-          ctx.lineWidth = 0.5;
-          ctx.moveTo(pts[i].x, pts[i].y);
-          ctx.lineTo(pts[j].x, pts[j].y);
-          ctx.stroke();
-        }
-      }
-    }
-    pts.forEach(p => {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.gold ? `rgba(240,180,41,${p.op})` : `rgba(0,212,245,${p.op})`;
-      ctx.fill();
-      p.x += p.vx; p.y += p.vy;
-      if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
-      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-    });
-    requestAnimationFrame(frame);
+  if (sub) {
+    sub.style.animation = 'none'; void sub.offsetWidth;
+    sub.style.animation = 'fadeUp .6s ease forwards 1.4s';
   }
+}
 
-  window.addEventListener('resize', init);
-  init();
-  frame();
-})();
-
-/* ════════════════════════════
-   COUNTER
-════════════════════════════ */
+/* ── COUNTERS ── */
 function runCounters(section) {
   section.querySelectorAll('.counter').forEach(el => {
     const target = +el.dataset.target;
-    const dur    = Math.min(2200, target * 0.75 + 600);
-    const t0     = performance.now();
+    const suffix = el.dataset.suffix || '';
+    const dur = Math.min(2200, target * 0.5 + 600);
+    const t0 = performance.now();
     (function tick(now) {
-      const p    = Math.min((now - t0) / dur, 1);
-      const ease = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(target * ease).toLocaleString();
+      const p = Math.min((now - t0) / dur, 1);
+      const v = Math.round(target * (1 - Math.pow(1 - p, 3)));
+      el.textContent = (v >= 1000 ? v.toLocaleString() : v) + suffix;
       if (p < 1) requestAnimationFrame(tick);
     })(t0);
   });
 }
 
-/* ════════════════════════════
-   SLIDE ANIMATIONS
-════════════════════════════ */
-function runAchievements(section) {
-  section.querySelectorAll('.a-card').forEach(c => c.classList.remove('go'));
-  section.querySelectorAll('.a-card').forEach(c => {
-    setTimeout(() => c.classList.add('go'), +c.dataset.delay || 0);
-  });
-  setTimeout(() => runCounters(section), 450);
-}
-
-function runTimeline(section) {
-  const line  = section.querySelector('.tl-line');
-  const items = section.querySelectorAll('.tl-item');
-  if (line) { line.classList.remove('go'); setTimeout(() => line.classList.add('go'), 80); }
-  items.forEach(item => {
-    item.classList.remove('go');
-    setTimeout(() => item.classList.add('go'), +item.dataset.delay || 0);
-  });
-}
-
-let chartInst = null;
-function runChart() {
-  const canvas = document.getElementById('perfChart');
-  if (!canvas) return;
-  if (chartInst) { chartInst.destroy(); chartInst = null; }
-
-  const labels = ['25.02','25.03','25.04','25.05','25.06','25.07','25.08','25.09','25.10','25.11','25.12','26.01'];
-  const data   = [2400, 2750, 3200, 3750, 4350, 5100, 6000, 6900, 8000, 9300, 10600, 9600];
-
-  chartInst = new Chart(canvas, {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [
-        {
-          type: 'bar',
-          label: '월별 매출 (만원)',
-          data,
-          backgroundColor: 'rgba(0,212,245,0.1)',
-          borderColor: 'rgba(0,212,245,0.45)',
-          borderWidth: 1,
-          borderRadius: 2,
-          order: 2
-        },
-        {
-          type: 'line',
-          label: '성장 추세선',
-          data,
-          borderColor: '#f0b429',
-          borderWidth: 2,
-          pointBackgroundColor: '#f0b429',
-          pointRadius: 3,
-          pointHoverRadius: 6,
-          tension: 0.35,
-          fill: false,
-          order: 1
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: { duration: 1800, easing: 'easeInOutQuart' },
-      plugins: {
-        legend: {
-          labels: {
-            color: 'rgba(232,240,248,0.55)',
-            font: { family: "'Noto Sans KR',sans-serif", size: 11 },
-            boxWidth: 12, padding: 16
-          }
-        },
-        tooltip: {
-          backgroundColor: 'rgba(4,20,36,0.96)',
-          borderColor: 'rgba(0,212,245,0.28)',
-          borderWidth: 1,
-          titleColor: '#00d4f5',
-          bodyColor: 'rgba(232,240,248,0.8)',
-          padding: 10,
-          callbacks: {
-            label: c => ` ${c.dataset.label}: ${c.parsed.y.toLocaleString()}만원`
-          }
-        }
-      },
-      scales: {
-        x: {
-          ticks: { color: 'rgba(232,240,248,0.38)', font: { family: "'Rajdhani',sans-serif", size: 11 } },
-          grid:  { color: 'rgba(255,255,255,0.03)' }
-        },
-        y: {
-          ticks: {
-            color: 'rgba(232,240,248,0.38)',
-            font: { family: "'Rajdhani',sans-serif", size: 11 },
-            callback: v => v >= 10000 ? (v/10000).toFixed(1)+'억' : (v/1000).toFixed(1)+'천만'
-          },
-          grid: { color: 'rgba(255,255,255,0.03)' }
-        }
-      }
-    }
-  });
-}
-
-function runGrades(section) {
-  section.querySelectorAll('.g-card').forEach(c => {
+/* ── NUMBERS SLIDE ── */
+function runNumbers(section) {
+  section.querySelectorAll('.co-card').forEach(c => {
     c.classList.remove('go');
     setTimeout(() => c.classList.add('go'), +c.dataset.delay || 0);
   });
+  setTimeout(() => runCounters(section), 480);
 }
 
+/* ── SKILLS ── */
 function runSkills(section) {
   section.querySelectorAll('.sk-card').forEach(c => {
     c.classList.remove('go');
-    c.querySelector('.sk-bar-fill').style.width = '0';
-    const delay = +c.dataset.delay || 0;
+    c.querySelector('.sk-fill').style.width = '0';
+    const d = +c.dataset.delay || 0;
     setTimeout(() => {
       c.classList.add('go');
-      setTimeout(() => {
-        c.querySelector('.sk-bar-fill').style.width = (c.dataset.width || 80) + '%';
-      }, 220);
-    }, delay);
+      setTimeout(() => { c.querySelector('.sk-fill').style.width = (c.dataset.w || 80) + '%'; }, 240);
+    }, d);
   });
 }
 
-function runClosing(section) {
-  const content = section.querySelector('.closing-content');
-  if (!content) return;
-  content.classList.remove('go');
-  setTimeout(() => content.classList.add('go'), 80);
+/* ── CTA ── */
+function runCta(section) {
+  const c = section.querySelector('.cta-content');
+  if (!c) return;
+  c.classList.remove('go');
+  setTimeout(() => c.classList.add('go'), 100);
 }
 
-/* ════════════════════════════
-   REVEAL.JS
-════════════════════════════ */
+/* ── REVEAL ── */
 Reveal.initialize({
-  hash: true,
-  transition: 'convex',
-  transitionSpeed: 'slow',
-  backgroundTransition: 'fade',
-  slideNumber: 'c/t',
-  controls: true,
-  progress: true,
-  center: true,
-  width:  1280,
-  height: 720,
-  margin: 0.02,
-  plugins: []
+  hash: true, transition: 'fade', transitionSpeed: 'default',
+  backgroundTransition: 'fade', slideNumber: 'c/t',
+  controls: true, progress: true, center: true,
+  width: 1280, height: 720, margin: 0.02, plugins: []
 });
 
 const handlers = [
+  () => setTimeout(runHook, 250),
+  () => setTimeout(runImpact, 100),
   null,
-  s => { setTimeout(() => runAchievements(s), 280); },
-  s => { setTimeout(() => runTimeline(s), 180); },
-  s => { setTimeout(() => runChart(), 180); },
-  s => { setTimeout(() => runGrades(s), 280); },
-  s => { setTimeout(() => runSkills(s), 180); },
-  s => { setTimeout(() => runClosing(s), 180); }
+  s  => setTimeout(() => runNumbers(s), 280),
+  null,
+  s  => setTimeout(() => runSkills(s), 200),
+  s  => setTimeout(() => runCta(s), 150)
 ];
 
-Reveal.on('slidechanged', e => {
-  const fn = handlers[e.indexh];
-  if (fn) fn(e.currentSlide);
-});
+Reveal.on('slidechanged', e => { const fn = handlers[e.indexh]; if (fn) fn(e.currentSlide); });
+Reveal.on('ready', () => setTimeout(runHook, 450));
 
-/* ════════════════════════════
-   INLINE EDITOR
-════════════════════════════ */
+/* ── INLINE EDITOR ── */
 (function () {
-  const STORAGE_KEY = 'portfolio-edits-v1';
-
-  const EDITABLE_SELECTORS = [
-    '.cover-eyebrow',
-    '.cover-name',
-    '.cover-role',
-    '.cover-badge-text',
-    '.slide-tag',
-    '.slide-title',
-    '.a-label',
-    '.a-sub',
-    '.tl-year',
-    '.tl-company',
-    '.tl-role',
-    '.tl-desc',
-    '.kpi-val',
-    '.kpi-label',
-    '.g-name',
-    '.g-desc',
-    '.g-badge',
-    '.s-val',
-    '.s-lab',
-    '.sk-name',
-    '.sk-desc',
-    '.closing-eyebrow',
-    '.closing-headline',
-    '.closing-sub',
-    '.c-text',
-    '.closing-sig'
+  const KEY = 'portfolio-v2-edits';
+  const SELS = [
+    '.hook-q', '.hook-cta',
+    '.impact-eyebrow', '.impact-hl', '.impact-sub',
+    '.hero-tag', '.hero-name', '.hero-role', '.hero-desc',
+    '.hero-yrs-big', '.hero-yrs-lbl', '.hero-yrs-sub',
+    '.sec-tag', '.sec-title',
+    '.co-name', '.co-period', '.n-txt',
+    '.nb-grade', '.nb-label', '.nb-sub',
+    '.nv-val', '.nv-lbl', '.naver-quote',
+    '.sk-name', '.sk-desc',
+    '.cta-tag', '.cta-hl', '.cta-sub', '.cta-val', '.cta-sig'
   ];
 
-  let editModeOn = false;
-  let saveTimer  = null;
+  let on = false, timer = null;
 
   function assignIds() {
-    EDITABLE_SELECTORS.forEach(sel => {
+    SELS.forEach(sel => {
       document.querySelectorAll(sel).forEach((el, i) => {
-        el.dataset.editId = sel.replace(/[^a-zA-Z]/g, '') + '_' + i;
-        el.classList.add('editable-text');
+        el.dataset.eid = sel.replace(/[^a-zA-Z]/g, '') + '_' + i;
+        el.classList.add('et');
       });
     });
   }
 
-  function restoreContent() {
+  function restore() {
     try {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-      Object.entries(saved).forEach(([id, html]) => {
-        const el = document.querySelector('[data-edit-id="' + id + '"]');
+      const d = JSON.parse(localStorage.getItem(KEY) || '{}');
+      Object.entries(d).forEach(([id, html]) => {
+        const el = document.querySelector('[data-eid="' + id + '"]');
         if (el) el.innerHTML = html;
       });
-    } catch (e) {}
+    } catch (_) {}
   }
 
   function saveAll() {
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(function () {
-      const data = {};
-      document.querySelectorAll('[data-edit-id]').forEach(el => {
-        data[el.dataset.editId] = el.innerHTML;
-      });
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-      showToast();
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      const d = {};
+      document.querySelectorAll('[data-eid]').forEach(el => { d[el.dataset.eid] = el.innerHTML; });
+      localStorage.setItem(KEY, JSON.stringify(d));
+      const t = document.getElementById('save-toast');
+      if (t) { t.classList.add('show'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 1800); }
     }, 300);
   }
 
-  function showToast() {
-    const toast = document.getElementById('save-toast');
-    if (!toast) return;
-    toast.classList.add('show');
-    clearTimeout(toast._t);
-    toast._t = setTimeout(() => toast.classList.remove('show'), 1800);
-  }
-
   function startEdit(el) {
-    const prev = document.querySelector('[data-edit-id][contenteditable]');
+    const prev = document.querySelector('[data-eid][contenteditable]');
     if (prev && prev !== el) endEdit(prev);
     el.setAttribute('contenteditable', 'true');
     el.setAttribute('spellcheck', 'false');
     el.focus();
-    const range = document.createRange();
-    range.selectNodeContents(el);
-    range.collapse(false);
-    const sel = window.getSelection();
-    if (sel) { sel.removeAllRanges(); sel.addRange(range); }
+    const r = document.createRange(); r.selectNodeContents(el); r.collapse(false);
+    const s = window.getSelection(); if (s) { s.removeAllRanges(); s.addRange(r); }
   }
 
-  function endEdit(el) {
-    el.removeAttribute('contenteditable');
-    saveAll();
-  }
+  function endEdit(el) { el.removeAttribute('contenteditable'); saveAll(); }
 
-  const btn   = document.getElementById('edit-mode-btn');
-  const label = document.getElementById('edit-btn-label');
+  const btn = document.getElementById('edit-mode-btn');
+  const lbl = document.getElementById('edit-lbl');
 
   btn.addEventListener('click', () => {
-    editModeOn = !editModeOn;
-    document.body.classList.toggle('edit-on', editModeOn);
-    btn.classList.toggle('is-on', editModeOn);
-    label.textContent = editModeOn ? '편집 종료' : '편집 모드';
-    if (!editModeOn) {
-      const active = document.querySelector('[data-edit-id][contenteditable]');
-      if (active) endEdit(active);
-    }
+    on = !on;
+    document.body.classList.toggle('edit-on', on);
+    btn.classList.toggle('is-on', on);
+    lbl.textContent = on ? '편집 종료' : '편집 모드';
+    if (!on) { const a = document.querySelector('[data-eid][contenteditable]'); if (a) endEdit(a); }
   });
 
   document.addEventListener('dblclick', e => {
-    if (!editModeOn) return;
-    const el = e.target.closest('[data-edit-id]');
+    if (!on) return;
+    const el = e.target.closest('[data-eid]');
     if (!el) return;
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault(); e.stopPropagation();
     startEdit(el);
   });
 
   document.addEventListener('blur', e => {
-    if (e.target.dataset && e.target.dataset.editId) {
-      endEdit(e.target);
-    }
+    if (e.target.dataset && e.target.dataset.eid) endEdit(e.target);
   }, true);
 
   document.addEventListener('keydown', e => {
-    const active = document.querySelector('[data-edit-id][contenteditable]');
-    if (!active) return;
-    if (e.key === 'Escape') { endEdit(active); active.blur(); return; }
+    const a = document.querySelector('[data-eid][contenteditable]');
+    if (!a) return;
+    if (e.key === 'Escape') { endEdit(a); a.blur(); return; }
     e.stopPropagation();
   }, true);
 
   assignIds();
-  restoreContent();
+  restore();
 })();
 </script>
 </body>
