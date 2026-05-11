@@ -6,7 +6,8 @@
   <title>양시현 — 디지털 마케터</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.0/dist/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.0/dist/reveal.css">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg:    #07080f;
@@ -24,13 +25,12 @@
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     .reveal-viewport { background: var(--bg); }
-    .reveal { font-family: 'Noto Sans KR', sans-serif; color: var(--white); font-size: 16px; }
+    .reveal { font-family: 'Pretendard', sans-serif; color: var(--white); font-size: 16px; }
     .reveal .slides section { padding: 0; height: 100%; top: 0 !important; }
     .reveal .progress { height: 3px; color: var(--red); background: rgba(255,53,32,0.1); }
-    .reveal .slide-number { font-family: 'Rajdhani',sans-serif; font-size: 11px; letter-spacing: .2em; background: none; color: var(--faint); }
+    .reveal .slide-number { font-family: 'Rajdhani', sans-serif; font-size: 11px; letter-spacing: .2em; background: none; color: var(--faint); }
     .reveal .controls button { color: var(--red); }
 
-    /* ── shared layout ── */
     .slide-inner {
       width: 100%; height: 100%;
       display: flex; flex-direction: column;
@@ -38,30 +38,36 @@
       padding: 2.4rem 5%; position: relative; overflow: hidden;
     }
 
-    /* ══════════════════════════════════
-       SLIDE 1 · HOOK
-    ══════════════════════════════════ */
+    .sec-tag {
+      font-family: 'Rajdhani', sans-serif; font-size: 10px;
+      letter-spacing: .45em; color: var(--red); text-transform: uppercase;
+      display: block; margin-bottom: .28rem;
+    }
+    .sec-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.25rem,2.4vw,1.95rem); font-weight: 700; color: var(--white);
+    }
+
+    /* ══ SLIDE 1 · HOOK ══ */
     .hook-wrap {
       position: absolute; inset: 0; background: var(--bg);
       display: flex; flex-direction: column;
-      justify-content: center; padding: 0 8%;
-      overflow: hidden;
+      justify-content: center; padding: 0 8%; overflow: hidden;
     }
     .hook-bg-char {
       position: absolute; right: -1%; top: 50%;
       transform: translateY(-50%);
-      font-family: 'Bebas Neue', sans-serif;
+      font-family: 'Noto Serif KR', serif; font-weight: 900;
       font-size: 38vw; color: rgba(255,53,32,0.028);
       line-height: 1; pointer-events: none; user-select: none;
     }
     .hook-line {
       display: flex; align-items: flex-start; gap: 1.1rem;
-      margin-bottom: 2rem;
-      opacity: 0; transform: translateX(-28px);
+      margin-bottom: 2rem; opacity: 0; transform: translateX(-28px);
     }
     .hook-line.show { animation: hookSlide .7s cubic-bezier(.22,1,.36,1) forwards; }
     .hook-num {
-      font-family: 'Bebas Neue', sans-serif;
+      font-family: 'Noto Serif KR', serif; font-weight: 900;
       font-size: clamp(1.4rem,2.8vw,2.2rem);
       color: var(--red); flex-shrink: 0; line-height: 1.3;
     }
@@ -72,21 +78,17 @@
       border-left: 3px solid var(--red); padding-left: 1rem;
     }
     .hook-cta {
-      font-family: 'Bebas Neue', sans-serif;
+      font-family: 'Noto Serif KR', serif; font-weight: 900;
       font-size: clamp(1.6rem,3.8vw,3.2rem);
-      letter-spacing: .06em; color: var(--red);
-      margin-top: .5rem;
-      opacity: 0; transform: translateX(-28px);
+      letter-spacing: .02em; color: var(--red);
+      margin-top: .5rem; opacity: 0; transform: translateX(-28px);
     }
     .hook-cta.show { animation: hookSlide .65s cubic-bezier(.22,1,.36,1) forwards; }
 
-    /* ══════════════════════════════════
-       SLIDE 2 · IMPACT
-    ══════════════════════════════════ */
+    /* ══ SLIDE 2 · IMPACT ══ */
     .impact-wrap {
       position: absolute; inset: 0; background: var(--bg);
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
     }
     .impact-radial {
       position: absolute; inset: 0;
@@ -103,18 +105,12 @@
     .impact-hl {
       font-family: 'Noto Serif KR', serif;
       font-size: clamp(2rem,5.5vw,5rem);
-      font-weight: 900; line-height: 1.22; color: var(--white);
-      opacity: 0;
+      font-weight: 900; line-height: 1.22; color: var(--white); opacity: 0;
     }
     .impact-hl .red { color: var(--red); }
-    .impact-sub {
-      font-size: clamp(.82rem,1.6vw,1.1rem); color: var(--dim);
-      margin-top: 1.8rem; opacity: 0;
-    }
+    .impact-sub { font-size: clamp(.82rem,1.6vw,1.1rem); color: var(--dim); margin-top: 1.8rem; opacity: 0; }
 
-    /* ══════════════════════════════════
-       SLIDE 3 · HERO
-    ══════════════════════════════════ */
+    /* ══ SLIDE 3 · HERO ══ */
     .hero-wrap {
       position: absolute; inset: 0; background: var(--bg);
       display: flex; align-items: center; justify-content: center;
@@ -123,7 +119,7 @@
       display: flex; align-items: center; gap: 5rem;
       padding: 0 7%; width: 100%; max-width: 1160px;
     }
-    .hero-left  { flex: 1.1; }
+    .hero-left { flex: 1.1; }
     .hero-right { flex: .9; }
 
     .hero-tag {
@@ -140,16 +136,15 @@
       opacity: 0; animation: fadeUp .85s cubic-bezier(.16,1,.3,1) forwards .38s;
     }
     .hero-role {
-      font-family: 'Bebas Neue', sans-serif;
+      font-family: 'Noto Serif KR', serif; font-weight: 700;
       font-size: clamp(1.1rem,2.4vw,2rem);
-      letter-spacing: .14em; color: var(--red); margin-bottom: 1.6rem;
+      letter-spacing: .04em; color: var(--red); margin-bottom: 1.6rem;
       opacity: 0; animation: fadeUp .5s ease forwards .68s;
     }
     .hero-bar {
       width: 0; height: 2px;
       background: linear-gradient(90deg, var(--red), var(--gold));
-      margin-bottom: 1.6rem;
-      animation: expandW .8s ease forwards 1s;
+      margin-bottom: 1.6rem; animation: expandW .8s ease forwards 1s;
     }
     .hero-desc {
       font-size: clamp(.82rem,1.55vw,.98rem); color: var(--dim);
@@ -164,8 +159,7 @@
       display: flex; align-items: center; gap: .45rem;
       padding: .55rem .95rem;
       background: var(--card); border: 1px solid var(--line);
-      font-size: 11.5px; color: var(--dim);
-      transition: border-color .3s;
+      font-size: 11.5px; color: var(--dim); transition: border-color .3s;
     }
     .hero-tag-pill:hover { border-color: rgba(255,53,32,.4); }
     .pill-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
@@ -177,7 +171,7 @@
       opacity: 0; animation: scaleIn .7s cubic-bezier(.16,1,.3,1) forwards .45s;
     }
     .hero-yrs-big {
-      font-family: 'Bebas Neue', sans-serif;
+      font-family: 'Noto Serif KR', serif; font-weight: 900;
       font-size: clamp(5rem,11vw,9rem); line-height: .88;
       color: var(--red); display: block;
       text-shadow: 0 0 80px rgba(255,53,32,.28);
@@ -189,70 +183,88 @@
     }
     .hero-yrs-sub {
       font-family: 'Rajdhani', sans-serif; font-size: 10px;
-      letter-spacing: .25em; color: var(--faint);
-      display: block; margin-top: .25rem;
+      letter-spacing: .25em; color: var(--faint); display: block; margin-top: .25rem;
     }
 
-    /* ══════════════════════════════════
-       SLIDE 4 · NUMBERS
-    ══════════════════════════════════ */
-    .nums-slide { background: var(--bg); justify-content: flex-start; padding-top: 1.8rem; }
-    .nums-header { text-align: center; margin-bottom: 1.4rem; width: 100%; }
-    .sec-tag {
-      font-family: 'Rajdhani', sans-serif; font-size: 10px;
-      letter-spacing: .45em; color: var(--red); text-transform: uppercase;
-      display: block; margin-bottom: .28rem;
-    }
-    .sec-title {
-      font-family: 'Noto Serif KR', serif;
-      font-size: clamp(1.25rem,2.4vw,1.95rem); font-weight: 700; color: var(--white);
-    }
-    .nums-split { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; width: 100%; max-width: 980px; }
+    /* ══ SLIDES 4-6 · EVIDENCE (텍스트 + 이미지) ══ */
+    .evidence-slide { background: var(--bg); justify-content: flex-start; padding-top: 1.4rem; }
+    .ev-header { text-align: center; margin-bottom: .85rem; width: 100%; }
 
-    .co-card {
+    .ev-body {
+      display: grid; grid-template-columns: 310px 1fr; gap: 1.3rem;
+      width: 100%; max-width: 1120px;
+    }
+
+    .ev-stats {
       background: var(--card); border: 1px solid var(--line);
-      padding: 1.4rem 1.5rem;
-      opacity: 0; transform: translateY(20px);
-      transition: opacity .5s ease, transform .5s ease;
+      padding: 1.2rem 1.3rem; display: flex; flex-direction: column;
+      opacity: 0; transform: translateX(-18px);
+      animation: evidenceLeft .6s cubic-bezier(.16,1,.3,1) forwards .3s;
     }
-    .co-card.go { opacity: 1; transform: translateY(0); }
-    .co-name {
-      font-family: 'Noto Serif KR', serif;
-      font-size: clamp(.95rem,1.9vw,1.35rem); font-weight: 700; color: var(--white);
-      padding-bottom: .7rem; margin-bottom: .3rem;
+    .ev-company {
+      font-family: 'Noto Serif KR', serif; font-weight: 900;
+      font-size: clamp(1rem,2vw,1.4rem); color: var(--white);
+      padding-bottom: .6rem; margin-bottom: .25rem;
       border-bottom: 1px solid var(--line); position: relative;
     }
-    .co-name::after {
+    .ev-company::after {
       content: ''; position: absolute; bottom: -1px; left: 0;
-      width: 0; height: 1px; background: var(--red);
-      transition: width .9s ease .3s;
+      width: 50%; height: 1px; background: var(--red);
     }
-    .co-card.go .co-name::after { width: 55%; }
-    .co-period {
+    .ev-period {
       font-family: 'Rajdhani', sans-serif; font-size: 10px;
-      letter-spacing: .2em; color: var(--faint); margin-bottom: 1rem;
+      letter-spacing: .2em; color: var(--faint); margin-bottom: .75rem;
     }
-    .n-row {
-      display: flex; align-items: baseline; gap: .8rem;
-      padding: .6rem 0; border-bottom: 1px solid rgba(255,255,255,.03);
+    .ev-row {
+      display: flex; align-items: baseline; gap: .65rem;
+      padding: .48rem 0; border-bottom: 1px solid rgba(255,255,255,.03);
     }
-    .n-row:last-child { border-bottom: none; }
-    .n-val {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(1.7rem,3.2vw,2.6rem); line-height: 1;
-      color: var(--gold); flex-shrink: 0; min-width: 110px;
+    .ev-row:last-child { border-bottom: none; }
+    .ev-val {
+      font-family: 'Noto Serif KR', serif; font-weight: 900;
+      font-size: clamp(1.3rem,2.5vw,1.9rem); line-height: 1;
+      color: var(--gold); flex-shrink: 0; min-width: 90px;
     }
-    .n-txt { font-size: clamp(9.5px,1.2vw,12px); color: var(--dim); line-height: 1.55; }
-    .n-badge {
-      display: inline-block; padding: .12rem .45rem;
+    .ev-txt { font-size: 11px; color: var(--dim); line-height: 1.55; }
+    .ev-badge {
+      display: inline-block; padding: .1rem .4rem;
       background: rgba(255,184,0,.09); border: 1px solid rgba(255,184,0,.28);
-      font-family: 'Rajdhani', sans-serif; font-size: 9px;
-      letter-spacing: .1em; color: var(--gold); margin-top: .18rem;
+      font-size: 9px; letter-spacing: .1em; color: var(--gold); margin-top: .15rem;
     }
 
-    /* ══════════════════════════════════
-       SLIDE 5 · NAVER CERTIFIED
-    ══════════════════════════════════ */
+    .ev-photos {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .85rem;
+      opacity: 0; transform: translateX(18px);
+      animation: evidenceRight .65s cubic-bezier(.16,1,.3,1) forwards .48s;
+    }
+    .ev-photo-col { display: flex; flex-direction: column; gap: .4rem; }
+    .ev-photo-label {
+      font-family: 'Rajdhani', sans-serif; font-size: 10px;
+      letter-spacing: .22em; text-align: center;
+      padding: .38rem .5rem;
+      border: 1px solid var(--line); background: var(--card);
+    }
+    .ev-photo-label.is-before { color: var(--dim); }
+    .ev-photo-label.is-after { color: var(--gold); border-color: rgba(255,184,0,.3); background: rgba(255,184,0,.04); }
+    .ev-photo-img {
+      width: 100%; display: block; object-fit: contain;
+      border: 1px solid var(--line); background: rgba(255,255,255,.025);
+      max-height: 340px;
+    }
+
+    .ev-caption {
+      font-family: 'Noto Serif KR', serif; font-weight: 700;
+      font-size: clamp(.82rem,1.6vw,1rem);
+      text-align: center; color: var(--white);
+      margin-top: .8rem; padding: .65rem 1.4rem;
+      background: var(--card); border-left: 3px solid var(--red);
+      width: 100%; max-width: 1120px;
+      opacity: 0; animation: fadeUp .5s ease forwards .7s;
+    }
+    .ev-caption .c-gold { color: var(--gold); }
+    .ev-caption .c-red  { color: var(--red); }
+
+    /* ══ SLIDE 7 · NAVER CERTIFIED ══ */
     .naver-slide { background: var(--bg); }
     .naver-wrap { max-width: 800px; width: 100%; text-align: center; }
     .naver-badge {
@@ -267,7 +279,7 @@
       font-size: 2rem; opacity: .2;
     }
     .nb-grade {
-      font-family: 'Bebas Neue', sans-serif;
+      font-family: 'Noto Serif KR', serif; font-weight: 900;
       font-size: clamp(3rem,7vw,6rem); line-height: 1; color: var(--gold);
       display: block; text-shadow: 0 0 60px rgba(255,184,0,.28);
     }
@@ -278,16 +290,17 @@
     }
     .nb-sub { font-size: 12px; color: var(--faint); margin-top: .35rem; }
 
-    .nv-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: .8rem; margin-bottom: 1.3rem;
-      opacity: 0; animation: fadeUp .5s ease forwards .88s; }
+    .nv-stats {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: .8rem; margin-bottom: 1.3rem;
+      opacity: 0; animation: fadeUp .5s ease forwards .88s;
+    }
     .nv-stat {
       background: var(--card); border: 1px solid var(--line);
-      padding: 1.1rem .7rem; text-align: center;
-      transition: border-color .3s;
+      padding: 1.1rem .7rem; text-align: center; transition: border-color .3s;
     }
     .nv-stat:hover { border-color: rgba(255,53,32,.35); }
     .nv-val {
-      font-family: 'Bebas Neue', sans-serif;
+      font-family: 'Noto Serif KR', serif; font-weight: 900;
       font-size: clamp(1.4rem,2.8vw,2.1rem); line-height: 1; color: var(--cyan); display: block;
     }
     .nv-lbl { font-size: 10px; color: var(--faint); margin-top: .28rem; display: block; }
@@ -301,9 +314,7 @@
     }
     .naver-quote .hl { color: var(--white); }
 
-    /* ══════════════════════════════════
-       SLIDE 6 · SKILLS
-    ══════════════════════════════════ */
+    /* ══ SLIDE 8 · SKILLS ══ */
     .skills-slide { background: var(--bg); }
     .sk-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: .85rem; width: 100%; max-width: 900px; }
     .sk-card {
@@ -323,9 +334,7 @@
     .sk-bar { margin-top: .9rem; height: 2px; background: rgba(255,255,255,.05); overflow: hidden; }
     .sk-fill { height: 100%; background: linear-gradient(90deg, var(--red), var(--gold)); width: 0; transition: width 1.2s cubic-bezier(.16,1,.3,1); }
 
-    /* ══════════════════════════════════
-       SLIDE 7 · CTA
-    ══════════════════════════════════ */
+    /* ══ SLIDE 9 · CTA ══ */
     .cta-wrap {
       position: absolute; inset: 0; background: var(--bg);
       display: flex; align-items: center; justify-content: center; overflow: hidden;
@@ -336,10 +345,7 @@
       pointer-events: none;
     }
     .cta-content { position: relative; z-index: 2; text-align: center; padding: 0 6%; }
-    .cta-content > * {
-      opacity: 0; transform: translateY(14px);
-      transition: opacity .6s ease, transform .6s ease;
-    }
+    .cta-content > * { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
     .cta-content.go > * { opacity: 1; transform: translateY(0); }
     .cta-content.go > *:nth-child(1) { transition-delay: .1s; }
     .cta-content.go > *:nth-child(2) { transition-delay: .24s; }
@@ -368,76 +374,31 @@
     .cta-icon { font-size: 1.1rem; }
     .cta-lbl { font-family: 'Rajdhani', sans-serif; font-size: 9px; letter-spacing: .25em; color: var(--faint); display: block; }
     .cta-val { font-family: 'Rajdhani', sans-serif; font-size: clamp(.88rem,1.75vw,1.15rem); letter-spacing: .08em; color: var(--white); font-weight: 600; }
-    .cta-sig { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: .4em; color: var(--faint); }
+    .cta-sig { font-family: 'Pretendard', sans-serif; font-size: 1rem; letter-spacing: .3em; color: var(--faint); }
 
-    /* ══════════════════════════════════
-       SLIDE · IMAGE COMPARE
-    ══════════════════════════════════ */
-    .compare-slide { background: var(--bg); justify-content: flex-start; padding-top: 1.6rem; }
-    .compare-header { text-align: center; margin-bottom: .9rem; width: 100%; }
-    .compare-pair {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;
-      width: 100%; max-width: 1080px;
-    }
-    .compare-col { display: flex; flex-direction: column; gap: .55rem; }
-    .compare-badge {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(.82rem,1.65vw,1.15rem);
-      letter-spacing: .22em; text-align: center;
-      padding: .45rem .6rem;
-      border: 1px solid var(--line); background: var(--card);
-    }
-    .compare-badge.is-before { color: var(--dim); border-color: rgba(255,255,255,.08); }
-    .compare-badge.is-after  { color: var(--gold); border-color: rgba(255,184,0,.3); background: rgba(255,184,0,.04); }
-    .compare-img {
-      width: 100%; display: block;
-      object-fit: contain; max-height: 350px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.025);
-    }
-    .compare-caption {
-      font-family: 'Noto Serif KR', serif;
-      font-size: clamp(.85rem,1.65vw,1.05rem);
-      font-weight: 700; text-align: center;
-      color: var(--white); margin-top: .85rem;
-      padding: .72rem 1.4rem;
-      background: var(--card);
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      border-left: 3px solid var(--red);
-      width: 100%; max-width: 1080px;
-    }
-    .compare-caption .c-gold { color: var(--gold); }
-    .compare-caption .c-red  { color: var(--red); }
+    /* ══ KEYFRAMES ══ */
+    @keyframes fadeUp        { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes hookSlide     { from { opacity:0; transform:translateX(-28px); } to { opacity:1; transform:translateX(0); } }
+    @keyframes scaleIn       { from { opacity:0; transform:scale(.92); } to { opacity:1; transform:scale(1); } }
+    @keyframes expandW       { from { width:0; } to { width:100%; } }
+    @keyframes crashIn       { from { opacity:0; transform:scale(1.14) translateY(-18px); } to { opacity:1; transform:scale(1) translateY(0); } }
+    @keyframes blink         { 0%,100% { opacity:1; } 50% { opacity:.25; } }
+    @keyframes evidenceLeft  { from { opacity:0; transform:translateX(-18px); } to { opacity:1; transform:translateX(0); } }
+    @keyframes evidenceRight { from { opacity:0; transform:translateX(18px); }  to { opacity:1; transform:translateX(0); } }
 
-    /* ══════════════════════════════════
-       KEYFRAMES
-    ══════════════════════════════════ */
-    @keyframes fadeUp   { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
-    @keyframes hookSlide{ from { opacity:0; transform:translateX(-28px); } to { opacity:1; transform:translateX(0); } }
-    @keyframes scaleIn  { from { opacity:0; transform:scale(.92); } to { opacity:1; transform:scale(1); } }
-    @keyframes expandW  { from { width:0; } to { width:100%; } }
-    @keyframes crashIn  { from { opacity:0; transform:scale(1.14) translateY(-18px); } to { opacity:1; transform:scale(1) translateY(0); } }
-    @keyframes blink    { 0%,100% { opacity:1; } 50% { opacity:.25; } }
-
-    /* ══════════════════════════════════
-       INLINE EDITOR
-    ══════════════════════════════════ */
+    /* ══ INLINE EDITOR ══ */
     #edit-mode-btn {
       position: fixed; top: 14px; right: 16px; z-index: 10000;
-      display: flex; align-items: center; gap: 7px;
-      padding: 7px 16px;
-      background: rgba(7,8,15,.9);
-      border: 1px solid rgba(255,53,32,.3);
-      color: var(--red);
+      display: flex; align-items: center; gap: 7px; padding: 7px 16px;
+      background: rgba(7,8,15,.9); border: 1px solid rgba(255,53,32,.3); color: var(--red);
       font-family: 'Rajdhani', sans-serif; font-size: 11px;
       font-weight: 600; letter-spacing: .25em; text-transform: uppercase;
       cursor: pointer; user-select: none;
       transition: background .25s, border-color .25s, box-shadow .25s;
       backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     }
-    #edit-mode-btn:hover  { background: rgba(255,53,32,.08); border-color: var(--red); }
-    #edit-mode-btn.is-on  { background: rgba(255,53,32,.12); border-color: var(--red); color: #fff; box-shadow: 0 0 20px rgba(255,53,32,.18); }
+    #edit-mode-btn:hover { background: rgba(255,53,32,.08); border-color: var(--red); }
+    #edit-mode-btn.is-on { background: rgba(255,53,32,.12); border-color: var(--red); color: #fff; box-shadow: 0 0 20px rgba(255,53,32,.18); }
     .edit-dot { width:6px; height:6px; border-radius:50%; background:rgba(255,53,32,.35); flex-shrink:0; transition: background .25s, box-shadow .25s; }
     #edit-mode-btn.is-on .edit-dot { background:var(--red); box-shadow:0 0 7px var(--red); animation:blink 1.5s ease-in-out infinite; }
     body.edit-on .et { outline: 1px dashed rgba(255,53,32,.2); cursor: text; }
@@ -453,21 +414,19 @@
     }
     #save-toast.show { opacity:1; transform:translateY(0); }
 
-    /* ══════════════════════════════════
-       MOBILE
-    ══════════════════════════════════ */
+    /* ══ MOBILE ══ */
     @media (max-width: 768px) {
       .hero-inner { flex-direction: column; gap: 2rem; }
       .hero-right { width: 100%; }
-      .nums-split { grid-template-columns: 1fr; }
+      .ev-body { grid-template-columns: 1fr; }
       .sk-grid { grid-template-columns: repeat(2,1fr); }
       .nv-stats { grid-template-columns: 1fr 1fr; }
       .cta-contacts { flex-direction: column; align-items: center; }
-      .compare-pair { grid-template-columns: 1fr; }
     }
     @media (max-width: 480px) {
       .sk-grid { grid-template-columns: 1fr; }
       .nv-stats { grid-template-columns: 1fr; }
+      .ev-photos { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -546,125 +505,132 @@
       </div>
     </section>
 
-    <!-- ════ 4. NUMBERS ════ -->
+    <!-- ════ 4. 바베큐타운 → 스테츠 ════ -->
     <section>
-      <div class="slide-inner nums-slide">
-        <div class="nums-header">
-          <span class="sec-tag">Proven Numbers</span>
-          <h2 class="sec-title">숫자로 증명합니다</h2>
+      <div class="slide-inner evidence-slide">
+        <div class="ev-header">
+          <span class="sec-tag">Case Study 01 · BBQ Town → Statz</span>
+          <h2 class="sec-title">사옥을 짓게 한 마케팅</h2>
         </div>
-        <div class="nums-split">
-
-          <div class="co-card" data-delay="0">
-            <div class="co-name">바베큐타운</div>
-            <div class="co-period">광고 전략 · 스마트스토어 운영</div>
-            <div class="n-row">
-              <div class="n-val"><span class="counter" data-target="3000" data-suffix="%">0</span></div>
-              <div class="n-txt">SA 광고 ROAS 달성</div>
+        <div class="ev-body">
+          <div class="ev-stats">
+            <div class="ev-company">바베큐타운</div>
+            <div class="ev-period">광고 전략 · 스마트스토어 운영</div>
+            <div class="ev-row">
+              <div class="ev-val">3,000%</div>
+              <div class="ev-txt">SA 광고 ROAS 달성</div>
             </div>
-            <div class="n-row">
-              <div class="n-val"><span class="counter" data-target="10" data-suffix="배">0</span></div>
-              <div class="n-txt">매출 성장<br><span class="n-badge">사옥 건립 기여</span></div>
+            <div class="ev-row">
+              <div class="ev-val">10배</div>
+              <div class="ev-txt">매출 성장<br><span class="ev-badge">사옥 건립 기여</span></div>
             </div>
-            <div class="n-row">
-              <div class="n-val" style="font-size:clamp(1.1rem,2vw,1.6rem);color:var(--gold);">프리미엄</div>
-              <div class="n-txt">네이버 스마트스토어 최고 등급 달성</div>
+            <div class="ev-row">
+              <div class="ev-val" style="font-size:clamp(.95rem,1.8vw,1.35rem);">프리미엄</div>
+              <div class="ev-txt">네이버 스마트스토어 최고 등급</div>
             </div>
-            <div class="n-row">
-              <div class="n-val"><span class="counter" data-target="6" data-suffix="억">0</span></div>
-              <div class="n-txt">3개월 매출<br><span class="n-badge">2,000건 판매</span></div>
+            <div class="ev-row">
+              <div class="ev-val">6억</div>
+              <div class="ev-txt">3개월 매출<br><span class="ev-badge">2,000건 판매</span></div>
             </div>
           </div>
-
-          <div class="co-card" data-delay="220">
-            <div class="co-name">비욘드릴렉스</div>
-            <div class="co-period">퍼포먼스 마케팅 · 이커머스 전략</div>
-            <div class="n-row">
-              <div class="n-val"><span class="counter" data-target="3000" data-suffix="%">0</span></div>
-              <div class="n-txt">SA ROAS 달성</div>
+          <div class="ev-photos">
+            <div class="ev-photo-col">
+              <div class="ev-photo-label is-before">BEFORE · 입사 전</div>
+              <img class="ev-photo-img" src="images/바베큐타운.png" alt="바베큐타운 입사 전">
             </div>
-            <div class="n-row">
-              <div class="n-val"><span class="counter" data-target="10000" data-suffix="%">0</span></div>
-              <div class="n-txt">GFA ROAS 달성</div>
-            </div>
-            <div class="n-row">
-              <div class="n-val"><span class="counter" data-target="4" data-suffix="배">0</span></div>
-              <div class="n-txt">매출 성장<br><span class="n-badge">5개월 만에 프리미엄</span></div>
-            </div>
-            <div class="n-row">
-              <div class="n-val"><span class="counter" data-target="1" data-suffix="개월">0</span></div>
-              <div class="n-txt">브랜드스토어 입점 완료</div>
+            <div class="ev-photo-col">
+              <div class="ev-photo-label is-after">AFTER · 사옥 건립</div>
+              <img class="ev-photo-img" src="images/스테츠.png" alt="스테츠 사옥">
             </div>
           </div>
-
         </div>
+        <div class="ev-caption">제가 기여한 회사는 <span class="c-gold">사옥을 짓습니다</span></div>
       </div>
     </section>
 
-    <!-- ════ 5. 전 vs 후 ════ -->
+    <!-- ════ 5. 비욘드릴렉스 ════ -->
     <section>
-      <div class="slide-inner compare-slide">
-        <div class="compare-header">
-          <span class="sec-tag">Before · After · Real Estate</span>
-          <h2 class="sec-title">전 vs 후</h2>
+      <div class="slide-inner evidence-slide">
+        <div class="ev-header">
+          <span class="sec-tag">Case Study 02 · Beyond Relax</span>
+          <h2 class="sec-title">광고 성과로 증명합니다</h2>
         </div>
-        <div class="compare-pair">
-          <div class="compare-col">
-            <div class="compare-badge is-before">BEFORE · 입사 전</div>
-            <img class="compare-img" src="images/바베큐타운.png" alt="바베큐타운 입사 전">
+        <div class="ev-body">
+          <div class="ev-stats">
+            <div class="ev-company">비욘드릴렉스</div>
+            <div class="ev-period">퍼포먼스 마케팅 · 이커머스 전략</div>
+            <div class="ev-row">
+              <div class="ev-val">3,000%</div>
+              <div class="ev-txt">SA 검색광고 ROAS 달성</div>
+            </div>
+            <div class="ev-row">
+              <div class="ev-val">10,000%</div>
+              <div class="ev-txt">GFA 디스플레이 ROAS 달성</div>
+            </div>
+            <div class="ev-row">
+              <div class="ev-val">4배</div>
+              <div class="ev-txt">매출 성장<br><span class="ev-badge">5개월 만에 프리미엄</span></div>
+            </div>
+            <div class="ev-row">
+              <div class="ev-val">1개월</div>
+              <div class="ev-txt">브랜드스토어 입점 완료</div>
+            </div>
           </div>
-          <div class="compare-col">
-            <div class="compare-badge is-after">AFTER · 사옥 건립</div>
-            <img class="compare-img" src="images/스테츠.png" alt="스테츠 사옥">
+          <div class="ev-photos">
+            <div class="ev-photo-col">
+              <div class="ev-photo-label is-before">2024년 11월 · 입사 전</div>
+              <img class="ev-photo-img" src="images/SA_24년 11월.png" alt="SA 광고 성과 2024년 11월">
+            </div>
+            <div class="ev-photo-col">
+              <div class="ev-photo-label is-after">2025년 11월 · 입사 후</div>
+              <img class="ev-photo-img" src="images/SA_25년 11월.png" alt="SA 광고 성과 2025년 11월">
+            </div>
           </div>
         </div>
-        <div class="compare-caption">제가 기여한 회사는 <span class="c-gold">사옥을 짓습니다</span></div>
+        <div class="ev-caption">입사 전 ROAS <span class="c-red">41%</span> → 입사 후 ROAS <span class="c-gold">3,986%</span></div>
       </div>
     </section>
 
-    <!-- ════ 6. 광고 성과 증거 ════ -->
+    <!-- ════ 6. 매출 증거 ════ -->
     <section>
-      <div class="slide-inner compare-slide">
-        <div class="compare-header">
-          <span class="sec-tag">SA Performance · Proof of Results</span>
-          <h2 class="sec-title">광고 성과 증거</h2>
-        </div>
-        <div class="compare-pair">
-          <div class="compare-col">
-            <div class="compare-badge is-before">2024년 11월 · 입사 전</div>
-            <img class="compare-img" src="images/SA_24년 11월.png" alt="SA 광고 성과 2024년 11월">
-          </div>
-          <div class="compare-col">
-            <div class="compare-badge is-after">2025년 11월 · 입사 후</div>
-            <img class="compare-img" src="images/SA_25년 11월.png" alt="SA 광고 성과 2025년 11월">
-          </div>
-        </div>
-        <div class="compare-caption">입사 전 ROAS <span class="c-red">41%</span> → 입사 후 ROAS <span class="c-gold">3,986%</span></div>
-      </div>
-    </section>
-
-    <!-- ════ 7. 매출 증거 ════ -->
-    <section>
-      <div class="slide-inner compare-slide">
-        <div class="compare-header">
+      <div class="slide-inner evidence-slide">
+        <div class="ev-header">
           <span class="sec-tag">Revenue · Verified Sales Record</span>
           <h2 class="sec-title">매출 증거</h2>
         </div>
-        <div class="compare-pair">
-          <div class="compare-col">
-            <div class="compare-badge is-before">2024년도 매출</div>
-            <img class="compare-img" src="images/매출전표_24년도.png" alt="매출전표 2024년도">
+        <div class="ev-body">
+          <div class="ev-stats">
+            <div class="ev-company">매출 성장 기록</div>
+            <div class="ev-period">2024 → 2025 · 비욘드릴렉스</div>
+            <div class="ev-row">
+              <div class="ev-val">4.6억</div>
+              <div class="ev-txt">2024년 연간 매출</div>
+            </div>
+            <div class="ev-row">
+              <div class="ev-val">16.6억</div>
+              <div class="ev-txt">2025년 연간 매출<br><span class="ev-badge">전년 대비 +260%</span></div>
+            </div>
+            <div class="ev-row">
+              <div class="ev-val">4배</div>
+              <div class="ev-txt">1년 만에 달성한 매출 성장</div>
+            </div>
           </div>
-          <div class="compare-col">
-            <div class="compare-badge is-after">2025년도 매출</div>
-            <img class="compare-img" src="images/매출전표_25년도.png" alt="매출전표 2025년도">
+          <div class="ev-photos">
+            <div class="ev-photo-col">
+              <div class="ev-photo-label is-before">2024년도 매출</div>
+              <img class="ev-photo-img" src="images/매출전표_24년도.png" alt="매출전표 2024년도">
+            </div>
+            <div class="ev-photo-col">
+              <div class="ev-photo-label is-after">2025년도 매출</div>
+              <img class="ev-photo-img" src="images/매출전표_25년도.png" alt="매출전표 2025년도">
+            </div>
           </div>
         </div>
-        <div class="compare-caption">2024년 <span class="c-red">4.6억</span> → 2025년 <span class="c-gold">16.6억</span> <span style="color:var(--dim)">(매출 4배 성장)</span></div>
+        <div class="ev-caption">2024년 <span class="c-red">4.6억</span> → 2025년 <span class="c-gold">16.6억</span> <span style="color:var(--dim)">(매출 4배 성장)</span></div>
       </div>
     </section>
 
-    <!-- ════ 8. NAVER CERTIFIED ════ -->
+    <!-- ════ 7. NAVER CERTIFIED ════ -->
     <section>
       <div class="slide-inner naver-slide">
         <div class="naver-wrap">
@@ -692,10 +658,10 @@
       </div>
     </section>
 
-    <!-- ════ 6. SKILLS ════ -->
+    <!-- ════ 8. SKILLS ════ -->
     <section>
       <div class="slide-inner skills-slide">
-        <div class="nums-header" style="margin-bottom:1.5rem;">
+        <div style="text-align:center;margin-bottom:1.5rem;width:100%;">
           <span class="sec-tag">What I Can Do</span>
           <h2 class="sec-title">할 수 있는 것</h2>
         </div>
@@ -710,7 +676,7 @@
       </div>
     </section>
 
-    <!-- ════ 7. CTA ════ -->
+    <!-- ════ 9. CTA ════ -->
     <section>
       <div class="cta-wrap">
         <div class="cta-radial"></div>
@@ -771,39 +737,18 @@ function runHook() {
 function runImpact() {
   const hl  = document.getElementById('impact-hl');
   const sub = document.getElementById('impact-sub');
-  if (hl) {
-    hl.style.animation = 'none'; void hl.offsetWidth;
-    hl.style.animation = 'crashIn .95s cubic-bezier(.16,1,.3,1) forwards .45s';
-  }
-  if (sub) {
-    sub.style.animation = 'none'; void sub.offsetWidth;
-    sub.style.animation = 'fadeUp .6s ease forwards 1.4s';
-  }
+  if (hl)  { hl.style.animation  = 'none'; void hl.offsetWidth;  hl.style.animation  = 'crashIn .95s cubic-bezier(.16,1,.3,1) forwards .45s'; }
+  if (sub) { sub.style.animation = 'none'; void sub.offsetWidth; sub.style.animation = 'fadeUp .6s ease forwards 1.4s'; }
 }
 
-/* ── COUNTERS ── */
-function runCounters(section) {
-  section.querySelectorAll('.counter').forEach(el => {
-    const target = +el.dataset.target;
-    const suffix = el.dataset.suffix || '';
-    const dur = Math.min(2200, target * 0.5 + 600);
-    const t0 = performance.now();
-    (function tick(now) {
-      const p = Math.min((now - t0) / dur, 1);
-      const v = Math.round(target * (1 - Math.pow(1 - p, 3)));
-      el.textContent = (v >= 1000 ? v.toLocaleString() : v) + suffix;
-      if (p < 1) requestAnimationFrame(tick);
-    })(t0);
-  });
-}
-
-/* ── NUMBERS SLIDE ── */
-function runNumbers(section) {
-  section.querySelectorAll('.co-card').forEach(c => {
-    c.classList.remove('go');
-    setTimeout(() => c.classList.add('go'), +c.dataset.delay || 0);
-  });
-  setTimeout(() => runCounters(section), 480);
+/* ── EVIDENCE ── */
+function runEvidence(section) {
+  const stats  = section.querySelector('.ev-stats');
+  const photos = section.querySelector('.ev-photos');
+  const cap    = section.querySelector('.ev-caption');
+  if (stats)  { stats.style.animation  = 'none'; void stats.offsetWidth;  stats.style.animation  = 'evidenceLeft .6s cubic-bezier(.16,1,.3,1) forwards .3s'; }
+  if (photos) { photos.style.animation = 'none'; void photos.offsetWidth; photos.style.animation = 'evidenceRight .65s cubic-bezier(.16,1,.3,1) forwards .48s'; }
+  if (cap)    { cap.style.animation    = 'none'; void cap.offsetWidth;    cap.style.animation    = 'fadeUp .5s ease forwards .7s'; }
 }
 
 /* ── SKILLS ── */
@@ -836,14 +781,15 @@ Reveal.initialize({
 });
 
 const handlers = [
-  () => setTimeout(runHook, 250),
-  () => setTimeout(runImpact, 100),
-  null,
-  s  => setTimeout(() => runNumbers(s), 280),
-  null, null, null,
-  null,
-  s  => setTimeout(() => runSkills(s), 200),
-  s  => setTimeout(() => runCta(s), 150)
+  () => setTimeout(runHook, 250),             // 0: HOOK
+  () => setTimeout(runImpact, 100),           // 1: IMPACT
+  null,                                        // 2: HERO
+  s => setTimeout(() => runEvidence(s), 100), // 3: 바베큐타운/스테츠
+  s => setTimeout(() => runEvidence(s), 100), // 4: 비욘드릴렉스
+  s => setTimeout(() => runEvidence(s), 100), // 5: 매출 증거
+  null,                                        // 6: NAVER CERTIFIED
+  s => setTimeout(() => runSkills(s), 200),   // 7: SKILLS
+  s => setTimeout(() => runCta(s), 150)       // 8: CTA
 ];
 
 Reveal.on('slidechanged', e => { const fn = handlers[e.indexh]; if (fn) fn(e.currentSlide); });
@@ -858,7 +804,7 @@ Reveal.on('ready', () => setTimeout(runHook, 450));
     '.hero-tag', '.hero-name', '.hero-role', '.hero-desc',
     '.hero-yrs-big', '.hero-yrs-lbl', '.hero-yrs-sub',
     '.sec-tag', '.sec-title',
-    '.co-name', '.co-period', '.n-txt',
+    '.ev-company', '.ev-period', '.ev-txt',
     '.nb-grade', '.nb-label', '.nb-sub',
     '.nv-val', '.nv-lbl', '.naver-quote',
     '.sk-name', '.sk-desc',
