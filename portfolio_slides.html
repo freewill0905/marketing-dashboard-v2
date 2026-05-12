@@ -1,893 +1,533 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>양시현 — 디지털 마케터</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.0/dist/reset.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.0/dist/reveal.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg:    #07080f;
-      --bg2:   #0d0e1a;
-      --red:   #FF3520;
-      --redg:  rgba(255,53,32,0.18);
-      --cyan:  #00D4F5;
-      --gold:  #FFB800;
-      --white: #F0F4FF;
-      --dim:   rgba(240,244,255,0.58);
-      --faint: rgba(240,244,255,0.16);
-      --card:  rgba(255,255,255,0.038);
-      --line:  rgba(255,255,255,0.07);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>양시현 포트폴리오 | 10년차 디지털 마케터</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+:root{
+  --bg:    #08080f;
+  --bg2:   #0f0f1c;
+  --bg3:   #141428;
+  --gold:  #c8972a;
+  --gl:    #e4b84d;
+  --gb:    #f5cc6b;
+  --gg:    rgba(200,151,42,.26);
+  --teal:  #3a8fa8;
+  --tl:    #5db3cf;
+  --t1:    #f0ece4;
+  --t2:    #9a9080;
+  --t3:    #504c44;
+  --bd:    rgba(200,151,42,.17);
+  --bdl:   rgba(240,236,228,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--t1);font-family:'Pretendard Variable',Pretendard,-apple-system,sans-serif}
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    .reveal-viewport { background: var(--bg); }
-    .reveal { font-family: 'Pretendard', sans-serif; color: var(--white); font-size: 16px; }
-    .reveal .slides section { padding: 0; height: 100%; top: 0 !important; }
-    .reveal .progress { height: 3px; color: var(--red); background: rgba(255,53,32,0.1); }
-    .reveal .slide-number { font-family: 'Rajdhani', sans-serif; font-size: 11px; letter-spacing: .2em; background: none; color: var(--faint); }
-    .reveal .controls button { color: var(--red); }
+/* grain */
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.022;pointer-events:none;z-index:9000}
 
-    .slide-inner {
-      width: 100%; height: 100%;
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
-      padding: 2.4rem 5%; position: relative; overflow: hidden;
-    }
+/* progress line */
+#pbar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gb));z-index:8000;transition:width .5s ease}
 
-    .sec-tag {
-      font-family: 'Rajdhani', sans-serif; font-size: 10px;
-      letter-spacing: .45em; color: var(--red); text-transform: uppercase;
-      display: block; margin-bottom: .28rem;
-    }
-    .sec-title {
-      font-family: 'Noto Serif KR', serif;
-      font-size: clamp(1.25rem,2.4vw,1.95rem); font-weight: 700; color: var(--white);
-    }
+/* ─── SLIDE SYSTEM ─── */
+.sw{position:fixed;inset:0;overflow:hidden}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:60px 96px;
+  opacity:0;pointer-events:none;transform:translateY(42px);
+  transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1);
+  z-index:0;overflow:hidden
+}
+.slide.active{opacity:1;pointer-events:all;transform:translateY(0);z-index:2}
+.slide.exit-u{opacity:0;transform:translateY(-42px);z-index:1}
+.slide.exit-d{opacity:0;transform:translateY(42px);z-index:1}
 
-    /* ══ SLIDE 1 · HOOK ══ */
-    .hook-wrap {
-      position: absolute; inset: 0; background: var(--bg);
-      display: flex; flex-direction: column;
-      justify-content: center; padding: 0 8%; overflow: hidden;
-    }
-    .hook-bg-char {
-      position: absolute; right: -1%; top: 50%;
-      transform: translateY(-50%);
-      font-family: 'Noto Serif KR', serif; font-weight: 900;
-      font-size: 38vw; color: rgba(255,53,32,0.028);
-      line-height: 1; pointer-events: none; user-select: none;
-    }
-    .hook-line {
-      display: flex; align-items: flex-start; gap: 1.1rem;
-      margin-bottom: 2rem; opacity: 0; transform: translateX(-28px);
-    }
-    .hook-line.show { animation: hookSlide .7s cubic-bezier(.22,1,.36,1) forwards; }
-    .hook-num {
-      font-family: 'Noto Serif KR', serif; font-weight: 900;
-      font-size: clamp(1.4rem,2.8vw,2.2rem);
-      color: var(--red); flex-shrink: 0; line-height: 1.3;
-    }
-    .hook-q {
-      font-family: 'Noto Serif KR', serif;
-      font-size: clamp(1.15rem,2.6vw,2.1rem);
-      font-weight: 700; color: var(--white); line-height: 1.45;
-      border-left: 3px solid var(--red); padding-left: 1rem;
-    }
-    .hook-cta {
-      font-family: 'Noto Serif KR', serif; font-weight: 900;
-      font-size: clamp(1.6rem,3.8vw,3.2rem);
-      letter-spacing: .02em; color: var(--red);
-      margin-top: .5rem; opacity: 0; transform: translateX(-28px);
-    }
-    .hook-cta.show { animation: hookSlide .65s cubic-bezier(.22,1,.36,1) forwards; }
+/* ─── NAVIGATION ─── */
+.dots{position:fixed;right:34px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:7000}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--t3);cursor:pointer;transition:all .3s ease}
+.dot.on{background:var(--gold);box-shadow:0 0 10px var(--gg);transform:scale(1.4)}
+.dot:hover:not(.on){background:var(--t2)}
 
-    /* ══ SLIDE 2 · IMPACT ══ */
-    .impact-wrap {
-      position: absolute; inset: 0; background: var(--bg);
-      display: flex; align-items: center; justify-content: center; overflow: hidden;
-    }
-    .impact-radial {
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 65% 60% at 50% 50%, rgba(255,53,32,.065) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .impact-content { position: relative; z-index: 2; text-align: center; padding: 0 7%; }
-    .impact-eyebrow {
-      font-family: 'Rajdhani', sans-serif; font-size: clamp(.65rem,1.3vw,.9rem);
-      letter-spacing: .45em; color: var(--red); text-transform: uppercase;
-      display: block; margin-bottom: 1.6rem;
-      opacity: 0; animation: fadeUp .55s ease forwards .3s;
-    }
-    .impact-hl {
-      font-family: 'Noto Serif KR', serif;
-      font-size: clamp(2rem,5.5vw,5rem);
-      font-weight: 900; line-height: 1.22; color: var(--white); opacity: 0;
-    }
-    .impact-hl .red { color: var(--red); }
-    .impact-sub { font-size: clamp(.82rem,1.6vw,1.1rem); color: var(--dim); margin-top: 1.8rem; opacity: 0; }
+.arrows{position:fixed;bottom:34px;left:50%;transform:translateX(-50%);display:flex;gap:12px;z-index:7000}
+.abtn{width:44px;height:44px;border-radius:50%;border:1px solid var(--bd);background:rgba(14,14,28,.85);color:var(--t2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .3s ease;backdrop-filter:blur(12px)}
+.abtn:hover{border-color:var(--gold);color:var(--gold);box-shadow:0 0 16px var(--gg)}
 
-    /* ══ SLIDE 3 · HERO ══ */
-    .hero-wrap {
-      position: absolute; inset: 0; background: var(--bg);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .hero-inner {
-      display: flex; align-items: center; gap: 5rem;
-      padding: 0 7%; width: 100%; max-width: 1160px;
-    }
-    .hero-left { flex: 1.1; }
-    .hero-right { flex: .9; }
+.ctr{position:fixed;bottom:42px;right:48px;font-size:11px;color:var(--t3);letter-spacing:.12em;z-index:7000}
+.phint{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--t3);letter-spacing:.07em;z-index:7000}
 
-    .hero-tag {
-      font-family: 'Rajdhani', sans-serif; font-size: 11px;
-      letter-spacing: .42em; color: var(--red); text-transform: uppercase;
-      display: block; margin-bottom: .9rem;
-      opacity: 0; animation: fadeUp .5s ease forwards .2s;
-    }
-    .hero-name {
-      font-family: 'Noto Serif KR', serif;
-      font-size: clamp(3.2rem,7.5vw,7rem); font-weight: 900;
-      line-height: .92; letter-spacing: -.03em; color: var(--white);
-      margin-bottom: .75rem;
-      opacity: 0; animation: fadeUp .85s cubic-bezier(.16,1,.3,1) forwards .38s;
-    }
-    .hero-role {
-      font-family: 'Noto Serif KR', serif; font-weight: 700;
-      font-size: clamp(1.1rem,2.4vw,2rem);
-      letter-spacing: .04em; color: var(--red); margin-bottom: 1.6rem;
-      opacity: 0; animation: fadeUp .5s ease forwards .68s;
-    }
-    .hero-bar {
-      width: 0; height: 2px;
-      background: linear-gradient(90deg, var(--red), var(--gold));
-      margin-bottom: 1.6rem; animation: expandW .8s ease forwards 1s;
-    }
-    .hero-desc {
-      font-size: clamp(.82rem,1.55vw,.98rem); color: var(--dim);
-      line-height: 1.95; margin-bottom: 1.6rem;
-      opacity: 0; animation: fadeUp .5s ease forwards 1.25s;
-    }
-    .hero-tags {
-      display: flex; flex-wrap: wrap; gap: .5rem;
-      opacity: 0; animation: fadeUp .5s ease forwards 1.5s;
-    }
-    .hero-tag-pill {
-      display: flex; align-items: center; gap: .45rem;
-      padding: .55rem .95rem;
-      background: var(--card); border: 1px solid var(--line);
-      font-size: 11.5px; color: var(--dim); transition: border-color .3s;
-    }
-    .hero-tag-pill:hover { border-color: rgba(255,53,32,.4); }
-    .pill-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
+/* edit hint */
+.ehint{
+  position:fixed;top:20px;left:50%;transform:translateX(-50%);
+  background:rgba(200,151,42,.11);border:1px solid var(--bd);color:var(--gl);
+  padding:7px 20px;border-radius:100px;font-size:12px;letter-spacing:.04em;
+  backdrop-filter:blur(10px);z-index:7500;pointer-events:none;
+  transition:opacity .6s ease;white-space:nowrap
+}
+[contenteditable="true"]{outline:none;border-radius:3px;box-shadow:0 0 0 1px var(--gold),0 0 12px var(--gg);padding:1px 5px;cursor:text}
 
-    .hero-yrs-box {
-      text-align: center; padding: 2.8rem 2.2rem;
-      background: var(--card); border: 1px solid rgba(255,53,32,.22);
-      margin-bottom: .7rem;
-      opacity: 0; animation: scaleIn .7s cubic-bezier(.16,1,.3,1) forwards .45s;
-    }
-    .hero-yrs-big {
-      font-family: 'Noto Serif KR', serif; font-weight: 900;
-      font-size: clamp(5rem,11vw,9rem); line-height: .88;
-      color: var(--red); display: block;
-      text-shadow: 0 0 80px rgba(255,53,32,.28);
-    }
-    .hero-yrs-lbl {
-      font-family: 'Noto Serif KR', serif;
-      font-size: clamp(.9rem,1.9vw,1.45rem); font-weight: 700;
-      color: var(--white); display: block; margin-top: .4rem;
-    }
-    .hero-yrs-sub {
-      font-family: 'Rajdhani', sans-serif; font-size: 10px;
-      letter-spacing: .25em; color: var(--faint); display: block; margin-top: .25rem;
-    }
+/* ─── SHARED ─── */
+.slbl{font-size:11px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;font-weight:400;margin-bottom:14px}
+.stit{font-family:'Noto Serif KR',serif;font-size:clamp(26px,3.4vw,48px);font-weight:700;color:var(--t1);margin-bottom:32px;position:relative}
+.stit::after{content:'';position:absolute;bottom:-11px;left:0;width:34px;height:2px;background:var(--gold)}
 
-    /* ══ SLIDES 4-6 · EVIDENCE (텍스트 + 이미지) ══ */
-    .evidence-slide { background: var(--bg); justify-content: flex-start; padding-top: 1.4rem; }
-    .ev-header { text-align: center; margin-bottom: .85rem; width: 100%; }
+/* ══════════════════════════════════
+   S1 – HERO
+══════════════════════════════════ */
+#s1{background:var(--bg)}
+.orbs{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.orb{position:absolute;border-radius:50%;filter:blur(110px);animation:flt 9s ease-in-out infinite}
+.o1{width:580px;height:580px;background:radial-gradient(circle,rgba(200,151,42,.34) 0%,transparent 70%);top:-170px;right:-70px}
+.o2{width:450px;height:450px;background:radial-gradient(circle,rgba(58,143,168,.27) 0%,transparent 70%);bottom:-130px;left:-70px;animation-delay:-4s}
+.o3{width:260px;height:260px;background:radial-gradient(circle,rgba(200,151,42,.17) 0%,transparent 70%);top:46%;left:43%;animation-delay:-6s}
+@keyframes flt{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-26px) scale(1.04)}}
 
-    .ev-body {
-      display: grid; grid-template-columns: 310px 1fr; gap: 1.3rem;
-      width: 100%; max-width: 1120px;
-    }
+.hwrap{position:relative;z-index:1;text-align:center;max-width:900px}
+.heye{font-size:11px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:26px;font-weight:400;opacity:0;animation:fu .8s .3s forwards}
+.hh1{font-family:'Noto Serif KR',serif;font-size:clamp(36px,5vw,68px);font-weight:700;line-height:1.22;color:var(--t1);margin-bottom:28px;opacity:0;animation:fu .8s .55s forwards}
+.hh1 em{font-style:normal;background:linear-gradient(130deg,var(--gl),var(--gb),var(--gl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hrul{width:50px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto 26px;opacity:0;animation:fu .8s .75s forwards}
+.hsub{font-family:'Noto Serif KR',serif;font-size:clamp(15px,1.7vw,23px);font-weight:300;color:var(--t2);letter-spacing:.06em;opacity:0;animation:fu .8s .95s forwards}
+.hsub strong{color:var(--t1);font-weight:600}
+.hscr{position:absolute;bottom:46px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;opacity:0;animation:fu .8s 1.4s forwards}
+.stxt{font-size:10px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase}
+.slin{width:1px;height:36px;background:linear-gradient(to bottom,var(--gold),transparent);animation:sp 2.2s ease-in-out infinite}
+@keyframes sp{0%,100%{opacity:1;transform:scaleY(1)}50%{opacity:.3;transform:scaleY(.6)}}
+@keyframes fu{from{opacity:0;transform:translateY(17px)}to{opacity:1;transform:translateY(0)}}
 
-    .ev-stats {
-      background: var(--card); border: 1px solid var(--line);
-      padding: 1.2rem 1.3rem; display: flex; flex-direction: column;
-      opacity: 0; transform: translateX(-18px);
-      animation: evidenceLeft .6s cubic-bezier(.16,1,.3,1) forwards .3s;
-    }
-    .ev-company {
-      font-family: 'Noto Serif KR', serif; font-weight: 900;
-      font-size: clamp(1rem,2vw,1.4rem); color: var(--white);
-      padding-bottom: .6rem; margin-bottom: .25rem;
-      border-bottom: 1px solid var(--line); position: relative;
-    }
-    .ev-company::after {
-      content: ''; position: absolute; bottom: -1px; left: 0;
-      width: 50%; height: 1px; background: var(--red);
-    }
-    .ev-period {
-      font-family: 'Rajdhani', sans-serif; font-size: 10px;
-      letter-spacing: .2em; color: var(--faint); margin-bottom: .75rem;
-    }
-    .ev-row {
-      display: flex; align-items: baseline; gap: .65rem;
-      padding: .48rem 0; border-bottom: 1px solid rgba(255,255,255,.03);
-    }
-    .ev-row:last-child { border-bottom: none; }
-    .ev-val {
-      font-family: 'Noto Serif KR', serif; font-weight: 900;
-      font-size: clamp(1.3rem,2.5vw,1.9rem); line-height: 1;
-      color: var(--gold); flex-shrink: 0; min-width: 90px;
-    }
-    .ev-txt { font-size: 11px; color: var(--dim); line-height: 1.55; }
-    .ev-badge {
-      display: inline-block; padding: .1rem .4rem;
-      background: rgba(255,184,0,.09); border: 1px solid rgba(255,184,0,.28);
-      font-size: 9px; letter-spacing: .1em; color: var(--gold); margin-top: .15rem;
-    }
+/* ══════════════════════════════════
+   S2 – METRICS
+══════════════════════════════════ */
+#s2{background:var(--bg2)}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;width:100%;max-width:840px}
+.mc{
+  background:var(--bg3);border:1px solid var(--bd);border-radius:13px;
+  padding:32px 28px;position:relative;overflow:hidden;
+  transition:border-color .3s,transform .3s
+}
+.mc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.mc:hover{border-color:var(--gl);transform:translateY(-4px);box-shadow:0 18px 52px rgba(0,0,0,.5),0 0 32px var(--gg)}
+.mica{font-size:17px;margin-bottom:12px;opacity:.75}
+.mnum{
+  font-size:clamp(36px,4.3vw,56px);font-weight:800;line-height:1;
+  background:linear-gradient(135deg,var(--gl),var(--gb));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:9px
+}
+.mlbl{font-size:13px;color:var(--t2);font-weight:400;line-height:1.5}
+.mlbl small{font-size:11px;color:var(--t3);display:block;margin-top:2px}
 
-    .ev-photos {
-      display: grid; grid-template-columns: 1fr 1fr; gap: .85rem;
-      opacity: 0; transform: translateX(18px);
-      animation: evidenceRight .65s cubic-bezier(.16,1,.3,1) forwards .48s;
-    }
-    .ev-photo-col { display: flex; flex-direction: column; gap: .4rem; }
-    .ev-photo-label {
-      font-family: 'Rajdhani', sans-serif; font-size: 10px;
-      letter-spacing: .22em; text-align: center;
-      padding: .38rem .5rem;
-      border: 1px solid var(--line); background: var(--card);
-    }
-    .ev-photo-label.is-before { color: var(--dim); }
-    .ev-photo-label.is-after { color: var(--gold); border-color: rgba(255,184,0,.3); background: rgba(255,184,0,.04); }
-    .ev-photo-img {
-      width: 100%; display: block; object-fit: contain;
-      border: 1px solid var(--line); background: rgba(255,255,255,.025);
-      max-height: 340px;
-    }
+/* ══════════════════════════════════
+   S3 – ABOUT
+══════════════════════════════════ */
+#s3{background:var(--bg)}
+.agrid{display:grid;grid-template-columns:1fr 1fr;gap:68px;width:100%;max-width:1040px;align-items:center}
+.aname{font-family:'Noto Serif KR',serif;font-size:clamp(30px,3.6vw,50px);font-weight:700;color:var(--t1);margin-bottom:5px}
+.attl{font-size:15px;color:var(--gl);font-weight:500;margin-bottom:28px;letter-spacing:.04em}
+.adesc{font-size:13px;color:var(--t2);line-height:1.88;margin-bottom:28px}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{background:rgba(200,151,42,.09);border:1px solid var(--bd);color:var(--gl);padding:6px 15px;border-radius:100px;font-size:12px;font-weight:500;transition:all .3s}
+.tag:hover{background:rgba(200,151,42,.18);border-color:var(--gold)}
 
-    .ev-caption {
-      font-family: 'Noto Serif KR', serif; font-weight: 700;
-      font-size: clamp(.82rem,1.6vw,1rem);
-      text-align: center; color: var(--white);
-      margin-top: .8rem; padding: .65rem 1.4rem;
-      background: var(--card); border-left: 3px solid var(--red);
-      width: 100%; max-width: 1120px;
-      opacity: 0; animation: fadeUp .5s ease forwards .7s;
-    }
-    .ev-caption .c-gold { color: var(--gold); }
-    .ev-caption .c-red  { color: var(--red); }
+.tl{position:relative;padding-left:20px}
+.tlh{font-size:11px;letter-spacing:.2em;color:var(--t3);text-transform:uppercase;margin-bottom:26px}
+.tl::before{content:'';position:absolute;left:5px;top:34px;bottom:14px;width:1px;background:linear-gradient(to bottom,var(--gold),rgba(200,151,42,.1))}
+.tli{position:relative;margin-bottom:28px}
+.tli::before{content:'';position:absolute;left:-18px;top:6px;width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 9px var(--gg)}
+.tlyr{font-size:11px;color:var(--gold);letter-spacing:.1em;margin-bottom:2px}
+.tlco{font-size:18px;font-weight:700;color:var(--t1);margin-bottom:2px}
+.tlro{font-size:12px;color:var(--t2)}
 
-    /* ══ SLIDE 7 · NAVER CERTIFIED ══ */
-    .naver-slide { background: var(--bg); }
-    .naver-wrap { max-width: 800px; width: 100%; text-align: center; }
-    .naver-badge {
-      background: linear-gradient(135deg, rgba(255,184,0,.07), rgba(255,184,0,.02));
-      border: 1px solid rgba(255,184,0,.32);
-      padding: 2.4rem 2.8rem; margin: 1.5rem 0;
-      position: relative; overflow: hidden;
-      opacity: 0; animation: scaleIn .75s cubic-bezier(.16,1,.3,1) forwards .55s;
-    }
-    .naver-badge::before {
-      content: '👑'; position: absolute; right: 1.4rem; top: 1.2rem;
-      font-size: 2rem; opacity: .2;
-    }
-    .nb-grade {
-      font-family: 'Noto Serif KR', serif; font-weight: 900;
-      font-size: clamp(3rem,7vw,6rem); line-height: 1; color: var(--gold);
-      display: block; text-shadow: 0 0 60px rgba(255,184,0,.28);
-    }
-    .nb-label {
-      font-family: 'Noto Serif KR', serif;
-      font-size: clamp(.88rem,1.9vw,1.25rem); font-weight: 700; color: var(--white);
-      display: block; margin-top: .5rem;
-    }
-    .nb-sub { font-size: 12px; color: var(--faint); margin-top: .35rem; }
+/* ══════════════════════════════════
+   S4, S5, S6 – EVIDENCE
+══════════════════════════════════ */
+#s4{background:var(--bg2)}
+#s5{background:var(--bg)}
+#s6{background:var(--bg2)}
 
-    .nv-stats {
-      display: grid; grid-template-columns: repeat(3,1fr); gap: .8rem; margin-bottom: 1.3rem;
-      opacity: 0; animation: fadeUp .5s ease forwards .88s;
-    }
-    .nv-stat {
-      background: var(--card); border: 1px solid var(--line);
-      padding: 1.1rem .7rem; text-align: center; transition: border-color .3s;
-    }
-    .nv-stat:hover { border-color: rgba(255,53,32,.35); }
-    .nv-val {
-      font-family: 'Noto Serif KR', serif; font-weight: 900;
-      font-size: clamp(1.4rem,2.8vw,2.1rem); line-height: 1; color: var(--cyan); display: block;
-    }
-    .nv-lbl { font-size: 10px; color: var(--faint); margin-top: .28rem; display: block; }
+.ev{width:100%;max-width:1040px}
+.evhd{margin-bottom:16px}
+.rtags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.rt{background:rgba(58,143,168,.1);border:1px solid rgba(58,143,168,.27);color:var(--tl);padding:4px 12px;border-radius:100px;font-size:11px;font-weight:500}
+.rbs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.rb{background:linear-gradient(135deg,rgba(200,151,42,.13),rgba(200,151,42,.04));border:1px solid rgba(200,151,42,.29);color:var(--gl);padding:5px 15px;border-radius:7px;font-size:13px;font-weight:700}
 
-    .naver-quote {
-      font-family: 'Noto Serif KR', serif;
-      font-size: clamp(.82rem,1.55vw,1.05rem); font-weight: 700; color: var(--dim);
-      line-height: 1.75; padding: 1.2rem 1.4rem;
-      background: var(--card); border-left: 3px solid var(--red); text-align: left;
-      opacity: 0; animation: fadeUp .5s ease forwards 1.08s;
-    }
-    .naver-quote .hl { color: var(--white); }
+.icmp{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:14px}
+.ifr{position:relative;border-radius:9px;overflow:hidden;border:1px solid var(--bd);background:var(--bg3);height:188px}
+.ifr img{width:100%;height:100%;object-fit:cover;display:block}
+.ifr.nim img{display:none}
+.iph{display:none;width:100%;height:100%;flex-direction:column;align-items:center;justify-content:center;gap:9px;background:var(--bg3)}
+.ifr.nim .iph{display:flex}
+.phi{font-size:26px;opacity:.22}
+.pht{font-size:11px;color:var(--t3);text-align:center;max-width:150px;line-height:1.5;word-break:break-all}
+.ilbl{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.76));color:var(--t1);padding:16px 13px 9px;font-size:12px;font-weight:600;letter-spacing:.03em}
 
-    /* ══ SLIDE 8 · SKILLS ══ */
-    .skills-slide { background: var(--bg); }
-    .sk-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: .85rem; width: 100%; max-width: 900px; }
-    .sk-card {
-      background: var(--card); border: 1px solid var(--line);
-      padding: 1.4rem 1.25rem;
-      opacity: 0; transform: translateY(16px);
-      transition: opacity .5s ease, transform .5s ease, border-color .3s;
-    }
-    .sk-card.go { opacity: 1; transform: translateY(0); }
-    .sk-card:hover { border-color: rgba(255,53,32,.35); }
-    .sk-icon { font-size: 1.55rem; display: block; margin-bottom: .65rem; }
-    .sk-name {
-      font-family: 'Noto Serif KR', serif;
-      font-size: .92rem; font-weight: 700; color: var(--white); margin-bottom: .35rem;
-    }
-    .sk-desc { font-size: 10.5px; color: var(--dim); line-height: 1.78; }
-    .sk-bar { margin-top: .9rem; height: 2px; background: rgba(255,255,255,.05); overflow: hidden; }
-    .sk-fill { height: 100%; background: linear-gradient(90deg, var(--red), var(--gold)); width: 0; transition: width 1.2s cubic-bezier(.16,1,.3,1); }
+.ecap{font-family:'Noto Serif KR',serif;font-size:16px;font-weight:600;color:var(--t1);margin-bottom:5px}
+.esub{font-size:12px;color:var(--t3);letter-spacing:.03em}
+.obdg{display:inline-flex;align-items:center;gap:6px;background:rgba(200,151,42,.09);border:1px solid var(--gold);color:var(--gl);padding:5px 16px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.08em;margin-top:9px}
+.bseal{width:15px;height:15px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--bg);font-size:9px;font-weight:800;flex-shrink:0}
 
-    /* ══ SLIDE 9 · CTA ══ */
-    .cta-wrap {
-      position: absolute; inset: 0; background: var(--bg);
-      display: flex; align-items: center; justify-content: center; overflow: hidden;
-    }
-    .cta-radial {
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 62% 58% at 50% 50%, rgba(255,53,32,.065) 0%, transparent 65%);
-      pointer-events: none;
-    }
-    .cta-content { position: relative; z-index: 2; text-align: center; padding: 0 6%; }
-    .cta-content > * { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
-    .cta-content.go > * { opacity: 1; transform: translateY(0); }
-    .cta-content.go > *:nth-child(1) { transition-delay: .1s; }
-    .cta-content.go > *:nth-child(2) { transition-delay: .24s; }
-    .cta-content.go > *:nth-child(3) { transition-delay: .38s; }
-    .cta-content.go > *:nth-child(4) { transition-delay: .54s; }
-    .cta-content.go > *:nth-child(5) { transition-delay: .7s; }
-    .cta-tag {
-      font-family: 'Rajdhani', sans-serif; font-size: 11px;
-      letter-spacing: .45em; color: var(--red); text-transform: uppercase;
-      display: block; margin-bottom: 1.2rem;
-    }
-    .cta-hl {
-      font-family: 'Noto Serif KR', serif;
-      font-size: clamp(1.8rem,4.5vw,3.8rem); font-weight: 900;
-      line-height: 1.22; color: var(--white); margin-bottom: .6rem;
-    }
-    .cta-sub { font-size: clamp(.82rem,1.6vw,1.05rem); color: var(--dim); margin-bottom: 2.4rem; }
-    .cta-contacts { display: flex; gap: .9rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
-    .cta-card {
-      display: flex; align-items: center; gap: .7rem;
-      padding: 1rem 1.8rem; background: var(--card);
-      border: 1px solid rgba(255,53,32,.25);
-      transition: border-color .3s, box-shadow .3s; cursor: default;
-    }
-    .cta-card:hover { border-color: var(--red); box-shadow: 0 0 24px rgba(255,53,32,.14); }
-    .cta-icon { font-size: 1.1rem; }
-    .cta-lbl { font-family: 'Rajdhani', sans-serif; font-size: 9px; letter-spacing: .25em; color: var(--faint); display: block; }
-    .cta-val { font-family: 'Rajdhani', sans-serif; font-size: clamp(.88rem,1.75vw,1.15rem); letter-spacing: .08em; color: var(--white); font-weight: 600; }
-    .cta-sig { font-family: 'Pretendard', sans-serif; font-size: 1rem; letter-spacing: .3em; color: var(--faint); }
+/* ══════════════════════════════════
+   S7 – SKILLS
+══════════════════════════════════ */
+#s7{background:var(--bg)}
+.skw{width:100%;max-width:860px}
+.skgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.ski{background:var(--bg3);border:1px solid var(--bdl);border-radius:10px;padding:19px 20px;transition:border-color .3s,transform .3s}
+.ski:hover{border-color:var(--bd);transform:translateX(3px)}
+.skhd{display:flex;align-items:center;gap:11px;margin-bottom:11px}
+.skic{width:36px;height:36px;border-radius:8px;background:rgba(200,151,42,.09);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.sknm{font-size:13px;font-weight:700;color:var(--t1);line-height:1.3}
+.sksb{font-size:11px;color:var(--t3);margin-top:2px}
+.sktr{height:3px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden}
+.skbar{height:100%;background:linear-gradient(90deg,var(--gold),var(--gb));border-radius:100px;width:0;transition:width 1.1s cubic-bezier(.16,1,.3,1)}
 
-    /* ══ KEYFRAMES ══ */
-    @keyframes fadeUp        { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
-    @keyframes hookSlide     { from { opacity:0; transform:translateX(-28px); } to { opacity:1; transform:translateX(0); } }
-    @keyframes scaleIn       { from { opacity:0; transform:scale(.92); } to { opacity:1; transform:scale(1); } }
-    @keyframes expandW       { from { width:0; } to { width:100%; } }
-    @keyframes crashIn       { from { opacity:0; transform:scale(1.14) translateY(-18px); } to { opacity:1; transform:scale(1) translateY(0); } }
-    @keyframes blink         { 0%,100% { opacity:1; } 50% { opacity:.25; } }
-    @keyframes evidenceLeft  { from { opacity:0; transform:translateX(-18px); } to { opacity:1; transform:translateX(0); } }
-    @keyframes evidenceRight { from { opacity:0; transform:translateX(18px); }  to { opacity:1; transform:translateX(0); } }
+/* ══════════════════════════════════
+   S8 – CLOSING
+══════════════════════════════════ */
+#s8{background:var(--bg)}
+.cw{position:relative;z-index:1;text-align:center;max-width:840px;width:100%}
+.ch{font-family:'Noto Serif KR',serif;font-size:clamp(24px,3.6vw,48px);font-weight:700;color:var(--t1);line-height:1.3;margin-bottom:18px}
+.ch em{font-style:normal;color:var(--gl)}
+.csum{font-size:13px;color:var(--t2);line-height:1.9;margin-bottom:32px;max-width:620px;margin-left:auto;margin-right:auto}
+.astrip{display:flex;border:1px solid var(--bd);border-radius:9px;overflow:hidden;margin-bottom:32px}
+.ai{flex:1;padding:16px 10px;text-align:center;border-right:1px solid var(--bd);background:var(--bg3)}
+.ai:last-child{border-right:none}
+.an{font-size:19px;font-weight:800;color:var(--gl);line-height:1;margin-bottom:4px}
+.al{font-size:11px;color:var(--t3)}
+.cbox{background:var(--bg3);border:1px solid var(--bd);border-radius:13px;padding:28px 38px;max-width:420px;margin:0 auto}
+.cbtl{font-size:11px;letter-spacing:.2em;color:var(--t3);text-transform:uppercase;margin-bottom:16px}
+.crow{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.crow:last-of-type{margin-bottom:0}
+.cic{width:32px;height:32px;background:rgba(200,151,42,.09);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.ctxt{font-size:14px;color:var(--t1);font-weight:500}
+.chnt{font-size:10px;color:var(--t3);margin-top:14px;letter-spacing:.04em}
 
-    /* ══ INLINE EDITOR ══ */
-    #edit-mode-btn {
-      position: fixed; top: 14px; right: 16px; z-index: 10000;
-      display: flex; align-items: center; gap: 7px; padding: 7px 16px;
-      background: rgba(7,8,15,.9); border: 1px solid rgba(255,53,32,.3); color: var(--red);
-      font-family: 'Rajdhani', sans-serif; font-size: 11px;
-      font-weight: 600; letter-spacing: .25em; text-transform: uppercase;
-      cursor: pointer; user-select: none;
-      transition: background .25s, border-color .25s, box-shadow .25s;
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-    }
-    #edit-mode-btn:hover { background: rgba(255,53,32,.08); border-color: var(--red); }
-    #edit-mode-btn.is-on { background: rgba(255,53,32,.12); border-color: var(--red); color: #fff; box-shadow: 0 0 20px rgba(255,53,32,.18); }
-    .edit-dot { width:6px; height:6px; border-radius:50%; background:rgba(255,53,32,.35); flex-shrink:0; transition: background .25s, box-shadow .25s; }
-    #edit-mode-btn.is-on .edit-dot { background:var(--red); box-shadow:0 0 7px var(--red); animation:blink 1.5s ease-in-out infinite; }
-    body.edit-on .et { outline: 1px dashed rgba(255,53,32,.2); cursor: text; }
-    body.edit-on .et:hover { outline: 1px dashed rgba(255,53,32,.6); }
-    body.edit-on .et[contenteditable="true"] { outline: 1px solid var(--red) !important; }
-    #save-toast {
-      position: fixed; bottom: 22px; right: 18px; z-index: 10000;
-      padding: 7px 16px; background: rgba(7,8,15,.92);
-      border: 1px solid rgba(255,53,32,.35); color: var(--red);
-      font-family: 'Rajdhani', sans-serif; font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
-      opacity: 0; transform: translateY(6px);
-      transition: opacity .22s, transform .22s; pointer-events: none;
-    }
-    #save-toast.show { opacity:1; transform:translateY(0); }
+/* ─── PRINT ─── */
+@media print{
+  body{overflow:visible;background:#fff;color:#111}
+  .sw{position:static;overflow:visible}
+  .slide{position:relative!important;opacity:1!important;transform:none!important;pointer-events:all!important;page-break-after:always;break-after:page;min-height:100vh;background:#fff!important;color:#111!important;animation:none!important}
+  .dots,.arrows,.ctr,.phint,.ehint,#pbar{display:none!important}
+  .orbs{display:none}
+  .hh1,.hsub,.heye{opacity:1!important;transform:none!important;animation:none!important}
+  .mnum{-webkit-text-fill-color:#a06a00!important}
+  *{animation:none!important;transition:none!important}
+  .skbar[style]{width:attr(data-lv %)!important}
+}
 
-    /* ══ MOBILE ══ */
-    @media (max-width: 768px) {
-      .hero-inner { flex-direction: column; gap: 2rem; }
-      .hero-right { width: 100%; }
-      .ev-body { grid-template-columns: 1fr; }
-      .sk-grid { grid-template-columns: repeat(2,1fr); }
-      .nv-stats { grid-template-columns: 1fr 1fr; }
-      .cta-contacts { flex-direction: column; align-items: center; }
-    }
-    @media (max-width: 480px) {
-      .sk-grid { grid-template-columns: 1fr; }
-      .nv-stats { grid-template-columns: 1fr; }
-      .ev-photos { grid-template-columns: 1fr; }
-    }
-  </style>
+@media(max-width:1366px){
+  .slide{padding:48px 68px}
+  .agrid{gap:40px}
+  .mgrid{gap:13px}
+  .ifr{height:165px}
+  .mnum{font-size:42px}
+}
+</style>
 </head>
 <body>
 
-<div class="reveal">
-  <div class="slides">
+<div id="pbar" style="width:12.5%"></div>
+<div class="ehint" id="eh">✏️ 텍스트를 더블클릭하면 직접 편집할 수 있습니다</div>
 
-    <!-- ════ 1. HOOK ════ -->
-    <section>
-      <div class="hook-wrap">
-        <div class="hook-bg-char">?</div>
-        <div class="hook-line" id="hq1">
-          <span class="hook-num">01</span>
-          <span class="hook-q">스마트스토어 제대로 운영하고 싶다고요?</span>
-        </div>
-        <div class="hook-line" id="hq2">
-          <span class="hook-num">02</span>
-          <span class="hook-q">광고를 해보고 싶은데 대행사는 높은 비용만 요구한다고요?</span>
-        </div>
-        <div class="hook-line" id="hq3">
-          <span class="hook-num">03</span>
-          <span class="hook-q">대행사를 쓰고 있는데 잘하고 있는지 모르겠다고요?</span>
-        </div>
-        <div class="hook-cta" id="hook-cta">그렇다면, 저를 만나보세요</div>
-      </div>
-    </section>
+<nav class="dots" id="dts"></nav>
+<div class="arrows">
+  <button class="abtn" onclick="go(-1)">←</button>
+  <button class="abtn" onclick="go(1)">→</button>
+</div>
+<div class="ctr" id="ct">01 / 08</div>
+<div class="phint">Ctrl+P · Cmd+P → PDF 저장</div>
 
-    <!-- ════ 2. IMPACT ════ -->
-    <section>
-      <div class="impact-wrap">
-        <div class="impact-radial"></div>
-        <div class="impact-content">
-          <span class="impact-eyebrow">Real Results · Proven Track Record</span>
-          <h2 class="impact-hl" id="impact-hl">
-            제가 입사한 회사는<br>
-            <span class="red">사옥을 짓고,</span><br>
-            매출은 <span class="red">10배</span>가 됩니다
-          </h2>
-          <p class="impact-sub" id="impact-sub">두 회사에서 반복 증명한 숫자, 운이 아닌 전략입니다</p>
-        </div>
-      </div>
-    </section>
+<div class="sw">
 
-    <!-- ════ 3. HERO ════ -->
-    <section>
-      <div class="hero-wrap">
-        <div class="hero-inner">
-          <div class="hero-left">
-            <span class="hero-tag">Digital Marketer · 10 Years</span>
-            <div class="hero-name">양시현</div>
-            <div class="hero-role">10년차 디지털 마케터</div>
-            <div class="hero-bar"></div>
-            <p class="hero-desc">
-              네이버 SA · GFA, Meta 광고, 스마트스토어 운영 전문가.<br>
-              두 회사에서 매출 10배 성장과 네이버 프리미엄 등급을<br>
-              직접 만들어낸 실전 마케터입니다.
-            </p>
-            <div class="hero-tags">
-              <div class="hero-tag-pill"><span class="pill-dot"></span>네이버 SA 검색광고</div>
-              <div class="hero-tag-pill"><span class="pill-dot"></span>네이버 GFA 광고</div>
-              <div class="hero-tag-pill"><span class="pill-dot"></span>Meta 광고</div>
-              <div class="hero-tag-pill"><span class="pill-dot"></span>스마트스토어 운영</div>
-              <div class="hero-tag-pill"><span class="pill-dot"></span>상세페이지 기획</div>
-              <div class="hero-tag-pill"><span class="pill-dot"></span>SEO 최적화</div>
-            </div>
-          </div>
-          <div class="hero-right">
-            <div class="hero-yrs-box">
-              <span class="hero-yrs-big">10</span>
-              <span class="hero-yrs-lbl">년차 마케터</span>
-              <span class="hero-yrs-sub">2015 – PRESENT</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ════ 4. 바베큐타운 → 스테츠 ════ -->
-    <section>
-      <div class="slide-inner evidence-slide">
-        <div class="ev-header">
-          <span class="sec-tag">Case Study 01 · BBQ Town → Statz</span>
-          <h2 class="sec-title">사옥을 짓게 한 마케팅</h2>
-        </div>
-        <div class="ev-body">
-          <div class="ev-stats">
-            <div class="ev-company">바베큐타운</div>
-            <div class="ev-period">광고 전략 · 스마트스토어 운영</div>
-            <div class="ev-row">
-              <div class="ev-val">3,000%</div>
-              <div class="ev-txt">SA 광고 ROAS 달성</div>
-            </div>
-            <div class="ev-row">
-              <div class="ev-val">10배</div>
-              <div class="ev-txt">매출 성장<br><span class="ev-badge">사옥 건립 기여</span></div>
-            </div>
-            <div class="ev-row">
-              <div class="ev-val" style="font-size:clamp(.95rem,1.8vw,1.35rem);">프리미엄</div>
-              <div class="ev-txt">네이버 스마트스토어 최고 등급</div>
-            </div>
-            <div class="ev-row">
-              <div class="ev-val">6억</div>
-              <div class="ev-txt">3개월 매출<br><span class="ev-badge">2,000건 판매</span></div>
-            </div>
-          </div>
-          <div class="ev-photos">
-            <div class="ev-photo-col">
-              <div class="ev-photo-label is-before">BEFORE · 입사 전</div>
-              <img class="ev-photo-img" src="images/바베큐타운.png" alt="바베큐타운 입사 전">
-            </div>
-            <div class="ev-photo-col">
-              <div class="ev-photo-label is-after">AFTER · 사옥 건립</div>
-              <img class="ev-photo-img" src="images/스테츠.png" alt="스테츠 사옥">
-            </div>
-          </div>
-        </div>
-        <div class="ev-caption">제가 기여한 회사는 <span class="c-gold">사옥을 짓습니다</span></div>
-      </div>
-    </section>
-
-    <!-- ════ 5. 비욘드릴렉스 ════ -->
-    <section>
-      <div class="slide-inner evidence-slide">
-        <div class="ev-header">
-          <span class="sec-tag">Case Study 02 · Beyond Relax</span>
-          <h2 class="sec-title">광고 성과로 증명합니다</h2>
-        </div>
-        <div class="ev-body">
-          <div class="ev-stats">
-            <div class="ev-company">비욘드릴렉스</div>
-            <div class="ev-period">퍼포먼스 마케팅 · 이커머스 전략</div>
-            <div class="ev-row">
-              <div class="ev-val">3,000%</div>
-              <div class="ev-txt">SA 검색광고 ROAS 달성</div>
-            </div>
-            <div class="ev-row">
-              <div class="ev-val">10,000%</div>
-              <div class="ev-txt">GFA 디스플레이 ROAS 달성</div>
-            </div>
-            <div class="ev-row">
-              <div class="ev-val">4배</div>
-              <div class="ev-txt">매출 성장<br><span class="ev-badge">5개월 만에 프리미엄</span></div>
-            </div>
-            <div class="ev-row">
-              <div class="ev-val">1개월</div>
-              <div class="ev-txt">브랜드스토어 입점 완료</div>
-            </div>
-          </div>
-          <div class="ev-photos">
-            <div class="ev-photo-col">
-              <div class="ev-photo-label is-before">2024년 11월 · 입사 전</div>
-              <img class="ev-photo-img" src="images/SA_24년 11월.png" alt="SA 광고 성과 2024년 11월">
-            </div>
-            <div class="ev-photo-col">
-              <div class="ev-photo-label is-after">2025년 11월 · 입사 후</div>
-              <img class="ev-photo-img" src="images/SA_25년 11월.png" alt="SA 광고 성과 2025년 11월">
-            </div>
-          </div>
-        </div>
-        <div class="ev-caption">입사 전 ROAS <span class="c-red">41%</span> → 입사 후 ROAS <span class="c-gold">3,986%</span></div>
-      </div>
-    </section>
-
-    <!-- ════ 6. 매출 증거 ════ -->
-    <section>
-      <div class="slide-inner evidence-slide">
-        <div class="ev-header">
-          <span class="sec-tag">Revenue · Verified Sales Record</span>
-          <h2 class="sec-title">매출 증거</h2>
-        </div>
-        <div class="ev-body">
-          <div class="ev-stats">
-            <div class="ev-company">매출 성장 기록</div>
-            <div class="ev-period">2024 → 2025 · 비욘드릴렉스</div>
-            <div class="ev-row">
-              <div class="ev-val">4.6억</div>
-              <div class="ev-txt">2024년 연간 매출</div>
-            </div>
-            <div class="ev-row">
-              <div class="ev-val">16.6억</div>
-              <div class="ev-txt">2025년 연간 매출<br><span class="ev-badge">전년 대비 +260%</span></div>
-            </div>
-            <div class="ev-row">
-              <div class="ev-val">4배</div>
-              <div class="ev-txt">1년 만에 달성한 매출 성장</div>
-            </div>
-          </div>
-          <div class="ev-photos">
-            <div class="ev-photo-col">
-              <div class="ev-photo-label is-before">2024년도 매출</div>
-              <img class="ev-photo-img" src="images/매출전표_24년도.png" alt="매출전표 2024년도">
-            </div>
-            <div class="ev-photo-col">
-              <div class="ev-photo-label is-after">2025년도 매출</div>
-              <img class="ev-photo-img" src="images/매출전표_25년도.png" alt="매출전표 2025년도">
-            </div>
-          </div>
-        </div>
-        <div class="ev-caption">2024년 <span class="c-red">4.6억</span> → 2025년 <span class="c-gold">16.6억</span> <span style="color:var(--dim)">(매출 4배 성장)</span></div>
-      </div>
-    </section>
-
-    <!-- ════ 7. NAVER CERTIFIED ════ -->
-    <section>
-      <div class="slide-inner naver-slide">
-        <div class="naver-wrap">
-          <span class="sec-tag" style="opacity:0;animation:fadeUp .5s ease forwards .2s;">Official Certification</span>
-          <h2 class="sec-title" style="opacity:0;animation:fadeUp .5s ease forwards .38s;margin-bottom:0;">네이버가 인정한 마케터</h2>
-
-          <div class="naver-badge">
-            <span class="nb-grade">프리미엄</span>
-            <span class="nb-label">네이버 스마트스토어 최고 등급</span>
-            <div class="nb-sub">두 회사에서 모두 달성 · 상위 1% 스토어</div>
-          </div>
-
-          <div class="nv-stats">
-            <div class="nv-stat"><span class="nv-val">3개월</span><span class="nv-lbl">바베큐타운 달성 기간</span></div>
-            <div class="nv-stat"><span class="nv-val">5개월</span><span class="nv-lbl">비욘드릴렉스 달성 기간</span></div>
-            <div class="nv-stat"><span class="nv-val">2개 사</span><span class="nv-lbl">반복 달성 (국내 유일급)</span></div>
-          </div>
-
-          <div class="naver-quote">
-            <span class="hl">바베큐타운: 3개월 매출 6억, 판매 2,000건</span>으로 프리미엄 달성.<br>
-            <span class="hl">비욘드릴렉스: 5개월 만에 프리미엄</span>, 1개월 내 브랜드스토어 입점 완료.<br>
-            두 회사 모두에서 최고 등급을 달성한 마케터는 흔하지 않습니다.
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ════ 8. SKILLS ════ -->
-    <section>
-      <div class="slide-inner skills-slide">
-        <div style="text-align:center;margin-bottom:1.5rem;width:100%;">
-          <span class="sec-tag">What I Can Do</span>
-          <h2 class="sec-title">할 수 있는 것</h2>
-        </div>
-        <div class="sk-grid">
-          <div class="sk-card" data-delay="0"   data-w="97"><span class="sk-icon">🎯</span><div class="sk-name">네이버 검색광고 (SA)</div><div class="sk-desc">키워드 세팅, 입찰 관리, ROAS 최적화.<br>ROAS 3,000% 달성 실적.</div><div class="sk-bar"><div class="sk-fill"></div></div></div>
-          <div class="sk-card" data-delay="100" data-w="92"><span class="sk-icon">📡</span><div class="sk-name">네이버 GFA 광고</div><div class="sk-desc">디스플레이 광고 운영, 타겟 설정.<br>ROAS 10,000% 달성 실적.</div><div class="sk-bar"><div class="sk-fill"></div></div></div>
-          <div class="sk-card" data-delay="200" data-w="88"><span class="sk-icon">📱</span><div class="sk-name">Meta 광고</div><div class="sk-desc">Facebook · Instagram 광고 운영,<br>크리에이티브 기획 및 타겟 최적화.</div><div class="sk-bar"><div class="sk-fill"></div></div></div>
-          <div class="sk-card" data-delay="300" data-w="95"><span class="sk-icon">🛒</span><div class="sk-name">스마트스토어 운영</div><div class="sk-desc">등급 관리, 프로모션, 리뷰 전략.<br>프리미엄 등급 2회 달성.</div><div class="sk-bar"><div class="sk-fill"></div></div></div>
-          <div class="sk-card" data-delay="400" data-w="84"><span class="sk-icon">✍️</span><div class="sk-name">상세페이지 기획</div><div class="sk-desc">구매 전환율 높이는 상세페이지<br>기획 및 콘텐츠 방향 설정.</div><div class="sk-bar"><div class="sk-fill"></div></div></div>
-          <div class="sk-card" data-delay="500" data-w="80"><span class="sk-icon">🔍</span><div class="sk-name">SEO 최적화</div><div class="sk-desc">검색 노출 최적화, 키워드 리서치,<br>콘텐츠 SEO 전략 수립.</div><div class="sk-bar"><div class="sk-fill"></div></div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ════ 9. CTA ════ -->
-    <section>
-      <div class="cta-wrap">
-        <div class="cta-radial"></div>
-        <div class="cta-content">
-          <span class="cta-tag">Contact · Let's Grow Together</span>
-          <h2 class="cta-hl">매출이 고민이라면,<br>지금 연락하세요</h2>
-          <p class="cta-sub">10년의 실전 데이터와 전략이 당신의 매출을 바꿉니다</p>
-          <div class="cta-contacts">
-            <div class="cta-card">
-              <span class="cta-icon">📞</span>
-              <div>
-                <span class="cta-lbl">Phone</span>
-                <span class="cta-val">010-4227-8127</span>
-              </div>
-            </div>
-            <div class="cta-card">
-              <span class="cta-icon">📧</span>
-              <div>
-                <span class="cta-lbl">Email</span>
-                <span class="cta-val">freewill0905@naver.com</span>
-              </div>
-            </div>
-          </div>
-          <div class="cta-sig">Yang Si-Hyeon · Digital Marketer · 2026</div>
-        </div>
-      </div>
-    </section>
-
+<!-- ① HERO -->
+<section class="slide active" id="s1">
+  <div class="orbs"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+  <div class="hwrap">
+    <div class="heye">Digital Marketing Portfolio</div>
+    <h1 class="hh1">당신이 찾던<br><em>마케터가 여기 있습니다</em></h1>
+    <div class="hrul"></div>
+    <p class="hsub"><strong>10년차 디지털 마케터</strong>&ensp;양시현</p>
   </div>
+  <div class="hscr"><span class="stxt">Scroll</span><div class="slin"></div></div>
+</section>
+
+<!-- ② METRICS -->
+<section class="slide" id="s2">
+  <div class="slbl">Key Performance</div>
+  <div class="stit">핵심 성과</div>
+  <div class="mgrid">
+    <div class="mc" data-cnt="10000" data-sfx="%" data-dur="2200">
+      <div class="mica">📈</div><div class="mnum">0%</div>
+      <div class="mlbl">ROAS 최대 달성<small>네이버 GFA 최고 기록</small></div>
+    </div>
+    <div class="mc" data-cnt="16.6" data-sfx="억" data-dec="1" data-dur="1800">
+      <div class="mica">💰</div><div class="mnum">0억</div>
+      <div class="mlbl">연매출 달성<small>2025년 스마트스토어 기준</small></div>
+    </div>
+    <div class="mc">
+      <div class="mica">🏆</div><div class="mnum">2회</div>
+      <div class="mlbl">네이버 프리미엄 등급<small>바베큐타운 · 비욘드릴렉스</small></div>
+    </div>
+    <div class="mc" data-cnt="4" data-sfx="배" data-dur="1400">
+      <div class="mica">🚀</div><div class="mnum">0배</div>
+      <div class="mlbl">스마트스토어 매출 성장<small>1년 만에 달성</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ③ ABOUT -->
+<section class="slide" id="s3">
+  <div class="agrid">
+    <div>
+      <div class="slbl">About Me</div>
+      <div class="aname">양시현</div>
+      <div class="attl">10년차 디지털 마케터</div>
+      <p class="adesc">데이터 기반의 퍼포먼스 마케팅으로 실제 매출을 만드는 마케터입니다.<br>네이버 광고부터 Meta, 스마트스토어 운영까지 디지털 마케팅 풀사이클을 직접 운영하며 증명된 성과를 쌓아왔습니다.</p>
+      <div class="tags">
+        <span class="tag">네이버 SA/GFA</span><span class="tag">Meta 광고</span>
+        <span class="tag">스마트스토어</span><span class="tag">상세페이지 기획</span>
+        <span class="tag">SEO</span><span class="tag">데이터 분석</span>
+      </div>
+    </div>
+    <div class="tl">
+      <div class="tlh">Career Timeline</div>
+      <div class="tli">
+        <div class="tlyr">2017</div>
+        <div class="tlco">바베큐타운</div>
+        <div class="tlro">디지털 마케터 — 네이버 SA · 스마트스토어 · SEO</div>
+      </div>
+      <div class="tli">
+        <div class="tlyr">2022</div>
+        <div class="tlco">에프에스</div>
+        <div class="tlro">디지털 마케터 — 퍼포먼스 마케팅</div>
+      </div>
+      <div class="tli">
+        <div class="tlyr">2025</div>
+        <div class="tlco">비욘드릴렉스</div>
+        <div class="tlro">디지털 마케터 — SA/GFA · Meta · 스마트스토어 · 브랜드스토어</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ④ BBQTOWN -->
+<section class="slide" id="s4">
+  <div class="ev">
+    <div class="evhd">
+      <div class="slbl">Case Study 01</div>
+      <div class="stit" style="margin-bottom:14px">바베큐타운 → 스테츠 성과</div>
+      <div class="rtags"><span class="rt">네이버 SA 광고 운영</span><span class="rt">스마트스토어 운영</span><span class="rt">SEO</span></div>
+      <div class="rbs"><span class="rb">SA ROAS 3,000%</span><span class="rb">매출 10배 성장</span><span class="rb">프리미엄 등급 달성</span></div>
+    </div>
+    <div class="icmp">
+      <div class="ifr"><img src="images/바베큐타운.png" alt="바베큐타운" onerror="this.closest('.ifr').classList.add('nim')"><div class="iph"><div class="phi">🏢</div><div class="pht">images/바베큐타운.png</div></div><div class="ilbl">입사 전 (바베큐타운)</div></div>
+      <div class="ifr"><img src="images/스테츠.png" alt="스테츠" onerror="this.closest('.ifr').classList.add('nim')"><div class="iph"><div class="phi">🏛️</div><div class="pht">images/스테츠.png</div></div><div class="ilbl">입사 후 (스테츠 — 새 사옥)</div></div>
+    </div>
+    <div class="ecap">제가 기여한 회사는 사옥을 짓습니다</div>
+  </div>
+</section>
+
+<!-- ⑤ BEYOND RELAX -->
+<section class="slide" id="s5">
+  <div class="ev">
+    <div class="evhd">
+      <div class="slbl">Case Study 02</div>
+      <div class="stit" style="margin-bottom:14px">비욘드릴렉스 성과</div>
+      <div class="rtags"><span class="rt">네이버 SA/GFA</span><span class="rt">Meta 광고</span><span class="rt">스마트스토어 운영</span><span class="rt">상세페이지 기획</span><span class="rt">브랜드스토어</span></div>
+      <div class="rbs"><span class="rb">SA ROAS 3,000%</span><span class="rb">GFA ROAS 10,000%</span><span class="rb">매출 4배</span><span class="rb">프리미엄 등급 5개월</span><span class="rb">브랜드스토어 1개월 입점</span></div>
+    </div>
+    <div class="icmp">
+      <div class="ifr"><img src="images/SA_24년 11월.png" alt="2024년 11월 SA" onerror="this.closest('.ifr').classList.add('nim')"><div class="iph"><div class="phi">📊</div><div class="pht">images/SA_24년 11월.png</div></div><div class="ilbl">입사 전 (2024년 11월)</div></div>
+      <div class="ifr"><img src="images/SA_25년 11월.png" alt="2025년 11월 SA" onerror="this.closest('.ifr').classList.add('nim')"><div class="iph"><div class="phi">📈</div><div class="pht">images/SA_25년 11월.png</div></div><div class="ilbl">입사 후 (2025년 11월)</div></div>
+    </div>
+    <div class="ecap">입사 전 ROAS 41% → 입사 후 ROAS 3,986%</div>
+  </div>
+</section>
+
+<!-- ⑥ REVENUE PROOF -->
+<section class="slide" id="s6">
+  <div class="ev">
+    <div class="evhd">
+      <div class="slbl">Revenue Proof</div>
+      <div class="stit" style="margin-bottom:18px">매출 팩트 증거</div>
+    </div>
+    <div class="icmp">
+      <div class="ifr"><img src="images/매출전표_24년도.png" alt="2024 매출전표" onerror="this.closest('.ifr').classList.add('nim')"><div class="iph"><div class="phi">🧾</div><div class="pht">images/매출전표_24년도.png</div></div><div class="ilbl">2024년도</div></div>
+      <div class="ifr"><img src="images/매출전표_25년도.png" alt="2025 매출전표" onerror="this.closest('.ifr').classList.add('nim')"><div class="iph"><div class="phi">🧾</div><div class="pht">images/매출전표_25년도.png</div></div><div class="ilbl">2025년도</div></div>
+    </div>
+    <div class="ecap">2024년 4.6억 → 2025년 16.6억 (매출 약 4배 성장)</div>
+    <div class="esub" style="margin-top:5px">네이버 스마트스토어 부가세 신고 기준</div>
+    <div><span class="obdg"><span class="bseal">✓</span>공식 데이터 (부가세 신고 기준)</span></div>
+  </div>
+</section>
+
+<!-- ⑦ SKILLS -->
+<section class="slide" id="s7">
+  <div class="skw">
+    <div class="slbl">Expertise</div>
+    <div class="stit" style="margin-bottom:28px">보유 스킬</div>
+    <div class="skgrid" id="skgrid">
+      <div class="ski" data-lv="95"><div class="skhd"><div class="skic">🔍</div><div><div class="sknm">네이버 검색광고 (SA)</div><div class="sksb">파워링크 · 쇼핑검색 · 브랜드검색</div></div></div><div class="sktr"><div class="skbar"></div></div></div>
+      <div class="ski" data-lv="90"><div class="skhd"><div class="skic">📺</div><div><div class="sknm">네이버 GFA</div><div class="sksb">디스플레이 광고 · 리타겟팅</div></div></div><div class="sktr"><div class="skbar"></div></div></div>
+      <div class="ski" data-lv="88"><div class="skhd"><div class="skic">📱</div><div><div class="sknm">Meta 광고</div><div class="sksb">페이스북 · 인스타그램</div></div></div><div class="sktr"><div class="skbar"></div></div></div>
+      <div class="ski" data-lv="93"><div class="skhd"><div class="skic">🛒</div><div><div class="sknm">스마트스토어 운영</div><div class="sksb">등급 관리 · 상품 최적화</div></div></div><div class="sktr"><div class="skbar"></div></div></div>
+      <div class="ski" data-lv="86"><div class="skhd"><div class="skic">🎨</div><div><div class="sknm">상세페이지 기획</div><div class="sksb">구매 전환 최적화 기획</div></div></div><div class="sktr"><div class="skbar"></div></div></div>
+      <div class="ski" data-lv="84"><div class="skhd"><div class="skic">🌐</div><div><div class="sknm">SEO 최적화</div><div class="sksb">키워드 리서치 · 콘텐츠 SEO</div></div></div><div class="sktr"><div class="skbar"></div></div></div>
+      <div class="ski" data-lv="88" style="grid-column:1/-1"><div class="skhd"><div class="skic">📊</div><div><div class="sknm">데이터 분석 및 리포팅</div><div class="sksb">성과 분석 · 인사이트 도출 · 개선안 제시</div></div></div><div class="sktr"><div class="skbar"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑧ CLOSING -->
+<section class="slide" id="s8">
+  <div class="orbs">
+    <div class="orb o2" style="top:-150px;right:-70px;bottom:auto;left:auto"></div>
+    <div class="orb o1" style="bottom:-170px;left:-70px;top:auto;right:auto"></div>
+  </div>
+  <div class="cw">
+    <div class="slbl" style="text-align:center;margin-bottom:14px">Let's Work Together</div>
+    <h2 class="ch">저를 채용하시면<br><em>이런 결과를 만들어 드립니다</em></h2>
+    <p class="csum">ROAS 10,000% · 연매출 16억 · 네이버 프리미엄 등급 2회 · 매출 4배 성장<br>숫자로 증명된 10년의 디지털 마케팅 경력</p>
+    <div class="astrip">
+      <div class="ai"><div class="an">10,000%</div><div class="al">최고 ROAS</div></div>
+      <div class="ai"><div class="an">16.6억</div><div class="al">연간 매출</div></div>
+      <div class="ai"><div class="an">×4</div><div class="al">매출 성장</div></div>
+      <div class="ai"><div class="an">10년</div><div class="al">디지털 마케팅</div></div>
+    </div>
+    <div class="cbox">
+      <div class="cbtl">Contact</div>
+      <div class="crow"><div class="cic">✉️</div><div class="ctxt">이메일 주소를 입력하세요</div></div>
+      <div class="crow"><div class="cic">📞</div><div class="ctxt">연락처를 입력하세요</div></div>
+      <p class="chnt">✏️ 더블클릭하여 연락처를 직접 입력하세요</p>
+    </div>
+  </div>
+</section>
+
 </div>
 
-<button id="edit-mode-btn" title="더블클릭으로 텍스트 편집">
-  <span class="edit-dot"></span>
-  <span id="edit-lbl">편집 모드</span>
-</button>
-<div id="save-toast">✓ 저장됨</div>
-
-<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.0/dist/reveal.js"></script>
 <script>
-/* ── HOOK ── */
-function runHook() {
-  ['hq1','hq2','hq3'].forEach((id, i) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.classList.remove('show');
-    void el.offsetWidth;
-    setTimeout(() => el.classList.add('show'), 350 + i * 850);
-  });
-  const cta = document.getElementById('hook-cta');
-  if (cta) {
-    cta.classList.remove('show');
-    void cta.offsetWidth;
-    setTimeout(() => cta.classList.add('show'), 350 + 3 * 850);
-  }
+// ── SLIDE ENGINE ────────────────────────────────────────
+const N=8;let cur=0,busy=false;
+const slides=document.querySelectorAll('.slide');
+const dotsEl=document.getElementById('dts');
+const ctEl=document.getElementById('ct');
+const pbar=document.getElementById('pbar');
+const fired=new Set();
+
+for(let i=0;i<N;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' on':'');
+  d.addEventListener('click',()=>jump(i));
+  dotsEl.appendChild(d);
 }
 
-/* ── IMPACT ── */
-function runImpact() {
-  const hl  = document.getElementById('impact-hl');
-  const sub = document.getElementById('impact-sub');
-  if (hl)  { hl.style.animation  = 'none'; void hl.offsetWidth;  hl.style.animation  = 'crashIn .95s cubic-bezier(.16,1,.3,1) forwards .45s'; }
-  if (sub) { sub.style.animation = 'none'; void sub.offsetWidth; sub.style.animation = 'fadeUp .6s ease forwards 1.4s'; }
+function jump(idx){
+  if(busy||idx===cur||idx<0||idx>=N)return;
+  busy=true;
+  const dir=idx>cur?1:-1;
+  const ps=slides[cur],ns=slides[idx];
+  ps.classList.add(dir>0?'exit-u':'exit-d');
+  ps.classList.remove('active');
+  setTimeout(()=>{
+    ps.classList.remove('exit-u','exit-d');
+    ns.classList.add('active');
+    cur=idx;ui();
+    setTimeout(()=>{busy=false;enter(idx);},640);
+  },310);
+}
+function go(d){jump(cur+d)}
+
+function ui(){
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+  ctEl.textContent=String(cur+1).padStart(2,'0')+' / '+String(N).padStart(2,'0');
+  pbar.style.width=((cur+1)/N*100)+'%';
 }
 
-/* ── EVIDENCE ── */
-function runEvidence(section) {
-  const stats  = section.querySelector('.ev-stats');
-  const photos = section.querySelector('.ev-photos');
-  const cap    = section.querySelector('.ev-caption');
-  if (stats)  { stats.style.animation  = 'none'; void stats.offsetWidth;  stats.style.animation  = 'evidenceLeft .6s cubic-bezier(.16,1,.3,1) forwards .3s'; }
-  if (photos) { photos.style.animation = 'none'; void photos.offsetWidth; photos.style.animation = 'evidenceRight .65s cubic-bezier(.16,1,.3,1) forwards .48s'; }
-  if (cap)    { cap.style.animation    = 'none'; void cap.offsetWidth;    cap.style.animation    = 'fadeUp .5s ease forwards .7s'; }
-}
-
-/* ── SKILLS ── */
-function runSkills(section) {
-  section.querySelectorAll('.sk-card').forEach(c => {
-    c.classList.remove('go');
-    c.querySelector('.sk-fill').style.width = '0';
-    const d = +c.dataset.delay || 0;
-    setTimeout(() => {
-      c.classList.add('go');
-      setTimeout(() => { c.querySelector('.sk-fill').style.width = (c.dataset.w || 80) + '%'; }, 240);
-    }, d);
-  });
-}
-
-/* ── CTA ── */
-function runCta(section) {
-  const c = section.querySelector('.cta-content');
-  if (!c) return;
-  c.classList.remove('go');
-  setTimeout(() => c.classList.add('go'), 100);
-}
-
-/* ── REVEAL ── */
-Reveal.initialize({
-  hash: true, transition: 'fade', transitionSpeed: 'default',
-  backgroundTransition: 'fade', slideNumber: 'c/t',
-  controls: true, progress: true, center: true,
-  width: 1280, height: 720, margin: 0.02, plugins: []
-});
-
-const handlers = [
-  () => setTimeout(runHook, 250),             // 0: HOOK
-  () => setTimeout(runImpact, 100),           // 1: IMPACT
-  null,                                        // 2: HERO
-  s => setTimeout(() => runEvidence(s), 100), // 3: 바베큐타운/스테츠
-  s => setTimeout(() => runEvidence(s), 100), // 4: 비욘드릴렉스
-  s => setTimeout(() => runEvidence(s), 100), // 5: 매출 증거
-  null,                                        // 6: NAVER CERTIFIED
-  s => setTimeout(() => runSkills(s), 200),   // 7: SKILLS
-  s => setTimeout(() => runCta(s), 150)       // 8: CTA
-];
-
-Reveal.on('slidechanged', e => { const fn = handlers[e.indexh]; if (fn) fn(e.currentSlide); });
-Reveal.on('ready', () => setTimeout(runHook, 450));
-
-/* ── INLINE EDITOR ── */
-(function () {
-  const KEY = 'portfolio-v2-edits';
-  const SELS = [
-    '.hook-q', '.hook-cta',
-    '.impact-eyebrow', '.impact-hl', '.impact-sub',
-    '.hero-tag', '.hero-name', '.hero-role', '.hero-desc',
-    '.hero-yrs-big', '.hero-yrs-lbl', '.hero-yrs-sub',
-    '.sec-tag', '.sec-title',
-    '.ev-company', '.ev-period', '.ev-txt',
-    '.nb-grade', '.nb-label', '.nb-sub',
-    '.nv-val', '.nv-lbl', '.naver-quote',
-    '.sk-name', '.sk-desc',
-    '.cta-tag', '.cta-hl', '.cta-sub', '.cta-val', '.cta-sig'
-  ];
-
-  let on = false, timer = null;
-
-  function assignIds() {
-    SELS.forEach(sel => {
-      document.querySelectorAll(sel).forEach((el, i) => {
-        el.dataset.eid = sel.replace(/[^a-zA-Z]/g, '') + '_' + i;
-        el.classList.add('et');
-      });
+// ── ENTER ANIMATIONS ────────────────────────────────────
+function enter(idx){
+  const id='s'+(idx+1);
+  if(fired.has(id))return;
+  fired.add(id);
+  if(idx===1){
+    document.querySelectorAll('#s2 .mc[data-cnt]').forEach(c=>{
+      const to=parseFloat(c.dataset.cnt),sfx=c.dataset.sfx||'',dec=parseInt(c.dataset.dec)||0,dur=parseInt(c.dataset.dur)||2000;
+      countUp(c.querySelector('.mnum'),0,to,dur,'',sfx,dec);
     });
   }
-
-  function restore() {
-    try {
-      const d = JSON.parse(localStorage.getItem(KEY) || '{}');
-      Object.entries(d).forEach(([id, html]) => {
-        const el = document.querySelector('[data-eid="' + id + '"]');
-        if (el) el.innerHTML = html;
-      });
-    } catch (_) {}
+  if(idx===6){
+    document.querySelectorAll('#s7 .ski').forEach((it,i)=>{
+      const lv=parseInt(it.dataset.lv)||80;
+      setTimeout(()=>it.querySelector('.skbar').style.width=lv+'%',i*90);
+    });
   }
+}
 
-  function saveAll() {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      const d = {};
-      document.querySelectorAll('[data-eid]').forEach(el => { d[el.dataset.eid] = el.innerHTML; });
-      localStorage.setItem(KEY, JSON.stringify(d));
-      const t = document.getElementById('save-toast');
-      if (t) { t.classList.add('show'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 1800); }
-    }, 300);
+function countUp(el,from,to,dur,pfx,sfx,dec){
+  const t0=performance.now();
+  function tick(now){
+    const p=Math.min((now-t0)/dur,1),e=1-Math.pow(1-p,3),v=from+(to-from)*e;
+    el.textContent=pfx+(dec?v.toFixed(dec):Math.floor(v).toLocaleString('ko-KR'))+sfx;
+    if(p<1)requestAnimationFrame(tick);
+    else el.textContent=pfx+(dec?to.toFixed(dec):to.toLocaleString('ko-KR'))+sfx;
   }
+  requestAnimationFrame(tick);
+}
 
-  function startEdit(el) {
-    const prev = document.querySelector('[data-eid][contenteditable]');
-    if (prev && prev !== el) endEdit(prev);
-    el.setAttribute('contenteditable', 'true');
-    el.setAttribute('spellcheck', 'false');
-    el.focus();
-    const r = document.createRange(); r.selectNodeContents(el); r.collapse(false);
-    const s = window.getSelection(); if (s) { s.removeAllRanges(); s.addRange(r); }
+// ── KEYBOARD ────────────────────────────────────────────
+document.addEventListener('keydown',e=>{
+  if(document.activeElement?.contentEditable==='true')return;
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();go(1);}
+  else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();go(-1);}
+  else if(e.key==='Escape')document.activeElement?.blur();
+});
+
+// ── WHEEL ───────────────────────────────────────────────
+let wt;
+document.addEventListener('wheel',e=>{clearTimeout(wt);wt=setTimeout(()=>go(e.deltaY>0?1:-1),55);},{passive:true});
+
+// ── TOUCH ───────────────────────────────────────────────
+let ty0=0;
+document.addEventListener('touchstart',e=>{ty0=e.touches[0].clientY;},{passive:true});
+document.addEventListener('touchend',e=>{const d=ty0-e.changedTouches[0].clientY;if(Math.abs(d)>50)go(d>0?1:-1);},{passive:true});
+
+// ── DOUBLE-CLICK EDITING ────────────────────────────────
+const ETAGS=new Set(['H1','H2','H3','H4','P','SPAN']);
+const SKIP=['dots','arrows','orbs','orb','ehint','sktr','skbar','slin','bseal','phi'];
+
+document.addEventListener('dblclick',e=>{
+  let el=e.target;
+  for(let i=0;i<5;i++){
+    if(!el||el===document.body)break;
+    const cls=(el.className||'').toString();
+    if(SKIP.some(s=>cls.includes(s))){el=el.parentElement;continue;}
+    if((ETAGS.has(el.tagName)||el.tagName==='DIV')&&el.textContent.trim()&&!el.querySelector('div,p,section')){
+      el.contentEditable='true';el.focus();
+      const r=document.createRange();r.selectNodeContents(el);r.collapse(false);
+      const s=window.getSelection();s.removeAllRanges();s.addRange(r);
+      break;
+    }
+    el=el.parentElement;
   }
+});
 
-  function endEdit(el) { el.removeAttribute('contenteditable'); saveAll(); }
+document.addEventListener('blur',e=>{
+  if(e.target.contentEditable==='true')e.target.contentEditable='false';
+},true);
 
-  const btn = document.getElementById('edit-mode-btn');
-  const lbl = document.getElementById('edit-lbl');
+// ── EDIT HINT ───────────────────────────────────────────
+const eh=document.getElementById('eh');
+setTimeout(()=>{
+  eh.style.opacity='1';
+  setTimeout(()=>{eh.style.opacity='0';setTimeout(()=>eh.style.display='none',600);},4500);
+},1200);
 
-  btn.addEventListener('click', () => {
-    on = !on;
-    document.body.classList.toggle('edit-on', on);
-    btn.classList.toggle('is-on', on);
-    lbl.textContent = on ? '편집 종료' : '편집 모드';
-    if (!on) { const a = document.querySelector('[data-eid][contenteditable]'); if (a) endEdit(a); }
-  });
-
-  document.addEventListener('dblclick', e => {
-    if (!on) return;
-    const el = e.target.closest('[data-eid]');
-    if (!el) return;
-    e.preventDefault(); e.stopPropagation();
-    startEdit(el);
-  });
-
-  document.addEventListener('blur', e => {
-    if (e.target.dataset && e.target.dataset.eid) endEdit(e.target);
-  }, true);
-
-  document.addEventListener('keydown', e => {
-    const a = document.querySelector('[data-eid][contenteditable]');
-    if (!a) return;
-    if (e.key === 'Escape') { endEdit(a); a.blur(); return; }
-    e.stopPropagation();
-  }, true);
-
-  assignIds();
-  restore();
-})();
+ui();
 </script>
 </body>
 </html>
